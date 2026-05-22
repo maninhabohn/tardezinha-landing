@@ -1,1 +1,37 @@
 @import "tailwindcss";
+
+/* Paleta Show de Bola — extraida do flyer */
+@theme {
+  --color-sdb-yellow: #ffe600;
+  --color-sdb-yellow-soft: #fff5a3;
+  --color-sdb-purple: #7b1fa2;
+  --color-sdb-purple-dark: #4a148c;
+  --color-sdb-pink: #ec4899;
+  --color-sdb-pink-soft: #fbcfe8;
+  --color-sdb-orange: #f97316;
+  --color-sdb-text: #1f2937;
+
+  --font-display: "Fredoka", system-ui, sans-serif;
+  --font-sans: "Nunito", system-ui, sans-serif;
+}
+
+/* Base */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--color-sdb-text);
+  background: var(--color-sdb-yellow);
+  margin: 0;
+}
+
+/* Headings com a fonte chunky */
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
