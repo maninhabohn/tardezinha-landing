@@ -4,6 +4,7 @@ import { ParaResponsaveis } from './components/ParaResponsaveis'
 import { Ingressos } from './components/Ingressos'
 import { Galeria } from './components/Galeria'
 import { Local } from './components/Local'
+import { Faq } from './components/Faq'
 import { Compartilhar } from './components/Compartilhar'
 import { Footer } from './components/Footer'
 import { WhatsappFloat } from './components/WhatsappFloat'
@@ -30,6 +31,9 @@ function App() {
       </Reveal>
       <Reveal>
         <Local />
+      </Reveal>
+      <Reveal>
+        <Faq />
       </Reveal>
       <Reveal>
         <Compartilhar />
