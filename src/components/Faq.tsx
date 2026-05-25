@@ -6,18 +6,16 @@ type FaqItem = {
   resposta: string
 }
 
-// ⚠️ MANINHA: revise as respostas. As marcadas como "padrao" eu chutei —
-// edite com a politica real da Casa de Festas Show de Bola.
 const faqs: FaqItem[] = [
   {
     pergunta: 'E se chover no dia?',
     resposta:
-      'O evento acontece em área coberta dentro da Casa de Festas, então a chuva não atrapalha. A festa rola normal! ☔', // VERIFICAR
+      'A festa rola normal! Nossa Casa de Festas tem 500m² de área coberta — então chuva não atrapalha em nada. ☔',
   },
   {
     pergunta: 'Como faço pra confirmar e pagar?',
     resposta:
-      'É só clicar no botão verde e mandar mensagem no WhatsApp. A gente te passa as formas de pagamento (Pix, cartão ou dinheiro no local).', // VERIFICAR formas de pagamento aceitas
+      'É só clicar no botão verde e chamar no WhatsApp. O pagamento é via Pix — rápido e prático.',
   },
   {
     pergunta: 'Tem desconto pra mais de uma criança?',
@@ -27,7 +25,7 @@ const faqs: FaqItem[] = [
   {
     pergunta: 'Tem estacionamento?',
     resposta:
-      'Sim, tem estacionamento gratuito no local. Sem complicação pra estacionar. 🅿️', // VERIFICAR
+      'Sim, tem estacionamento no local. Sem complicação pra estacionar. 🅿️',
   },
   {
     pergunta: 'Posso ficar acompanhando ou tenho que sair?',
@@ -37,7 +35,7 @@ const faqs: FaqItem[] = [
   {
     pergunta: 'Crianças menores de 4 anos podem ir?',
     resposta:
-      'Por questões de segurança das atrações (giro radical, escalada, etc), o evento é a partir de 4 anos. Crianças menores acompanhadas dos pais podem usar a área comum e mesas.', // VERIFICAR politica de menores de 4
+      'Por questões de segurança das atrações (giro radical, escalada, etc), as atrações principais são a partir de 4 anos. Menores de 4 anos podem participar desde que acompanhados de um responsável o tempo todo.',
   },
   {
     pergunta: 'E se minha criança não pode comer crepe (alergia, etc)?',
@@ -45,9 +43,9 @@ const faqs: FaqItem[] = [
       'Sem problema! O crepe é uma cortesia opcional. Avise a gente na hora da confirmação que adaptamos.',
   },
   {
-    pergunta: 'Posso cancelar se algo acontecer?',
+    pergunta: 'Posso cancelar se acontecer algum imprevisto?',
     resposta:
-      'Sim, cancelamentos com até 48h de antecedência têm devolução integral. Próximo do evento, conversamos caso a caso.', // VERIFICAR politica de cancelamento real
+      'Sim! Cancelamentos com até 48h de antecedência geram crédito pra próxima edição da Tardezinha. Você não perde o valor pago — só transfere pro próximo evento.',
   },
 ]
 
