@@ -36,10 +36,10 @@ export function Galeria() {
             Galeria
           </p>
           <h2 className="font-display text-4xl text-sdb-purple sm:text-5xl">
-            O nosso espaço
+            O que rola aqui
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-sdb-text/70">
-            Um pedacinho da diversão que rola na Show de Bola.
+            Um pedacinho do que tu pode esperar na Tardezinha.
           </p>
         </div>
 

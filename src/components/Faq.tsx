@@ -10,42 +10,47 @@ const faqs: FaqItem[] = [
   {
     pergunta: 'E se chover no dia?',
     resposta:
-      'A festa rola normal! Nossa Casa de Festas tem 500m² de área coberta — então chuva não atrapalha em nada. ☔',
+      'A festa rola normal. Nossa Casa de Festas tem 500m² de área coberta — chuva não atrapalha em nada. ☔',
   },
   {
     pergunta: 'Como faço pra confirmar e pagar?',
     resposta:
-      'É só clicar no botão verde e chamar no WhatsApp. O pagamento é via Pix — rápido e prático.',
+      'É só clicar no botão verde e chamar no WhatsApp. Pagamento via Pix — rápido e prático.',
   },
   {
-    pergunta: 'Tem desconto pra mais de uma criança?',
+    pergunta: 'Tem valor especial pra grupo?',
     resposta:
-      'Sim! Pra grupos (irmãos, amigos, turma da escola), temos valores especiais. Fala com a gente no WhatsApp que combinamos.',
+      'Sim. Pra grupos (irmãos, amigos, turma da escola), temos valor especial. Fala com a gente no WhatsApp que combinamos.',
   },
   {
     pergunta: 'Tem estacionamento?',
     resposta:
-      'Sim, tem estacionamento no local. Sem complicação pra estacionar. 🅿️',
+      'Sim, tem estacionamento gratuito no local. 🅿️',
   },
   {
     pergunta: 'Posso ficar acompanhando ou tenho que sair?',
     resposta:
-      'Você escolhe! Temos mesas e bar pra você curtir junto, ou pode aproveitar a folga e voltar no horário marcado pra buscar. Nossa equipe cuida da criançada.',
+      'Tu escolhe — mas a Tardezinha foi pensada pra tu APROVEITAR teu tempo fora. A criançada fica em boas mãos com a equipe de monitoria. Volta às 22h30 pra buscar.',
   },
   {
     pergunta: 'Crianças menores de 4 anos podem ir?',
     resposta:
-      'Por questões de segurança das atrações (giro radical, escalada, etc), as atrações principais são a partir de 4 anos. Menores de 4 anos podem participar desde que acompanhados de um responsável o tempo todo.',
+      'Por questões de segurança das atrações (Giro Radical, Escalada, Nerf, etc.), as atrações principais são a partir de 4 anos. Menores podem participar desde que acompanhados de um responsável o tempo todo.',
   },
   {
-    pergunta: 'E se minha criança não pode comer crepe (alergia, etc)?',
+    pergunta: 'E se minha criança não pode comer crepe (alergia)?',
     resposta:
-      'Sem problema! O crepe é uma cortesia opcional. Avise a gente na hora da confirmação que adaptamos.',
+      'Sem problema. O crepe é uma cortesia opcional. Avisa a gente na hora da confirmação que a equipe adapta.',
+  },
+  {
+    pergunta: 'E se eu quiser que a criançada coma mais coisas além do crepe?',
+    resposta:
+      'A lanchonete da casa funciona durante toda a Tardezinha — comidinhas e bebidas à venda no local. Tu paga só o que a criançada consumir além do crepe cortesia.',
   },
   {
     pergunta: 'Posso cancelar se acontecer algum imprevisto?',
     resposta:
-      'Sim! Cancelamentos com até 48h de antecedência geram crédito pra próxima edição da Tardezinha. Você não perde o valor pago — só transfere pro próximo evento.',
+      'Sim. Cancelamentos com até 48h de antecedência geram crédito pra próxima edição da Tardezinha. Tu não perde o valor pago — só transfere pro próximo evento.',
   },
 ]
 
@@ -97,8 +102,7 @@ export function Faq() {
             Ainda tá em dúvida?
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-sdb-text/70">
-            A gente respondeu as perguntas mais comuns aqui embaixo. Se a sua
-            não tá listada, é só chamar no WhatsApp.
+            A gente respondeu as perguntas mais comuns aqui embaixo. Se a tua não tá listada, é só chamar no WhatsApp.
           </p>
         </div>
 
@@ -119,7 +123,7 @@ export function Faq() {
             Tem outra dúvida? Chama no WhatsApp que a gente responde rapidinho.
           </p>
           <a
-            href={whatsappLink('Olá! Tenho uma dúvida sobre a Tardezinha Show de Bola.')}
+            href={whatsappLink('Oi! Tenho uma dúvida sobre a Tardezinha Show de Bola.')}
             target="_blank"
             rel="noopener noreferrer"
             className="mt-4 inline-block rounded-full bg-sdb-purple px-6 py-3 font-display text-white transition hover:bg-sdb-purple-dark hover:scale-105"

@@ -1,32 +1,29 @@
-type Beneficio = {
-  foto: string
+type Opcao = {
   emoji: string
   titulo: string
   descricao: string
 }
 
-// Foto propria do happy hour (em public/fotos/happy-hour.jpg)
-const HAPPY_HOUR_FOTO = '/fotos/happy-hour.jpg'
-
-const beneficios: Beneficio[] = [
+const opcoes: Opcao[] = [
   {
-    foto: '/fotos/mesas.jpg',
-    emoji: '🪑',
-    titulo: 'Mesas pra família',
-    descricao: 'Espaço confortável pra ficar curtindo junto com a galera',
-  },
-  {
-    foto: '/fotos/bar.jpg',
     emoji: '🍻',
-    titulo: 'Bar disponível',
-    descricao: 'Bebidas e petiscos durante toda a tardezinha',
+    titulo: 'Happy Hour',
+    descricao: 'Começa cedo, termina no horário',
   },
   {
-    foto: HAPPY_HOUR_FOTO,
-    emoji: '🍷',
-    titulo: 'Folga merecida',
-    descricao:
-      'Ou aproveita pra sair com amigos. A gente devolve seu filho cansado e dormindo cedo.',
+    emoji: '🍽️',
+    titulo: 'Jantar',
+    descricao: 'Com calma, sem correria',
+  },
+  {
+    emoji: '🏖️',
+    titulo: 'Beach Tênis',
+    descricao: 'Aquela partida que tu não consegue marcar',
+  },
+  {
+    emoji: '👯',
+    titulo: 'Rolê dos Amigos',
+    descricao: 'Tipo gente, sem interrupção',
   },
 ]
 
@@ -36,44 +33,48 @@ export function ParaResponsaveis() {
       <div className="mx-auto max-w-6xl">
         <div className="text-center">
           <p className="mb-3 inline-block rounded-full bg-sdb-orange px-4 py-1 text-sm font-bold text-white uppercase tracking-wider">
-            E pra você que vai junto
+            E pra ti, mãe e pai
           </p>
           <h2 className="font-display text-5xl text-sdb-purple sm:text-6xl">
-            Fica ou aproveita:
+            A NOITE
             <br />
-            <span className="text-sdb-pink">você escolhe</span>
+            <span className="text-sdb-pink">É TUA</span>
           </h2>
           <p className="mx-auto mt-6 max-w-2xl text-lg text-sdb-text sm:text-xl">
-            <strong className="text-sdb-purple">18h às 22h30</strong> — horário
-            perfeito pra ficar curtindo aqui com a família, ou sair pra aquele{' '}
-            <strong className="text-sdb-purple">happy hour</strong> enquanto a
-            gente cuida dos pequenos.
+            Deixa a criançada com a gente.{' '}
+            <strong className="text-sdb-purple">Vai viver tua sexta.</strong>
+          </p>
+          <p className="mx-auto mt-4 max-w-3xl text-base text-sdb-text/80">
+            Das <strong>18h às 22h30</strong> a criançada fica brincando à vontade — brinquedos liberados, equipe de monitoria de olho, lanchonete servindo crepe e comidinhas. Tu? Tu vai pra onde quiser.
           </p>
         </div>
 
-        <div className="mt-14 grid gap-6 md:grid-cols-3">
-          {beneficios.map((b) => (
+        {/* 4 cards de opções */}
+        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {opcoes.map((opcao) => (
             <div
-              key={b.titulo}
-              className="group relative aspect-[4/5] overflow-hidden rounded-2xl shadow-xl transition hover:scale-105"
+              key={opcao.titulo}
+              className="group relative overflow-hidden rounded-2xl border-2 border-sdb-purple/15 bg-sdb-yellow-soft p-6 text-center shadow-md transition hover:scale-105 hover:border-sdb-purple/40 hover:shadow-xl"
             >
-              <img
-                src={b.foto}
-                alt={b.titulo}
-                loading="lazy"
-                className="absolute inset-0 h-full w-full object-cover [filter:sepia(0.08)_saturate(1.2)_contrast(1.05)_brightness(1.05)] transition group-hover:scale-110"
-              />
-
-              {/* Overlay escuro pra legibilidade do texto */}
-              <div className="absolute inset-0 bg-gradient-to-t from-sdb-purple-dark via-sdb-purple-dark/50 to-transparent" />
-
-              <div className="absolute right-0 bottom-0 left-0 p-6 text-white">
-                <div className="text-5xl">{b.emoji}</div>
-                <h3 className="mt-3 font-display text-3xl">{b.titulo}</h3>
-                <p className="mt-2 text-base text-white">{b.descricao}</p>
-              </div>
+              <div className="text-5xl">{opcao.emoji}</div>
+              <h3 className="mt-4 font-display text-2xl text-sdb-purple">
+                {opcao.titulo}
+              </h3>
+              <p className="mt-2 text-sm text-sdb-text/70">{opcao.descricao}</p>
             </div>
           ))}
+        </div>
+
+        {/* Promessa final */}
+        <div className="mx-auto mt-12 max-w-3xl rounded-3xl bg-sdb-purple p-8 text-center text-white shadow-2xl">
+          <p className="font-display text-2xl sm:text-3xl">
+            Volta às <strong className="text-sdb-yellow">22h30</strong> e pega um filho
+            <br />
+            <strong className="text-sdb-yellow">cansado, alimentado e feliz</strong>.
+          </p>
+          <p className="mt-4 text-lg italic text-white/85">
+            A família agradece.
+          </p>
         </div>
       </div>
     </section>
