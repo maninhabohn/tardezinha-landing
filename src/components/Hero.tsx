@@ -3,7 +3,6 @@ import {
   EVENT_DATE_LONG,
   EVENT_DAY_OF_WEEK,
   EVENT_TIME_LABEL,
-  whatsappLink,
 } from '../lib/contact'
 import { Logo } from './Logo'
 
