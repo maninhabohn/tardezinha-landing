@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { supabase } from '../lib/supabase'
-import { WHATSAPP_NUMBER } from '../lib/contact'
+import { supabase, isSupabaseConfigured } from '../lib/supabase'
+import { WHATSAPP_NUMBER, whatsappLink } from '../lib/contact'
 
 type Status =
   | { kind: 'idle' }
@@ -81,6 +81,29 @@ export function LeadForm() {
   }
 
   const isSubmitting = status.kind === 'submitting'
+
+  // Fallback gracioso: se Supabase nao tiver configurado, mostra CTA direto pro WhatsApp
+  if (!isSupabaseConfigured()) {
+    return (
+      <div className="rounded-3xl bg-white p-6 text-center shadow-lg sm:p-8">
+        <p className="text-5xl">📱</p>
+        <h3 className="mt-3 font-display text-2xl text-sdb-purple sm:text-3xl">
+          Garante tua vaga agora
+        </h3>
+        <p className="mt-2 text-sm text-sdb-text/70">
+          Chama no WhatsApp que a gente fecha rapidinho.
+        </p>
+        <a
+          href={whatsappLink('Oi! Quero ingresso da Tardezinha 03/07/2026.')}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-6 inline-block w-full rounded-full bg-emerald-500 px-6 py-4 font-display text-lg text-white shadow-lg transition hover:scale-[1.02] hover:bg-emerald-600 sm:w-auto sm:px-12"
+        >
+          💬 Falar no WhatsApp
+        </a>
+      </div>
+    )
+  }
 
   if (status.kind === 'success') {
     return (
