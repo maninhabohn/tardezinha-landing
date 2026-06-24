@@ -25,7 +25,7 @@ const atracoes: Atracao[] = [
     badge: 'queridinho',
   },
   {
-    foto: '/fotos/nerf.jpg', // ⚠️ trocar por /fotos/P1555148.jpg quando subir a foto do tubarão
+    foto: '/fotos/P1555148.jpg',
     titulo: 'Tubarão Inflável',
     descricao: 'Aquele clássico que vira foto pro feed',
     badge: 'memoravel',
