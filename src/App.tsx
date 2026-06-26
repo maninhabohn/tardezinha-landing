@@ -1,3 +1,4 @@
+import { DateBanner } from './components/DateBanner'
 import { Hero } from './components/Hero'
 import { Atracoes } from './components/Atracoes'
 import { ParaResponsaveis } from './components/ParaResponsaveis'
@@ -13,6 +14,9 @@ import { Reveal } from './components/Reveal'
 function App() {
   return (
     <>
+      {/* Banner fixo com data — primeira coisa que a familia ve */}
+      <DateBanner />
+
       {/* Hero entra sem animacao — primeira coisa que aparece */}
       <Hero />
 
