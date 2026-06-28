@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { whatsappLink } from '../lib/contact'
 import { Countdown, antecipadoExpirou } from './Countdown'
 import { LeadForm } from './LeadForm'
@@ -59,6 +60,17 @@ export function Ingressos() {
               {expirou ? 'Sujeito a disponibilidade' : 'Sujeito a disponibilidade'}
             </p>
           </div>
+        </div>
+
+        {/* CTA reserva */}
+        <div className="mt-10 text-center">
+          <Link
+            to="/reservar"
+            className="inline-block rounded-2xl bg-sdb-pink px-10 py-5 font-display text-2xl font-bold text-white shadow-2xl ring-4 ring-sdb-pink/30 transition hover:scale-105 hover:bg-sdb-purple sm:text-3xl"
+          >
+            GARANTIR MINHA VAGA →
+          </Link>
+          <p className="mt-3 text-sm text-sdb-text/60">Reserva online · pagamento via Pix</p>
         </div>
 
         {/* Form de captura de lead */}

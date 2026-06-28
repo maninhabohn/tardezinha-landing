@@ -1,3 +1,4 @@
+import { Routes, Route } from 'react-router-dom'
 import { DateBanner } from './components/DateBanner'
 import { Hero } from './components/Hero'
 import { Atracoes } from './components/Atracoes'
@@ -10,42 +11,34 @@ import { Compartilhar } from './components/Compartilhar'
 import { Footer } from './components/Footer'
 import { WhatsappFloat } from './components/WhatsappFloat'
 import { Reveal } from './components/Reveal'
+import { Reservar } from './pages/Reservar'
+import { AdminStats } from './pages/AdminStats'
 
-function App() {
+function Home() {
   return (
     <>
-      {/* Banner fixo com data — primeira coisa que a familia ve */}
       <DateBanner />
-
-      {/* Hero entra sem animacao — primeira coisa que aparece */}
       <Hero />
-
-      {/* Demais secoes com fade-in ao scrollar */}
-      <Reveal>
-        <Atracoes />
-      </Reveal>
-      <Reveal>
-        <ParaResponsaveis />
-      </Reveal>
-      <Reveal>
-        <Ingressos />
-      </Reveal>
-      <Reveal>
-        <Galeria />
-      </Reveal>
-      <Reveal>
-        <Local />
-      </Reveal>
-      <Reveal>
-        <Faq />
-      </Reveal>
-      <Reveal>
-        <Compartilhar />
-      </Reveal>
-
+      <Reveal><Atracoes /></Reveal>
+      <Reveal><ParaResponsaveis /></Reveal>
+      <Reveal><Ingressos /></Reveal>
+      <Reveal><Galeria /></Reveal>
+      <Reveal><Local /></Reveal>
+      <Reveal><Faq /></Reveal>
+      <Reveal><Compartilhar /></Reveal>
       <Footer />
       <WhatsappFloat />
     </>
+  )
+}
+
+function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/reservar" element={<Reservar />} />
+      <Route path="/admin/tardezinha-stats" element={<AdminStats />} />
+    </Routes>
   )
 }
 
