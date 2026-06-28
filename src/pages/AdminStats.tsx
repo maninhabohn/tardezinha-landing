@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from 'react'
 import { supabase } from '../lib/supabase'
 
-const ADMIN_KEY = import.meta.env.VITE_ADMIN_KEY ?? ''
+const ADMIN_KEY = (import.meta.env.VITE_ADMIN_KEY ?? '').replace(/^﻿/, '').trim()
 
 interface Crianca {
   id: string
