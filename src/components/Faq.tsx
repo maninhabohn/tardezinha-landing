@@ -23,9 +23,9 @@ const faqs: FaqItem[] = [
       'Sim. Pra grupos (irmãos, amigos, turma da escola), temos valor especial. Fala com a gente no WhatsApp que combinamos.',
   },
   {
-    pergunta: 'Tem estacionamento?',
+    pergunta: 'Tem onde estacionar?',
     resposta:
-      'Sim, tem estacionamento gratuito no local. 🅿️',
+      'Sim! A rua é bem tranquila e sempre tem vaga na porta. 🚗',
   },
   {
     pergunta: 'Posso ficar acompanhando ou tenho que sair?',

@@ -70,7 +70,7 @@ const CANAIS = [
   { value: 'instagram', label: 'Instagram (@casashowdebolaoficial)' },
   { value: 'panfleto', label: 'Panfleto' },
   { value: 'anuncio_meta', label: 'Anúncio no Facebook/Instagram' },
-  { value: 'indicacao_amigo', label: 'Indicação de amigo' },
+  { value: 'indicacao_amigo', label: 'Indicação de alguém' },
   { value: 'ja_cliente_showdebola', label: 'Já sou cliente Show de Bola' },
   { value: 'outro', label: 'Outro' },
 ]
@@ -265,7 +265,7 @@ export function Reservar() {
                 Av. G, 101 — Atlântida, Xangri-Lá — RS
               </a>
             </p>
-            <p className="mb-1 text-gray-700">🅿️ Estacionamento no local</p>
+            <p className="mb-1 text-gray-700">🚗 Rua tranquila com vaga na porta</p>
             <p className="mt-4 text-sm text-gray-500 font-semibold">
               Pix em até 24h pra garantir a vaga.
             </p>

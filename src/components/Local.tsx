@@ -33,7 +33,7 @@ export function Local() {
               ☔ 500m² de área coberta · chova ou faça sol
             </span>
             <span className="inline-flex items-center gap-2 rounded-full bg-emerald-500/20 px-4 py-2 text-sm font-semibold text-emerald-200 ring-2 ring-emerald-500/40">
-              🅿️ Estacionamento gratuito
+              🚗 Rua tranquila com vaga na porta
             </span>
           </div>
 
