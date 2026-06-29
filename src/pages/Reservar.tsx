@@ -219,10 +219,10 @@ export function Reservar() {
 
   if (step === 'enviando') {
     return (
-      <div className="min-h-screen bg-sdb-yellow flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin inline-block w-12 h-12 border-4 border-sdb-purple border-t-transparent rounded-full" />
-          <p className="mt-4 font-display text-xl text-sdb-purple-dark">Salvando tua reserva...</p>
+          <p className="mt-4 text-xl font-semibold text-gray-700">Salvando tua reserva...</p>
         </div>
       </div>
     )
@@ -230,12 +230,12 @@ export function Reservar() {
 
   if (step === 'confirmacao') {
     return (
-      <div className="min-h-screen bg-sdb-yellow">
+      <div className="min-h-screen bg-gray-50">
         <DateBanner />
         <div className="mx-auto max-w-lg px-4 py-12 text-center">
           <p className="text-6xl mb-4">✨</p>
-          <h1 className="font-display text-4xl text-sdb-purple mb-4">Tu tá na lista da Tardezinha!</h1>
-          <p className="text-lg text-sdb-purple-dark mb-8">
+          <h1 className="text-3xl font-bold text-gray-800 mb-4">Tu tá na lista da Tardezinha!</h1>
+          <p className="text-lg text-gray-600 mb-8">
             A Ana vai te chamar no WhatsApp em instantes pra fechar o Pix.
           </p>
 
@@ -243,7 +243,7 @@ export function Reservar() {
             href={whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 rounded-2xl bg-emerald-500 px-8 py-5 font-display text-xl text-white shadow-xl transition hover:scale-105 hover:bg-emerald-600"
+            className="inline-flex items-center gap-3 rounded-2xl bg-emerald-500 px-8 py-5 text-xl font-bold text-white shadow-xl transition hover:scale-105 hover:bg-emerald-600"
           >
             <svg className="h-7 w-7" viewBox="0 0 24 24" fill="currentColor">
               <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" />
@@ -251,12 +251,12 @@ export function Reservar() {
             Falar com a Ana agora
           </a>
 
-          <div className="mt-10 rounded-2xl bg-white/80 p-6 text-left shadow-lg">
-            <p className="font-display text-lg text-sdb-purple-dark mb-3">Enquanto isso, anota:</p>
-            <p className="mb-1">🎯 <strong>03/07 (sexta)</strong> · 18h às 22h30</p>
-            <p className="mb-1">📍 Atlântida, Xangri-Lá · Av. G, 101</p>
-            <p className="mb-1">🅿️ Estacionamento no local</p>
-            <p className="mt-4 text-sm text-sdb-purple-dark/70 font-semibold">
+          <div className="mt-10 rounded-2xl bg-white p-6 text-left shadow-md border border-gray-200">
+            <p className="text-lg font-bold text-gray-800 mb-3">Enquanto isso, anota:</p>
+            <p className="mb-1 text-gray-700">🎯 <strong>03/07 (sexta)</strong> · 18h às 22h30</p>
+            <p className="mb-1 text-gray-700">📍 Atlântida, Xangri-Lá · Av. G, 101</p>
+            <p className="mb-1 text-gray-700">🅿️ Estacionamento no local</p>
+            <p className="mt-4 text-sm text-gray-500 font-semibold">
               Pix em até 24h pra garantir a vaga.
             </p>
           </div>
@@ -270,111 +270,111 @@ export function Reservar() {
   }
 
   return (
-    <div className="min-h-screen bg-sdb-yellow">
+    <div className="min-h-screen bg-gray-50">
       <DateBanner />
 
       {/* Hero compacto */}
-      <div className="bg-sdb-yellow px-4 pt-6 pb-4 text-center">
-        <Logo size={120} className="mb-3" />
-        <h1 className="font-display text-3xl text-sdb-purple leading-tight sm:text-4xl">
+      <div className="bg-white border-b border-gray-200 px-4 pt-6 pb-6 text-center">
+        <Logo size={100} className="mb-3" />
+        <h1 className="text-2xl font-bold text-gray-800 leading-tight sm:text-3xl">
           Garante tua vaga na<br />Tardezinha 03/07
         </h1>
-        <p className="mt-2 font-display text-lg text-sdb-purple-dark">
-          4 horas pra ti. 4 horas pra criançada.<br />
-          <span className="text-sdb-pink">A família agradece.</span>
+        <p className="mt-2 text-base text-gray-600">
+          4 horas pra ti. 4 horas pra criançada.
+          <span className="text-sdb-pink font-semibold"> A família agradece.</span>
         </p>
-        <div className="mt-3 inline-block rounded-xl bg-white px-5 py-2 shadow-md">
-          <p className="font-display text-xl text-sdb-orange font-bold">
+        <div className="mt-3 inline-block rounded-lg bg-sdb-purple/10 px-5 py-2">
+          <p className="text-lg text-sdb-purple-dark font-bold">
             R$45 antecipado · R$50 na hora
           </p>
         </div>
       </div>
 
       {/* Form */}
-      <form onSubmit={handleSubmit} className="mx-auto max-w-lg px-4 pb-12">
+      <form onSubmit={handleSubmit} className="mx-auto max-w-lg px-4 py-8">
 
         {/* Erro global */}
         {erro && (
-          <div className="mb-4 rounded-xl bg-red-100 border-2 border-red-400 p-4 text-red-800 font-semibold text-sm">
+          <div className="mb-4 rounded-lg bg-red-50 border border-red-300 p-4 text-red-700 font-semibold text-sm">
             ⚠️ {erro}
           </div>
         )}
 
         {/* SEÇÃO 1 — Responsável */}
-        <fieldset className="mb-6 rounded-2xl bg-white p-5 shadow-lg">
-          <legend className="font-display text-lg text-sdb-purple font-bold px-2">
+        <fieldset className="mb-6 rounded-xl bg-white border border-gray-200 p-5 shadow-sm">
+          <legend className="text-base font-bold text-gray-700 px-2">
             👤 Responsável
           </legend>
 
           <label className="block mt-3">
-            <span className="text-sm font-bold text-sdb-purple-dark">Teu nome completo *</span>
+            <span className="text-sm font-semibold text-gray-700">Teu nome completo *</span>
             <input
               type="text"
               value={nome}
               onChange={e => setNome(e.target.value)}
-              className="mt-1 block w-full rounded-xl border-2 border-sdb-purple/20 px-4 py-3 text-base focus:border-sdb-purple focus:outline-none"
+              className="mt-1 block w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:border-sdb-purple focus:ring-1 focus:ring-sdb-purple focus:outline-none"
               placeholder="Como tu te chama?"
             />
           </label>
 
           <label className="block mt-3">
-            <span className="text-sm font-bold text-sdb-purple-dark">WhatsApp com DDD *</span>
+            <span className="text-sm font-semibold text-gray-700">WhatsApp com DDD *</span>
             <input
               type="tel"
               value={whatsapp}
               onChange={e => setWhatsapp(maskPhone(e.target.value))}
-              className="mt-1 block w-full rounded-xl border-2 border-sdb-purple/20 px-4 py-3 text-base focus:border-sdb-purple focus:outline-none"
+              className="mt-1 block w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:border-sdb-purple focus:ring-1 focus:ring-sdb-purple focus:outline-none"
               placeholder="(51) 99999-9999"
             />
           </label>
 
           <label className="block mt-3">
-            <span className="text-sm font-bold text-sdb-purple-dark">CPF <span className="font-normal text-sdb-text/50">(opcional)</span></span>
+            <span className="text-sm font-semibold text-gray-700">CPF <span className="font-normal text-gray-400">(opcional)</span></span>
             <input
               type="text"
               value={cpf}
               onChange={e => setCpf(maskCpf(e.target.value))}
-              className="mt-1 block w-full rounded-xl border-2 border-sdb-purple/20 px-4 py-3 text-base focus:border-sdb-purple focus:outline-none"
+              className="mt-1 block w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:border-sdb-purple focus:ring-1 focus:ring-sdb-purple focus:outline-none"
               placeholder="000.000.000-00"
             />
           </label>
 
           <label className="block mt-3">
-            <span className="text-sm font-bold text-sdb-purple-dark">Email <span className="font-normal text-sdb-text/50">(opcional — pra futuras edições)</span></span>
+            <span className="text-sm font-semibold text-gray-700">Email <span className="font-normal text-gray-400">(opcional — pra futuras edições)</span></span>
             <input
               type="email"
               value={email}
               onChange={e => setEmail(e.target.value)}
-              className="mt-1 block w-full rounded-xl border-2 border-sdb-purple/20 px-4 py-3 text-base focus:border-sdb-purple focus:outline-none"
+              className="mt-1 block w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:border-sdb-purple focus:ring-1 focus:ring-sdb-purple focus:outline-none"
               placeholder="teu@email.com"
             />
           </label>
 
           <label className="block mt-3">
-            <span className="text-sm font-bold text-sdb-purple-dark">Cidade *</span>
+            <span className="text-sm font-semibold text-gray-700">Cidade *</span>
             <input
               type="text"
               value={cidade}
               onChange={e => setCidade(e.target.value)}
-              className="mt-1 block w-full rounded-xl border-2 border-sdb-purple/20 px-4 py-3 text-base focus:border-sdb-purple focus:outline-none"
+              className="mt-1 block w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:border-sdb-purple focus:ring-1 focus:ring-sdb-purple focus:outline-none"
               placeholder="De onde tu vem?"
             />
           </label>
         </fieldset>
 
         {/* SEÇÃO 2 — Crianças */}
-        <fieldset className="mb-6 rounded-2xl bg-white p-5 shadow-lg">
-          <legend className="font-display text-lg text-sdb-purple font-bold px-2">
+        <fieldset className="mb-6 rounded-xl bg-white border border-gray-200 p-5 shadow-sm">
+          <legend className="text-base font-bold text-gray-700 px-2">
             👧 Crianças
           </legend>
 
           <div className="mt-3 flex gap-4">
             <label className="flex-1">
-              <span className="text-sm font-bold text-sdb-purple-dark">Quantas crianças vão?</span>
+              <span className="text-sm font-semibold text-gray-700">Quantas crianças vão?</span>
               <select
                 value={qtdCriancas}
                 onChange={e => handleQtdChange(Number(e.target.value))}
-                className="mt-1 block w-full rounded-xl border-2 border-sdb-purple/20 px-4 py-3 text-base focus:border-sdb-purple focus:outline-none"
+                className="mt-1 block w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:border-sdb-purple focus:ring-1 focus:ring-sdb-purple focus:outline-none"
               >
                 {Array.from({ length: 10 }, (_, i) => (
                   <option key={i + 1} value={i + 1}>{i + 1}</option>
@@ -382,11 +382,11 @@ export function Reservar() {
               </select>
             </label>
             <label className="flex-1">
-              <span className="text-sm font-bold text-sdb-purple-dark">Adultos extra além de ti?</span>
+              <span className="text-sm font-semibold text-gray-700">Adultos extra além de ti?</span>
               <select
                 value={qtdAdultos}
                 onChange={e => setQtdAdultos(Number(e.target.value))}
-                className="mt-1 block w-full rounded-xl border-2 border-sdb-purple/20 px-4 py-3 text-base focus:border-sdb-purple focus:outline-none"
+                className="mt-1 block w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:border-sdb-purple focus:ring-1 focus:ring-sdb-purple focus:outline-none"
               >
                 {Array.from({ length: 6 }, (_, i) => (
                   <option key={i} value={i}>{i}</option>
@@ -396,35 +396,35 @@ export function Reservar() {
           </div>
 
           {criancas.map((c, i) => (
-            <div key={i} className="mt-5 rounded-xl border-2 border-sdb-pink/30 bg-sdb-pink-soft/20 p-4">
-              <p className="font-display text-base text-sdb-pink font-bold mb-3">
+            <div key={i} className="mt-5 rounded-lg border border-gray-200 bg-gray-50 p-4">
+              <p className="text-sm font-bold text-sdb-purple mb-3">
                 👧 Criança {i + 1} de {criancas.length}
               </p>
 
               <label className="block">
-                <span className="text-sm font-bold text-sdb-purple-dark">Nome completo *</span>
+                <span className="text-sm font-semibold text-gray-700">Nome completo *</span>
                 <input
                   type="text"
                   value={c.nome}
                   onChange={e => updateCrianca(i, 'nome', e.target.value)}
-                  className="mt-1 block w-full rounded-xl border-2 border-sdb-purple/20 px-4 py-3 text-base focus:border-sdb-purple focus:outline-none bg-white"
+                  className="mt-1 block w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:border-sdb-purple focus:ring-1 focus:ring-sdb-purple focus:outline-none bg-white"
                 />
               </label>
 
               <label className="block mt-3">
-                <span className="text-sm font-bold text-sdb-purple-dark">Data de nascimento *</span>
+                <span className="text-sm font-semibold text-gray-700">Data de nascimento *</span>
                 <input
                   type="text"
                   value={c.dataNascimento}
                   onChange={e => updateCrianca(i, 'dataNascimento', maskDate(e.target.value))}
-                  className="mt-1 block w-full rounded-xl border-2 border-sdb-purple/20 px-4 py-3 text-base focus:border-sdb-purple focus:outline-none bg-white"
+                  className="mt-1 block w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:border-sdb-purple focus:ring-1 focus:ring-sdb-purple focus:outline-none bg-white"
                   placeholder="DD/MM/AAAA"
                 />
               </label>
 
               {/* Alergia */}
               <div className="mt-3">
-                <span className="text-sm font-bold text-sdb-purple-dark">Tem alergia ou restrição alimentar?</span>
+                <span className="text-sm font-semibold text-gray-700">Tem alergia ou restrição alimentar?</span>
                 <div className="flex gap-4 mt-1">
                   <label className="flex items-center gap-1.5 cursor-pointer">
                     <input type="radio" checked={c.temAlergia === true} onChange={() => updateCrianca(i, 'temAlergia', true)} className="accent-sdb-purple" /> Sim
@@ -438,7 +438,7 @@ export function Reservar() {
                     value={c.alergiaDetalhes}
                     onChange={e => updateCrianca(i, 'alergiaDetalhes', e.target.value)}
                     placeholder="Qual alergia ou restrição?"
-                    className="mt-2 block w-full rounded-xl border-2 border-sdb-purple/20 px-4 py-3 text-sm focus:border-sdb-purple focus:outline-none bg-white"
+                    className="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-3 text-sm focus:border-sdb-purple focus:ring-1 focus:ring-sdb-purple focus:outline-none bg-white"
                     rows={2}
                   />
                 )}
@@ -446,7 +446,7 @@ export function Reservar() {
 
               {/* Necessidade especial */}
               <div className="mt-3">
-                <span className="text-sm font-bold text-sdb-purple-dark">Tem alguma necessidade especial ou orientação importante?</span>
+                <span className="text-sm font-semibold text-gray-700">Tem alguma necessidade especial ou orientação importante?</span>
                 <div className="flex gap-4 mt-1">
                   <label className="flex items-center gap-1.5 cursor-pointer">
                     <input type="radio" checked={c.temNecessidade === true} onChange={() => updateCrianca(i, 'temNecessidade', true)} className="accent-sdb-purple" /> Sim
@@ -460,15 +460,15 @@ export function Reservar() {
                     value={c.necessidadeDetalhes}
                     onChange={e => updateCrianca(i, 'necessidadeDetalhes', e.target.value)}
                     placeholder="Conta pra gente pra equipe ficar preparada"
-                    className="mt-2 block w-full rounded-xl border-2 border-sdb-purple/20 px-4 py-3 text-sm focus:border-sdb-purple focus:outline-none bg-white"
+                    className="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-3 text-sm focus:border-sdb-purple focus:ring-1 focus:ring-sdb-purple focus:outline-none bg-white"
                     rows={2}
                   />
                 )}
               </div>
 
               {/* Autorizações LGPD */}
-              <div className="mt-4 rounded-lg bg-sdb-purple/5 p-3">
-                <p className="text-xs font-bold text-sdb-purple-dark mb-2">⚖️ AUTORIZAÇÕES PRA ESTA CRIANÇA</p>
+              <div className="mt-4 rounded-lg bg-gray-100 p-3">
+                <p className="text-xs font-bold text-gray-600 mb-2">⚖️ AUTORIZAÇÕES PRA ESTA CRIANÇA</p>
                 <label className="flex items-start gap-2 cursor-pointer">
                   <input
                     type="checkbox"
@@ -476,7 +476,7 @@ export function Reservar() {
                     onChange={e => updateCrianca(i, 'autorizouImagem', e.target.checked)}
                     className="mt-0.5 accent-sdb-purple"
                   />
-                  <span className="text-sm text-sdb-purple-dark">Autorizo uso de <strong>imagem</strong> (fotos e vídeos do evento)</span>
+                  <span className="text-sm text-gray-700">Autorizo uso de <strong>imagem</strong> (fotos e vídeos do evento)</span>
                 </label>
                 <label className="flex items-start gap-2 cursor-pointer mt-2">
                   <input
@@ -485,7 +485,7 @@ export function Reservar() {
                     onChange={e => updateCrianca(i, 'autorizouAudio', e.target.checked)}
                     className="mt-0.5 accent-sdb-purple"
                   />
-                  <span className="text-sm text-sdb-purple-dark">Autorizo uso de <strong>áudio</strong> (gravações do evento)</span>
+                  <span className="text-sm text-gray-700">Autorizo uso de <strong>áudio</strong> (gravações do evento)</span>
                 </label>
               </div>
             </div>
@@ -493,13 +493,13 @@ export function Reservar() {
         </fieldset>
 
         {/* SEÇÃO 3 — Origem */}
-        <fieldset className="mb-6 rounded-2xl bg-white p-5 shadow-lg">
-          <legend className="font-display text-lg text-sdb-purple font-bold px-2">
+        <fieldset className="mb-6 rounded-xl bg-white border border-gray-200 p-5 shadow-sm">
+          <legend className="text-base font-bold text-gray-700 px-2">
             📣 Como nos conheceu
           </legend>
 
           <div className="mt-3">
-            <span className="text-sm font-bold text-sdb-purple-dark">Como conheceu a Tardezinha? *</span>
+            <span className="text-sm font-semibold text-gray-700">Como conheceu a Tardezinha? *</span>
             <div className="mt-2 space-y-2">
               {CANAIS.map(c => (
                 <label key={c.value} className="flex items-center gap-2 cursor-pointer">
@@ -520,13 +520,13 @@ export function Reservar() {
                 value={outroOrigem}
                 onChange={e => setOutroOrigem(e.target.value)}
                 placeholder="Conta pra gente..."
-                className="mt-2 block w-full rounded-xl border-2 border-sdb-purple/20 px-4 py-3 text-sm focus:border-sdb-purple focus:outline-none"
+                className="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-3 text-sm focus:border-sdb-purple focus:ring-1 focus:ring-sdb-purple focus:outline-none"
               />
             )}
           </div>
 
           <div className="mt-4">
-            <span className="text-sm font-bold text-sdb-purple-dark">Já veio em alguma Tardezinha antes? *</span>
+            <span className="text-sm font-semibold text-gray-700">Já veio em alguma Tardezinha antes? *</span>
             <div className="flex gap-4 mt-2">
               <label className="flex items-center gap-1.5 cursor-pointer">
                 <input type="radio" name="jaVeio" checked={jaVeio === true} onChange={() => setJaVeio(true)} className="accent-sdb-purple" /> Sim
@@ -539,29 +539,29 @@ export function Reservar() {
         </fieldset>
 
         {/* SEÇÃO 4 — Autorização e Logística */}
-        <fieldset className="mb-6 rounded-2xl bg-white p-5 shadow-lg">
-          <legend className="font-display text-lg text-sdb-purple font-bold px-2">
+        <fieldset className="mb-6 rounded-xl bg-white border border-gray-200 p-5 shadow-sm">
+          <legend className="text-base font-bold text-gray-700 px-2">
             📋 Autorização e Logística
           </legend>
 
           <label className="block mt-3">
-            <span className="text-sm font-bold text-sdb-purple-dark">
+            <span className="text-sm font-semibold text-gray-700">
               Quem é autorizado a buscar as crianças?
             </span>
-            <span className="block text-xs text-sdb-text/60 mt-0.5">
+            <span className="block text-xs text-gray-400 mt-0.5">
               Coloca nome e CPF da(s) pessoa(s) que pode(m) buscar. É comum 1 responsável levar e outro buscar.
             </span>
             <textarea
               value={quemBusca}
               onChange={e => setQuemBusca(e.target.value)}
-              className="mt-2 block w-full rounded-xl border-2 border-sdb-purple/20 px-4 py-3 text-sm focus:border-sdb-purple focus:outline-none"
+              className="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-3 text-sm focus:border-sdb-purple focus:ring-1 focus:ring-sdb-purple focus:outline-none"
               rows={3}
               placeholder="Ex: Maria Silva — CPF 000.000.000-00"
             />
           </label>
 
           {/* Termo */}
-          <div className="mt-5 rounded-xl border-2 border-sdb-purple/30 bg-sdb-purple/5 p-4">
+          <div className="mt-5 rounded-lg border border-gray-300 bg-gray-50 p-4">
             <label className="flex items-start gap-2 cursor-pointer">
               <input
                 type="checkbox"
@@ -569,7 +569,7 @@ export function Reservar() {
                 onChange={e => setAceitouTermo(e.target.checked)}
                 className="mt-0.5 accent-sdb-purple w-5 h-5"
               />
-              <span className="text-sm font-bold text-sdb-purple-dark">
+              <span className="text-sm font-semibold text-gray-700">
                 Aceito o TERMO DE RESPONSABILIDADE *
               </span>
             </label>
@@ -581,7 +581,7 @@ export function Reservar() {
               {mostraTermo ? 'Ocultar termo' : 'Ver termo completo'}
             </button>
             {mostraTermo && (
-              <pre className="mt-2 whitespace-pre-wrap text-xs text-sdb-text/70 bg-white rounded-lg p-3 border">
+              <pre className="mt-2 whitespace-pre-wrap text-xs text-gray-500 bg-white rounded-lg p-3 border border-gray-200">
                 {TERMO_TEXTO}
               </pre>
             )}
@@ -592,11 +592,11 @@ export function Reservar() {
         <button
           type="submit"
           disabled={!aceitouTermo}
-          className="w-full rounded-2xl bg-sdb-yellow py-5 font-display text-2xl font-bold text-sdb-purple-dark shadow-xl ring-4 ring-sdb-orange/40 transition hover:scale-[1.02] hover:bg-sdb-pink hover:text-white disabled:opacity-40 disabled:hover:scale-100 disabled:hover:bg-sdb-yellow disabled:hover:text-sdb-purple-dark"
+          className="w-full rounded-xl bg-sdb-purple py-4 text-lg font-bold text-white shadow-lg transition hover:bg-sdb-purple-dark disabled:opacity-40 disabled:hover:bg-sdb-purple"
         >
           GARANTIR MINHA VAGA →
         </button>
-        <p className="mt-2 text-center text-xs text-sdb-text/60">
+        <p className="mt-2 text-center text-xs text-gray-400">
           Teus dados são usados só pra organizar a Tardezinha e te avisar das próximas edições.
         </p>
       </form>
