@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react'
+import { useState, useEffect, type FormEvent } from 'react'
 import { Logo } from '../components/Logo'
 import { DateBanner } from '../components/DateBanner'
 import { supabase, isSupabaseConfigured } from '../lib/supabase'
@@ -82,6 +82,7 @@ const TERMO_TEXTO = `DECLARO QUE:
 • Não responsabilizo a Show de Bola por acidentes resultantes do uso incorreto dos brinquedos pela criança ou imprudência`
 
 export function Reservar() {
+  useEffect(() => { document.title = 'Inscrição — Tardezinha 03/07' }, [])
   const [step, setStep] = useState<'form' | 'enviando' | 'confirmacao'>('form')
 
   const [nome, setNome] = useState('')
