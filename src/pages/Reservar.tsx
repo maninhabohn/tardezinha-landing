@@ -556,10 +556,10 @@ export function Reservar() {
 
           <label className="block mt-3">
             <span className="text-sm font-semibold text-gray-700">
-              Quem é autorizado a buscar as crianças?
+              Quem tem autorização pra buscar as crianças?
             </span>
             <span className="block text-xs text-gray-400 mt-0.5">
-              Coloca nome e CPF da(s) pessoa(s) que pode(m) buscar. É comum 1 responsável levar e outro buscar.
+              Coloca nome e CPF de quem pode buscar. É comum uma pessoa levar e outra buscar.
             </span>
             <textarea
               value={quemBusca}
