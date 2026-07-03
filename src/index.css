@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* Paleta Show de Bola — extraida do flyer */
+/* Paleta Show de Bola — edição junina */
 @theme {
   --color-sdb-yellow: #ffe600;
   --color-sdb-yellow-soft: #fff5a3;
@@ -10,6 +10,12 @@
   --color-sdb-pink-soft: #fbcfe8;
   --color-sdb-orange: #f97316;
   --color-sdb-text: #1f2937;
+
+  /* Cores juninas */
+  --color-junino-warm: #d97706;
+  --color-junino-red: #dc2626;
+  --color-junino-green: #16a34a;
+  --color-junino-blue: #2563eb;
 
   --font-display: "Fredoka", system-ui, sans-serif;
   --font-sans: "Nunito", system-ui, sans-serif;

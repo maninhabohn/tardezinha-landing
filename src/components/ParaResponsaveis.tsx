@@ -42,7 +42,7 @@ export function ParaResponsaveis() {
           </h2>
           <p className="mx-auto mt-6 max-w-2xl text-lg text-sdb-text sm:text-xl">
             Deixa a criançada com a gente.{' '}
-            <strong className="text-sdb-purple">Vai viver tua sexta.</strong>
+            <strong className="text-sdb-purple">Vai viver tua noite.</strong>
           </p>
           <p className="mx-auto mt-4 max-w-3xl text-base text-sdb-text/80">
             Das <strong>18h às 22h30</strong> a criançada fica brincando à vontade — brinquedos liberados, equipe de monitoria de olho, lanchonete servindo crepe e comidinhas. Tu? Tu vai pra onde quiser.

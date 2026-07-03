@@ -82,7 +82,7 @@ const TERMO_TEXTO = `DECLARO QUE:
 • Não responsabilizo a Show de Bola por acidentes resultantes do uso incorreto dos brinquedos pela criança ou imprudência`
 
 export function Reservar() {
-  useEffect(() => { document.title = 'Inscrição — Tardezinha 03/07' }, [])
+  useEffect(() => { document.title = 'Inscrição — Tardezinha Junina 09/07' }, [])
   const [step, setStep] = useState<'form' | 'enviando' | 'confirmacao'>('form')
 
   const [nome, setNome] = useState('')
@@ -254,7 +254,7 @@ export function Reservar() {
 
           <div className="mt-10 rounded-2xl bg-white p-6 text-left shadow-md border border-gray-200">
             <p className="text-lg font-bold text-gray-800 mb-3">Enquanto isso, anota:</p>
-            <p className="mb-1 text-gray-700">🎯 <strong>03/07 (sexta)</strong> · 18h às 22h30</p>
+            <p className="mb-1 text-gray-700">🌽 <strong>09/07 (quinta)</strong> · 18h às 22h30 · Tema Junino</p>
             <p className="mb-1">
               📍{' '}
               <a
@@ -284,14 +284,14 @@ export function Reservar() {
     <div className="min-h-screen bg-gray-50">
       <DateBanner />
 
-      {/* Hero compacto */}
-      <div className="bg-white border-b border-gray-200 px-4 pt-6 pb-6 text-center">
+      {/* Hero compacto — tema junino */}
+      <div className="bg-amber-50 border-b border-amber-200 px-4 pt-6 pb-6 text-center">
         <Logo size={100} className="mb-3" />
         <h1 className="text-2xl font-bold text-gray-800 leading-tight sm:text-3xl">
-          Garante tua vaga na<br />Tardezinha 03/07
+          Garante tua vaga na<br />Tardezinha Junina 09/07 🌽
         </h1>
         <p className="mt-2 text-base text-gray-600">
-          4 horas pra ti. 4 horas pra criançada.
+          Bandeirinhas, comida de arraial e 4 horas pra ti.
           <span className="text-sdb-pink font-semibold"> A família agradece.</span>
         </p>
         <div className="mt-3 inline-block rounded-lg bg-sdb-purple/10 px-5 py-2">

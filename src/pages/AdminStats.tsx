@@ -103,7 +103,7 @@ function exportCSV(reservas: Reserva[]) {
 }
 
 export function AdminStats() {
-  useEffect(() => { document.title = 'Controle de Inscrições — Admin Tardezinha' }, [])
+  useEffect(() => { document.title = 'Controle de Inscrições — Admin Tardezinha Junina 09/07' }, [])
   const params = new URLSearchParams(window.location.search)
   const key = params.get('key') || ''
 

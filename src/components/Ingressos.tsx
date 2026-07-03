@@ -4,7 +4,7 @@ import { Countdown, antecipadoExpirou } from './Countdown'
 import { LeadForm } from './LeadForm'
 
 const grupoMessage =
-  'Oi! Quero saber sobre os valores especiais pra grupo na Tardezinha 03/07/2026.'
+  'Oi! Quero saber sobre os valores especiais pra grupo na Tardezinha Junina 09/07/2026.'
 
 export function Ingressos() {
   const expirou = antecipadoExpirou()
@@ -41,7 +41,7 @@ export function Ingressos() {
                 R$ <span className="text-sdb-yellow">45</span>
                 <span className="text-3xl">,00</span>
               </p>
-              <p className="mt-3 text-sm text-white/80">Até 30/06</p>
+              <p className="mt-3 text-sm text-white/80">Até 07/07</p>
             </div>
           )}
 
