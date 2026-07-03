@@ -1,4 +1,4 @@
-type Badge = 'novo' | 'queridinho' | 'memoravel' | 'desafio'
+type Badge = 'novo' | 'queridinho' | 'classico' | 'desafio'
 
 type Atracao = {
   foto: string
@@ -7,10 +7,6 @@ type Atracao = {
   badge: Badge
 }
 
-// ⚠️ MANINHA: quando subir as fotos novas em public/fotos/, troca os caminhos:
-//   - tubarao.jpg → /fotos/P1555148.jpg (foto oficial do tubarão)
-//   - giro.jpg → /fotos/P1544368.jpg (versão melhor)
-//   - escalada-2.jpg → /fotos/P1544553.jpg (versão melhor)
 const atracoes: Atracao[] = [
   {
     foto: '/fotos/nerf.jpg',
@@ -26,14 +22,14 @@ const atracoes: Atracao[] = [
   },
   {
     foto: '/fotos/P1555148.jpg',
-    titulo: 'Tubarão Inflável',
-    descricao: 'Aquele clássico que vira foto pro feed',
-    badge: 'memoravel',
+    titulo: 'Tobogã Inflável',
+    descricao: 'Escorrega gigante que a criançada não cansa de repetir',
+    badge: 'classico',
   },
   {
     foto: '/fotos/escalada-2.jpg',
     titulo: 'Escalada',
-    descricao: 'O clássico que todo mundo ama',
+    descricao: 'O desafio que todo mundo quer vencer',
     badge: 'desafio',
   },
 ]
@@ -47,9 +43,9 @@ const badgeStyle: Record<Badge, { classes: string; text: string }> = {
     classes: 'bg-sdb-pink text-white',
     text: '❤️ O queridinho',
   },
-  memoravel: {
+  classico: {
     classes: 'bg-emerald-500 text-white',
-    text: '🦈 O memorável',
+    text: '🛝 Clássico',
   },
   desafio: {
     classes: 'bg-sdb-yellow text-sdb-purple',
@@ -63,11 +59,14 @@ export function Atracoes() {
       <div className="mx-auto max-w-6xl">
         <div className="text-center">
           <p className="mb-2 inline-block rounded-full bg-sdb-yellow px-4 py-1 text-sm font-bold text-sdb-purple uppercase">
-            Nesta edição
+            Edição Junina 🌽
           </p>
           <h2 className="font-display text-4xl text-sdb-yellow sm:text-5xl">
             A festa fica assim:
           </h2>
+          <p className="mt-3 text-lg text-white/80">
+            Atrações liberadas + clima de arraial
+          </p>
         </div>
 
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -104,14 +103,14 @@ export function Atracoes() {
           })}
         </div>
 
-        {/* Crepe cortesia — destacado separado, NÃO é mais um card de atração */}
+        {/* Crepe cortesia + clima junino */}
         <div className="mx-auto mt-12 max-w-3xl rounded-2xl bg-sdb-yellow/15 p-6 text-center backdrop-blur ring-2 ring-sdb-yellow/30">
-          <p className="text-4xl">🥞</p>
+          <p className="text-4xl">🌽</p>
           <h3 className="mt-3 font-display text-2xl text-sdb-yellow">
-            1 Crepe cortesia
+            Crepe cortesia + comidinhas de arraial
           </h3>
           <p className="mt-2 text-base text-white/90">
-            Pra cada criança · comidinhas e bebidas extras à venda no local
+            Cada criança ganha 1 crepe + suco · comidinhas juninas e bebidas extras à venda no local
           </p>
         </div>
       </div>

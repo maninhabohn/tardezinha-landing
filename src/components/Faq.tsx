@@ -45,7 +45,7 @@ const faqs: FaqItem[] = [
   {
     pergunta: 'E se eu quiser que a criançada coma mais coisas além do crepe?',
     resposta:
-      'A lanchonete da casa funciona durante toda a Tardezinha — comidinhas e bebidas à venda no local. Tu paga só o que a criançada consumir além do crepe cortesia.',
+      'A lanchonete da casa funciona durante toda a Tardezinha — nessa edição junina tem comidinhas de arraial e bebidas à venda no local. Tu paga só o que a criançada consumir além do crepe cortesia.',
   },
   {
     pergunta: 'Posso cancelar se acontecer algum imprevisto?',

@@ -14,10 +14,10 @@ export function Ingressos() {
       <div className="mx-auto max-w-5xl">
         <div className="text-center">
           <p className="mb-2 inline-block rounded-full bg-sdb-pink px-4 py-1 text-sm font-bold text-white uppercase">
-            Ingresso
+            🎟️ Ingresso
           </p>
           <h2 className="font-display text-4xl text-sdb-purple sm:text-5xl">
-            Garante tua vaga
+            Garante tua vaga no arraial 🌽
           </h2>
 
           {!expirou && (
