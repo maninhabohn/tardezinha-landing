@@ -69,7 +69,7 @@ export function Hero() {
         {/* Selo de idade */}
         <div className="mt-6 inline-flex items-center gap-2 rounded-full bg-sdb-orange px-5 py-2 text-sm font-bold text-white uppercase shadow-md">
           <span>🎉</span>
-          Crianças a partir de 4 anos
+          A partir de 5 anos sem acompanhante
         </div>
 
         {/* CTA direto */}

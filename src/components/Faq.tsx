@@ -33,9 +33,9 @@ const faqs: FaqItem[] = [
       'Tu escolhe — mas a Tardezinha foi pensada pra tu APROVEITAR teu tempo fora. A criançada fica em boas mãos com a equipe de monitoria. Volta às 22h30 pra buscar.',
   },
   {
-    pergunta: 'Crianças menores de 4 anos podem ir?',
+    pergunta: 'Crianças menores de 5 anos podem ir?',
     resposta:
-      'Por questões de segurança das atrações (Giro Radical, Escalada, Nerf, etc.), as atrações principais são a partir de 4 anos. Menores podem participar desde que acompanhados de um responsável o tempo todo.',
+      'A partir de 5 anos a criança fica sem acompanhante com a equipe de monitoria. Menores de 5 podem participar desde que acompanhados de um responsável o tempo todo.',
   },
   {
     pergunta: 'E se minha criança não pode comer crepe (alergia)?',

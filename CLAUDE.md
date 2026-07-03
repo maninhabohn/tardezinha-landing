@@ -41,9 +41,9 @@ liberdade · noite livre · happy hour · jantar · beach tenis · a gente cuida
 | **Horario** | 18h as 22h30 |
 | **Local** | Av. G, 101 — Atlantida, Xangri-La — RS, 95588-000 |
 | **Espaco** | 500m² de area coberta |
-| **Estacionamento** | Gratuito no local |
-| **Idade** | A partir de 4 anos (menores apenas com responsavel) |
-| **Ingresso antecipado** | R$ 45,00 (ate 30/06/2026) |
+| **Estacionamento** | Rua tranquila com vaga na porta (nao tem estacionamento proprio) |
+| **Idade** | A partir de 5 anos sem acompanhante (menores de 5 so com responsavel) |
+| **Ingresso antecipado** | R$ 45,00 (ate 07/07/2026) |
 | **Ingresso na hora** | R$ 50,00 |
 | **Grupos** | "Valor especial pra grupo" (NUNCA "desconto") |
 | **Pagamento** | Pix |
