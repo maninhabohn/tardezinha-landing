@@ -215,6 +215,11 @@ export function Reservar() {
     const msg = `Oi! Acabei de garantir minha vaga na Tardezinha ${EVENT_DATE_LABEL}.\n\n📝 Nome: ${nome.trim()}\n👧 Crianças: ${idadesStr}\n💰 Estimativa: R$ ${totalEstimado.toFixed(2).replace('.', ',')}\n\nTô pronta pra fechar o Pix!`
     const url = whatsappLink(msg)
     setWhatsappUrl(url)
+
+    if (typeof window.fbq === 'function') {
+      window.fbq('track', 'Lead')
+    }
+
     setStep('confirmacao')
   }
 
