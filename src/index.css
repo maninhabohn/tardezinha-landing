@@ -1,21 +1,17 @@
 @import "tailwindcss";
 
-/* Paleta Show de Bola — edição de férias */
+/* Paleta Show de Bola — edição de férias (laranja)
+   Para trocar a cor da edição, mude sdb-yellow e sdb-yellow-soft.
+   Sugestões: amarelo #ffe600/#fff5a3 · laranja #ff8c00/#ffd6a5 · roxo #9333ea/#d8b4fe */
 @theme {
-  --color-sdb-yellow: #ffe600;
-  --color-sdb-yellow-soft: #fff5a3;
+  --color-sdb-yellow: #ff8c00;
+  --color-sdb-yellow-soft: #ffd6a5;
   --color-sdb-purple: #7b1fa2;
   --color-sdb-purple-dark: #4a148c;
   --color-sdb-pink: #ec4899;
   --color-sdb-pink-soft: #fbcfe8;
   --color-sdb-orange: #f97316;
   --color-sdb-text: #1f2937;
-
-  /* Cores extras */
-  --color-junino-warm: #d97706;
-  --color-junino-red: #dc2626;
-  --color-junino-green: #16a34a;
-  --color-junino-blue: #2563eb;
 
   --font-display: "Fredoka", system-ui, sans-serif;
   --font-sans: "Nunito", system-ui, sans-serif;
