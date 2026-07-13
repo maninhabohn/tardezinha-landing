@@ -103,7 +103,7 @@ function exportCSV(reservas: Reserva[]) {
 }
 
 export function AdminStats() {
-  useEffect(() => { document.title = 'Controle de Inscrições — Admin Tardezinha Junina 09/07' }, [])
+  useEffect(() => { document.title = 'Controle de Inscrições — Admin Tardezinha de Férias 30/07' }, [])
   const params = new URLSearchParams(window.location.search)
   const key = params.get('key') || ''
 
@@ -184,7 +184,7 @@ export function AdminStats() {
       <header className="bg-purple-800 text-white px-4 py-4">
         <div className="mx-auto max-w-5xl flex items-center justify-between">
           <div>
-            <h1 className="text-xl font-bold">Tardezinha 03/07 — Admin</h1>
+            <h1 className="text-xl font-bold">Tardezinha 30/07 — Admin</h1>
             <p className="text-sm text-purple-200">Painel de reservas</p>
           </div>
           <div className="flex gap-2">

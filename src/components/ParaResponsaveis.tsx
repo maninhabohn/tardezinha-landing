@@ -45,7 +45,7 @@ export function ParaResponsaveis() {
             <strong className="text-sdb-purple">Vai viver tua noite.</strong>
           </p>
           <p className="mx-auto mt-4 max-w-3xl text-base text-sdb-text/80">
-            Das <strong>18h às 22h30</strong> a criançada fica brincando à vontade — brinquedos liberados, equipe de monitoria de olho, comidinhas de arraial e crepe cortesia. Tu? Tu vai pra onde quiser.
+            Das <strong>18h às 22h30</strong> a criançada fica brincando à vontade — brinquedos liberados, equipe de monitoria de olho, lanchonete no local e crepe cortesia. Tu? Tu vai pra onde quiser.
           </p>
         </div>
 

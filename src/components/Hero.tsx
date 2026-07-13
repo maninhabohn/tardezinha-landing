@@ -26,7 +26,7 @@ export function Hero() {
 
         {/* Kicker — pre-titulo */}
         <p className="font-display text-sm uppercase tracking-[0.25em] text-sdb-pink">
-          🌽 Edição Junina · {EVENT_DATE_LONG}
+          🏖️ Edição de Férias · {EVENT_DATE_LONG}
         </p>
 
         {/* Titulo principal */}
@@ -36,9 +36,9 @@ export function Hero() {
           <span className="text-sdb-purple-dark">SHOW DE BOLA</span>
         </h1>
 
-        {/* Subtítulo junino */}
+        {/* Subtítulo edição de férias */}
         <p className="mt-4 font-display text-xl text-sdb-orange sm:text-2xl">
-          Bandeirinhas, comida de arraial e aquele clima gostoso
+          Férias escolares + 4 horas de diversão. Tu descansa, a criançada brinca.
         </p>
 
         {/* Jargão âncora da campanha — DESTAQUE */}
@@ -52,14 +52,14 @@ export function Hero() {
 
         {/* Descrição complementar */}
         <p className="mx-auto mt-6 max-w-xl text-base text-sdb-text/85 sm:text-lg">
-          Quinta-feira é pré-férias escolares — deixa a criançada com a gente e vai pro happy hour, pro jantar, pro beach tênis. A gente cuida. Tu busca às 22h30 um filho{' '}
+          Quinta-feira é férias escolares — deixa a criançada com a gente e vai pro happy hour, pro jantar, pro beach tênis. A gente cuida. Tu busca às 22h30 um filho{' '}
           <strong className="text-sdb-purple">cansado, alimentado e feliz</strong>.
         </p>
 
         {/* Data e horario — cartao destaque */}
         <div className="mx-auto mt-10 inline-block rotate-[-2deg] rounded-2xl bg-white px-8 py-5 shadow-xl ring-4 ring-sdb-orange/40">
           <p className="font-display text-2xl text-sdb-orange sm:text-3xl">
-            🌽 {EVENT_DATE_LABEL} ({EVENT_DAY_OF_WEEK.slice(0, 5)})
+            🏖️ {EVENT_DATE_LABEL} ({EVENT_DAY_OF_WEEK.slice(0, 5)})
           </p>
           <p className="mt-1 font-display text-xl text-sdb-orange/80 sm:text-2xl">
             {EVENT_TIME_LABEL}

@@ -59,13 +59,13 @@ export function Atracoes() {
       <div className="mx-auto max-w-6xl">
         <div className="text-center">
           <p className="mb-2 inline-block rounded-full bg-sdb-yellow px-4 py-1 text-sm font-bold text-sdb-purple uppercase">
-            Edição Junina 🌽
+            Edição de Férias 🏖️
           </p>
           <h2 className="font-display text-4xl text-sdb-yellow sm:text-5xl">
             A festa fica assim:
           </h2>
           <p className="mt-3 text-lg text-white/80">
-            Atrações liberadas + clima de arraial
+            Atrações liberadas + diversão garantida
           </p>
         </div>
 
@@ -103,14 +103,14 @@ export function Atracoes() {
           })}
         </div>
 
-        {/* Crepe cortesia + clima junino */}
+        {/* Crepe cortesia + lanchonete */}
         <div className="mx-auto mt-12 max-w-3xl rounded-2xl bg-sdb-yellow/15 p-6 text-center backdrop-blur ring-2 ring-sdb-yellow/30">
-          <p className="text-4xl">🌽</p>
+          <p className="text-4xl">🏖️</p>
           <h3 className="mt-3 font-display text-2xl text-sdb-yellow">
-            Crepe cortesia + comidinhas de arraial
+            Crepe cortesia + lanchonete no local
           </h3>
           <p className="mt-2 text-base text-white/90">
-            Cada criança ganha 1 crepe + suco · comidinhas juninas e bebidas extras à venda no local
+            Cada criança ganha 1 crepe + suco · lanches e bebidas extras à venda no local
           </p>
         </div>
       </div>

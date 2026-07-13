@@ -82,7 +82,7 @@ const TERMO_TEXTO = `DECLARO QUE:
 • Não responsabilizo a Show de Bola por acidentes resultantes do uso incorreto dos brinquedos pela criança ou imprudência`
 
 export function Reservar() {
-  useEffect(() => { document.title = 'Inscrição — Tardezinha Junina 09/07' }, [])
+  useEffect(() => { document.title = 'Inscrição — Tardezinha de Férias 30/07' }, [])
   const [step, setStep] = useState<'form' | 'enviando' | 'confirmacao'>('form')
 
   const [nome, setNome] = useState('')
@@ -205,7 +205,7 @@ export function Reservar() {
 
     if (errCriancas) console.error('Erro ao salvar crianças:', errCriancas)
 
-    const valorPorCrianca = 45
+    const valorPorCrianca = 38
     const totalEstimado = criancas.length * valorPorCrianca
     const idadesStr = criancas.map(c => {
       const dt = parseDateBR(c.dataNascimento)!
@@ -259,7 +259,7 @@ export function Reservar() {
 
           <div className="mt-10 rounded-2xl bg-white p-6 text-left shadow-md border border-gray-200">
             <p className="text-lg font-bold text-gray-800 mb-3">Enquanto isso, anota:</p>
-            <p className="mb-1 text-gray-700">🌽 <strong>09/07 (quinta)</strong> · 18h às 22h30 · Tema Junino</p>
+            <p className="mb-1 text-gray-700">🏖️ <strong>30/07 (quinta)</strong> · 18h às 22h30 · Edição de Férias</p>
             <p className="mb-1">
               📍{' '}
               <a
@@ -289,19 +289,19 @@ export function Reservar() {
     <div className="min-h-screen bg-gray-50">
       <DateBanner />
 
-      {/* Hero compacto — tema junino */}
+      {/* Hero compacto — edição de férias */}
       <div className="bg-amber-50 border-b border-amber-200 px-4 pt-6 pb-6 text-center">
         <Logo size={100} className="mb-3" />
         <h1 className="text-2xl font-bold text-gray-800 leading-tight sm:text-3xl">
-          Garante tua vaga na<br />Tardezinha Junina 09/07 🌽
+          Garante tua vaga na<br />Tardezinha de Férias 30/07 🏖️
         </h1>
         <p className="mt-2 text-base text-gray-600">
-          Bandeirinhas, comida de arraial e 4 horas pra ti.
+          Férias escolares + 4 horas de diversão. Tu descansa, a criançada brinca.
           <span className="text-sdb-pink font-semibold"> A família agradece.</span>
         </p>
         <div className="mt-3 inline-block rounded-lg bg-sdb-purple/10 px-5 py-2">
           <p className="text-lg text-sdb-purple-dark font-bold">
-            R$45 antecipado · R$50 na hora
+            R$38 antecipado · R$45 na hora
           </p>
         </div>
       </div>

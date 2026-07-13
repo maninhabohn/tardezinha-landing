@@ -5,16 +5,38 @@
 
 ## O que e este projeto
 
-Landing page do evento **Tardezinha Show de Bola — 03/07/2026 (sexta)**, da **Casa de Festas Show de Bola** (braco da empresa-mae Show de Bola Locacao).
+Landing page do evento **Tardezinha Show de Bola — 30/07/2026 (quinta)**, da **Casa de Festas Show de Bola** (braco da empresa-mae Show de Bola Locacao).
 
 - **URL producao:** https://tardezinha.showdebolars.com.br
 - **Repo:** https://github.com/maninhabohn/tardezinha-landing
 - **Deploy:** Vercel (auto a cada `git push`)
 - **Stack:** React 19 + Vite + TypeScript + Tailwind v4 + Supabase
 
+---
+
+## 📓 DIARIO compartilhado com outras sessoes (obrigatorio)
+
+Esta sessao (Landing Tardezinha) faz parte de um ecossistema de 5 sessoes Claude da Show de Bola:
+**Jack** (estrategia), **Editorial** (Instagram/conteudo), **Trafego** (Meta/Google Ads),
+**CRM** (outro projeto), **Landing Tardezinha** (este projeto).
+
+**Local do diario:** `C:\Users\Usuário\Desktop\PROJETOS IA\JACK SHOW DE BOLA\01-COMPARTILHADO\DIARIO.md`
+
+- **Ao comecar qualquer trabalho** → ler as ~15 ultimas linhas do DIARIO pra saber o que outras sessoes fizeram
+- **Ao terminar algo importante** (deploy, mudanca na landing, config Vercel) → escrever 1 linha no TOPO:
+  `- AAAA-MM-DD HH:MM · [LANDING] · o que rolou (link se tiver)`
+- **Nome desta sessao no diario:** `[LANDING]` (fixo)
+- **Regra:** escreve so o que outra sessao precisa saber (ex: "deploy novo no ar", "pixel Meta instalado"). Detalhe passo a passo fica em briefings/.
+
+Contexto adicional da pasta JACK (identidade, brand voice, politicas, STATUS dos bracos)
+esta em `C:\Users\Usuário\Desktop\PROJETOS IA\JACK SHOW DE BOLA\` — ler quando precisar
+de contexto estrategico.
+
+---
+
 ## Posicionamento da campanha (CRITICO)
 
-**O que vendemos:** 4 horas de **liberdade pros pais** numa sexta-feira, com cuidado garantido pros filhos. A Tardezinha NAO e "casa de festa pra familia curtir junto" — e a **NOITE LIVRE DOS PAIS**.
+**O que vendemos:** 4 horas de **liberdade pros pais** numa quinta-feira, com cuidado garantido pros filhos. A Tardezinha NAO e "casa de festa pra familia curtir junto" — e a **NOITE LIVRE DOS PAIS**.
 
 ### Jargao ancora (aparece no Hero)
 > "4 horas pra ti. 4 horas pra criancada. A familia agradece."
@@ -31,24 +53,24 @@ Landing page do evento **Tardezinha Show de Bola — 03/07/2026 (sexta)**, da **
 kit · combo · **desconto** · promocao · barato · epico · magico · inesquecivel · imperdivel · **bar** · **tradicao** · "tarde" (pra 18h+) · **janta inclusa** / jantar incluso
 
 ### Palavras DA MARCA (preferir)
-liberdade · noite livre · happy hour · jantar · beach tenis · a gente cuida · cansado · alimentado · dormindo · pacote · experiencia · curadoria · criancada · familia · galera · pequenos · 1 crepe cortesia · comidinhas a venda
+liberdade · noite livre · happy hour · jantar · beach tenis · a gente cuida · cansado · alimentado · dormindo · pacote · experiencia · curadoria · criancada · familia · galera · pequenos · 1 crepe cortesia · lanchonete no local
 
 ## Dados do evento
 
 | Campo | Valor |
 |---|---|
-| **Data** | 03/07/2026 (sexta-feira) |
+| **Data** | 30/07/2026 (quinta-feira) |
 | **Horario** | 18h as 22h30 |
 | **Local** | Av. G, 101 — Atlantida, Xangri-La — RS, 95588-000 |
 | **Espaco** | 500m² de area coberta |
 | **Estacionamento** | Rua tranquila com vaga na porta (nao tem estacionamento proprio) |
 | **Idade** | A partir de 5 anos sem acompanhante (menores de 5 so com responsavel) |
-| **Ingresso antecipado** | R$ 45,00 (ate 07/07/2026) |
-| **Ingresso na hora** | R$ 50,00 |
+| **Ingresso antecipado** | R$ 38,00 (ate 28/07/2026) |
+| **Ingresso na hora** | R$ 45,00 |
 | **Grupos** | "Valor especial pra grupo" (NUNCA "desconto") |
 | **Pagamento** | Pix |
 | **Cancelamento** | 48h antes → credito pra proxima edicao |
-| **Crepe** | 1 cortesia por crianca + comidinhas a venda |
+| **Crepe** | 1 cortesia por crianca + lanchonete no local |
 
 ## Atracoes (com hierarquia narrativa)
 
@@ -114,7 +136,7 @@ src/
   - `P1544427.jpg` (Lanchonete)
   - `P1555284.jpg` (Atividade calma)
 - [ ] **Google Maps embed URL oficial** (`MAPA_EMBED_URL` em `Local.tsx` — hoje usa fallback)
-- [ ] **OG image (og.png)** desatualizada com data 29/05 — regenerar pra 03/07
+- [ ] **OG image (og.png)** desatualizada — regenerar pra 30/07
 - [ ] **Google Analytics + Meta Pixel** com placeholders no `index.html`
 
 ## Como rodar

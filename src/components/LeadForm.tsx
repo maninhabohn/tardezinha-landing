@@ -9,7 +9,7 @@ type Status =
   | { kind: 'error'; message: string }
 
 // Edicao atual — atualizar quando virar a proxima
-const EDICAO = '2026-07-09'
+const EDICAO = '2026-07-30'
 
 function getUtmParams() {
   const params = new URLSearchParams(window.location.search)
@@ -77,7 +77,7 @@ export function LeadForm() {
 
     // Redireciona pro WhatsApp pre-preenchido
     const msg = encodeURIComponent(
-      `Oi! Quero ingresso da Tardezinha 09/07. Sou ${nomeClean} e levo ${criancasNum} criança${criancasNum > 1 ? 's' : ''}.`,
+      `Oi! Quero ingresso da Tardezinha 30/07. Sou ${nomeClean} e levo ${criancasNum} criança${criancasNum > 1 ? 's' : ''}.`,
     )
     setTimeout(() => {
       window.location.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`
@@ -98,7 +98,7 @@ export function LeadForm() {
           Chama no WhatsApp que a gente fecha rapidinho.
         </p>
         <a
-          href={whatsappLink('Oi! Quero ingresso da Tardezinha 09/07/2026.')}
+          href={whatsappLink('Oi! Quero ingresso da Tardezinha 30/07/2026.')}
           target="_blank"
           rel="noopener noreferrer"
           className="mt-6 inline-block w-full rounded-full bg-emerald-500 px-6 py-4 font-display text-lg text-white shadow-lg transition hover:scale-[1.02] hover:bg-emerald-600 sm:w-auto sm:px-12"

@@ -18,7 +18,7 @@ export function Local() {
           Local
         </p>
         <h2 className="font-display text-4xl text-sdb-yellow sm:text-5xl">
-          Onde o arraial acontece 🌽
+          Onde a diversão acontece 🏖️
         </h2>
 
         <div className="mt-10 rounded-3xl bg-white/10 p-6 backdrop-blur sm:p-8">
