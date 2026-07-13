@@ -1,8 +1,16 @@
 @import "tailwindcss";
 
-/* Paleta Show de Bola — edição de férias (laranja)
-   Para trocar a cor da edição, mude sdb-yellow e sdb-yellow-soft.
-   Sugestões: amarelo #ffe600/#fff5a3 · laranja #ff8c00/#ffd6a5 · roxo #9333ea/#d8b4fe */
+/* Paleta Show de Bola — cores que mudam A CADA EDIÇÃO
+   sdb-yellow     = cor dominante (fundo hero, ingressos, body)
+   sdb-yellow-soft = versão suave da dominante (FAQ, cards)
+   sdb-orange     = cor de destaque/contraste (datas, subtítulos, rings)
+                    DEVE contrastar com sdb-yellow — se dominante é laranja, destaque é roxo
+
+   RECEITA PRA TROCAR EDIÇÃO (só mexe nestas 3 linhas):
+   Férias (atual):  yellow #ff8c00 / soft #ffd6a5 / orange #4a148c (roxo escuro)
+   Junina:          yellow #ffe600 / soft #fff5a3 / orange #f97316 (laranja)
+   Halloween:       yellow #9333ea / soft #d8b4fe / orange #ff8c00 (laranja)
+   Primavera:       yellow #22c55e / soft #bbf7d0 / orange #7b1fa2 (roxo)       */
 @theme {
   --color-sdb-yellow: #ff8c00;
   --color-sdb-yellow-soft: #ffd6a5;
@@ -10,7 +18,7 @@
   --color-sdb-purple-dark: #4a148c;
   --color-sdb-pink: #ec4899;
   --color-sdb-pink-soft: #fbcfe8;
-  --color-sdb-orange: #f97316;
+  --color-sdb-orange: #4a148c;
   --color-sdb-text: #1f2937;
 
   --font-display: "Fredoka", system-ui, sans-serif;
