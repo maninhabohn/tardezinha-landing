@@ -2,7 +2,7 @@ import { useState, useEffect, type FormEvent } from 'react'
 import { Logo } from '../components/Logo'
 import { DateBanner } from '../components/DateBanner'
 import { supabase, isSupabaseConfigured } from '../lib/supabase'
-import { whatsappLink, EVENT_DATE_LABEL } from '../lib/contact'
+import { whatsappLink, EVENTS } from '../lib/contact'
 
 interface CriancaForm {
   nome: string
@@ -66,6 +66,16 @@ function calcAge(isoDate: string): number {
   return age
 }
 
+// Monta opcoes de data+sessao
+const SESSION_OPTIONS = EVENTS.flatMap(ev =>
+  ev.sessions.map(s => ({
+    value: `${ev.id}|${s.label}`,
+    label: `${ev.date} (${ev.dayOfWeek.slice(0, 4)}) — ${s.label}`,
+    eventDate: ev.date,
+    sessionLabel: s.label,
+  }))
+)
+
 const CANAIS = [
   { value: 'instagram', label: 'Instagram (@casashowdebolaoficial)' },
   { value: 'panfleto', label: 'Panfleto' },
@@ -82,9 +92,10 @@ const TERMO_TEXTO = `DECLARO QUE:
 • Não responsabilizo a Show de Bola por acidentes resultantes do uso incorreto dos brinquedos pela criança ou imprudência`
 
 export function Reservar() {
-  useEffect(() => { document.title = 'Inscrição — Tardezinha de Férias 30/07' }, [])
+  useEffect(() => { document.title = 'Inscrição — Tardezinha de Férias' }, [])
   const [step, setStep] = useState<'form' | 'enviando' | 'confirmacao'>('form')
 
+  const [sessaoEscolhida, setSessaoEscolhida] = useState('')
   const [nome, setNome] = useState('')
   const [whatsapp, setWhatsapp] = useState('')
   const [cpf, setCpf] = useState('')
@@ -106,6 +117,8 @@ export function Reservar() {
   const [erro, setErro] = useState('')
   const [whatsappUrl, setWhatsappUrl] = useState('')
 
+  const selectedOption = SESSION_OPTIONS.find(o => o.value === sessaoEscolhida)
+
   function handleQtdChange(n: number) {
     setQtdCriancas(n)
     setCriancas(prev => {
@@ -119,6 +132,7 @@ export function Reservar() {
   }
 
   function validate(): string | null {
+    if (!sessaoEscolhida) return 'Escolhe a data e o turno que tu quer ir'
     if (!nome.trim()) return 'Preenche teu nome'
     const phoneDigits = whatsapp.replace(/\D/g, '')
     if (phoneDigits.length < 10) return 'WhatsApp precisa ter DDD + número'
@@ -174,6 +188,7 @@ export function Reservar() {
         qtd_criancas: criancas.length,
         qtd_adultos_extra: qtdAdultos,
         aceitou_termo_responsabilidade: aceitouTermo,
+        edicao: sessaoEscolhida,
         utm_source: params.get('utm_source') || null,
         utm_medium: params.get('utm_medium') || null,
         utm_campaign: params.get('utm_campaign') || null,
@@ -212,7 +227,7 @@ export function Reservar() {
       return `${c.nome.split(' ')[0]} (${calcAge(dt)} anos)`
     }).join(', ')
 
-    const msg = `Oi! Acabei de garantir minha vaga na Tardezinha ${EVENT_DATE_LABEL}.\n\n📝 Nome: ${nome.trim()}\n👧 Crianças: ${idadesStr}\n💰 Estimativa: R$ ${totalEstimado.toFixed(2).replace('.', ',')}\n\nTô pronta pra fechar o Pix!`
+    const msg = `Oi! Acabei de garantir minha vaga na Tardezinha de Férias ${selectedOption?.eventDate} (${selectedOption?.sessionLabel}).\n\n📝 Nome: ${nome.trim()}\n👧 Crianças: ${idadesStr}\n💰 Estimativa: R$ ${totalEstimado.toFixed(2).replace('.', ',')}\n\nTô pronta pra fechar o Pix!`
     const url = whatsappLink(msg)
     setWhatsappUrl(url)
 
@@ -259,7 +274,7 @@ export function Reservar() {
 
           <div className="mt-10 rounded-2xl bg-white p-6 text-left shadow-md border border-gray-200">
             <p className="text-lg font-bold text-gray-800 mb-3">Enquanto isso, anota:</p>
-            <p className="mb-1 text-gray-700">🏖️ <strong>30/07 (quinta)</strong> · 18h às 22h30 · Edição de Férias</p>
+            <p className="mb-1 text-gray-700">🏖️ <strong>{selectedOption?.label}</strong> · Edição de Férias</p>
             <p className="mb-1">
               📍{' '}
               <a
@@ -293,7 +308,7 @@ export function Reservar() {
       <div className="bg-amber-50 border-b border-amber-200 px-4 pt-6 pb-6 text-center">
         <Logo size={100} className="mb-3" />
         <h1 className="text-2xl font-bold text-gray-800 leading-tight sm:text-3xl">
-          Garante tua vaga na<br />Tardezinha de Férias 30/07 🏖️
+          Garante tua vaga na<br />Tardezinha de Férias 🏖️
         </h1>
         <p className="mt-2 text-base text-gray-600">
           Férias escolares + 4 horas de diversão. Tu descansa, a criançada brinca.
@@ -301,7 +316,7 @@ export function Reservar() {
         </p>
         <div className="mt-3 inline-block rounded-lg bg-sdb-purple/10 px-5 py-2">
           <p className="text-lg text-sdb-purple-dark font-bold">
-            R$38 antecipado · R$45 na hora
+            R$38 antecipado · R$45 na hora · Adulto não paga
           </p>
         </div>
       </div>
@@ -315,6 +330,36 @@ export function Reservar() {
             ⚠️ {erro}
           </div>
         )}
+
+        {/* SEÇÃO 0 — Escolher data e turno */}
+        <fieldset className="mb-6 rounded-xl bg-white border-2 border-sdb-purple/30 p-5 shadow-sm">
+          <legend className="text-base font-bold text-sdb-purple px-2">
+            📅 Qual data e turno?
+          </legend>
+
+          <div className="mt-3 space-y-2">
+            {SESSION_OPTIONS.map(opt => (
+              <label
+                key={opt.value}
+                className={`flex items-center gap-3 cursor-pointer rounded-lg border-2 p-4 transition ${
+                  sessaoEscolhida === opt.value
+                    ? 'border-sdb-purple bg-sdb-purple/5'
+                    : 'border-gray-200 hover:border-sdb-purple/30'
+                }`}
+              >
+                <input
+                  type="radio"
+                  name="sessao"
+                  value={opt.value}
+                  checked={sessaoEscolhida === opt.value}
+                  onChange={() => setSessaoEscolhida(opt.value)}
+                  className="accent-sdb-purple w-5 h-5"
+                />
+                <span className="text-base font-semibold text-gray-800">{opt.label}</span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
 
         {/* SEÇÃO 1 — Responsável */}
         <fieldset className="mb-6 rounded-xl bg-white border border-gray-200 p-5 shadow-sm">

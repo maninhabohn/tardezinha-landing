@@ -18,6 +18,11 @@ const faqs: FaqItem[] = [
       'É só clicar no botão verde e chamar no WhatsApp. Pagamento via Pix — rápido e prático.',
   },
   {
+    pergunta: 'Adulto paga entrada?',
+    resposta:
+      'Não. Adulto não paga entrada — paga apenas o que consumir no bar (cerveja, refri, água, lanches).',
+  },
+  {
     pergunta: 'Tem valor especial pra grupo?',
     resposta:
       'Sim. Pra grupos (irmãos, amigos, turma da escola), temos valor especial. Fala com a gente no WhatsApp que combinamos.',
@@ -30,7 +35,7 @@ const faqs: FaqItem[] = [
   {
     pergunta: 'Posso ficar acompanhando ou tenho que sair?',
     resposta:
-      'Tu escolhe — mas a Tardezinha foi pensada pra tu APROVEITAR teu tempo fora. A criançada fica em boas mãos com a equipe de monitoria. Volta às 22h30 pra buscar.',
+      'Tu escolhe — mas a Tardezinha foi pensada pra tu APROVEITAR teu tempo fora. A criançada fica em boas mãos com a equipe de monitoria. Tu busca no final do turno.',
   },
   {
     pergunta: 'Crianças menores de 5 anos podem ir?',
@@ -38,14 +43,14 @@ const faqs: FaqItem[] = [
       'A partir de 5 anos a criança fica sem acompanhante com a equipe de monitoria. Menores de 5 podem participar desde que acompanhados de um responsável o tempo todo.',
   },
   {
-    pergunta: 'E se minha criança não pode comer crepe (alergia)?',
+    pergunta: 'O que tá incluso no ingresso?',
     resposta:
-      'Sem problema. O crepe é uma cortesia opcional. Avisa a gente na hora da confirmação que a equipe adapta.',
+      'Todas as atrações (Giro Radical, Escalada, Nerf Inflável e clássicos) + pipoca e água liberada. Quer mais coisa? Tem o bar funcionando durante todo o evento.',
   },
   {
-    pergunta: 'E se eu quiser que a criançada coma mais coisas além do crepe?',
+    pergunta: 'Minha criança tem alergia alimentar, como funciona?',
     resposta:
-      'A lanchonete da casa funciona durante toda a Tardezinha — tem lanches e bebidas à venda no local. Tu paga só o que a criançada consumir além do crepe cortesia.',
+      'Avisa a gente na hora da inscrição que a equipe fica ciente. A pipoca cortesia é simples (milho e sal), e no bar tu escolhe o que faz sentido pra tua criança.',
   },
   {
     pergunta: 'Posso cancelar se acontecer algum imprevisto?',

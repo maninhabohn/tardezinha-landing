@@ -1,10 +1,5 @@
 import { Link } from 'react-router-dom'
-import {
-  EVENT_DATE_LABEL,
-  EVENT_DATE_LONG,
-  EVENT_DAY_OF_WEEK,
-  EVENT_TIME_LABEL,
-} from '../lib/contact'
+import { EVENTS, EVENT_THEME } from '../lib/contact'
 import { Logo } from './Logo'
 
 export function Hero() {
@@ -26,7 +21,7 @@ export function Hero() {
 
         {/* Kicker — pre-titulo */}
         <p className="font-display text-sm uppercase tracking-[0.25em] text-sdb-pink">
-          🏖️ Edição de Férias · {EVENT_DATE_LONG}
+          🏖️ Edição de Férias · Julho 2026
         </p>
 
         {/* Titulo principal */}
@@ -52,18 +47,27 @@ export function Hero() {
 
         {/* Descrição complementar */}
         <p className="mx-auto mt-6 max-w-xl text-base text-sdb-text/85 sm:text-lg">
-          Quinta-feira é férias escolares — deixa a criançada com a gente e vai pro happy hour, pro jantar, pro beach tênis. A gente cuida. Tu busca às 22h30 um filho{' '}
+          Férias escolares — deixa a criançada com a gente e vai pro happy hour, pro jantar, pro beach tênis. A gente cuida. Tu busca um filho{' '}
           <strong className="text-sdb-purple">cansado, alimentado e feliz</strong>.
         </p>
 
-        {/* Data e horario — cartao destaque */}
-        <div className="mx-auto mt-10 inline-block rotate-[-2deg] rounded-2xl bg-white px-8 py-5 shadow-xl ring-4 ring-sdb-orange/40">
-          <p className="font-display text-2xl text-sdb-orange sm:text-3xl">
-            🏖️ {EVENT_DATE_LABEL} ({EVENT_DAY_OF_WEEK.slice(0, 5)})
-          </p>
-          <p className="mt-1 font-display text-xl text-sdb-orange/80 sm:text-2xl">
-            {EVENT_TIME_LABEL}
-          </p>
+        {/* Datas — 2 cards lado a lado */}
+        <div className="mx-auto mt-10 flex flex-col gap-4 sm:flex-row sm:justify-center">
+          {EVENTS.map((ev) => (
+            <div
+              key={ev.id}
+              className="inline-block rotate-[-1deg] rounded-2xl bg-white px-7 py-5 shadow-xl ring-4 ring-sdb-orange/40"
+            >
+              <p className="font-display text-xl text-sdb-orange sm:text-2xl">
+                🏖️ {ev.date} ({ev.dayOfWeek.slice(0, 4)})
+              </p>
+              {ev.sessions.map((s, i) => (
+                <p key={i} className="mt-1 font-display text-lg text-sdb-orange/80 sm:text-xl">
+                  {s.time}
+                </p>
+              ))}
+            </div>
+          ))}
         </div>
 
         {/* Selo de idade */}

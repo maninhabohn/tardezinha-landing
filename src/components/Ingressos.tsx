@@ -4,7 +4,7 @@ import { Countdown, antecipadoExpirou } from './Countdown'
 import { LeadForm } from './LeadForm'
 
 const grupoMessage =
-  'Oi! Quero saber sobre os valores especiais pra grupo na Tardezinha de Férias 30/07/2026.'
+  'Oi! Quero saber sobre os valores especiais pra grupo na Tardezinha de Férias.'
 
 export function Ingressos() {
   const expirou = antecipadoExpirou()
@@ -41,7 +41,7 @@ export function Ingressos() {
                 R$ <span className="text-sdb-yellow">38</span>
                 <span className="text-3xl">,00</span>
               </p>
-              <p className="mt-3 text-sm text-white/80">Até 28/07</p>
+              <p className="mt-3 text-sm text-white/80">Até 2 dias antes do evento</p>
             </div>
           )}
 
@@ -57,9 +57,16 @@ export function Ingressos() {
               R$ 45<span className="text-3xl">,00</span>
             </p>
             <p className="mt-3 text-sm text-sdb-text/70">
-              {expirou ? 'Sujeito a disponibilidade' : 'Sujeito a disponibilidade'}
+              Sujeito a disponibilidade
             </p>
           </div>
+        </div>
+
+        {/* Info adulto */}
+        <div className="mt-6 text-center">
+          <p className="text-sm font-semibold text-sdb-text/70">
+            👨‍👩‍👧 Adulto não paga entrada — paga apenas consumo no bar
+          </p>
         </div>
 
         {/* CTA reserva */}

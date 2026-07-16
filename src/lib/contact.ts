@@ -6,23 +6,60 @@ export const WHATSAPP_LABEL = '(51) 99818-1165'
 export const INSTAGRAM_HANDLE = 'casashowdebolaoficial'
 export const INSTAGRAM_URL = `https://instagram.com/${INSTAGRAM_HANDLE}`
 
-// Data do evento (atualizar aqui pra propagar pra toda a landing)
-export const EVENT_DATE_LABEL = '30/07/2026'
-export const EVENT_DATE_LONG = '30 DE JULHO'
-export const EVENT_DAY_OF_WEEK = 'quinta-feira'
-export const EVENT_TIME_LABEL = 'das 18h às 22h30'
+// Edicoes de ferias — multiplas datas
+export interface EventSession {
+  time: string   // "das 18h às 22h"
+  label: string  // "18h–22h"
+}
+
+export interface TardezinhaEvent {
+  id: string
+  date: string        // "23/07/2026"
+  dateLong: string    // "23 DE JULHO"
+  dayOfWeek: string
+  sessions: EventSession[]
+  antecipadoDeadline: string // ISO
+}
+
+export const EVENTS: TardezinhaEvent[] = [
+  {
+    id: '23jul',
+    date: '23/07/2026',
+    dateLong: '23 DE JULHO',
+    dayOfWeek: 'quarta-feira',
+    sessions: [{ time: 'das 18h às 22h', label: '18h–22h' }],
+    antecipadoDeadline: '2026-07-21T23:59:59-03:00',
+  },
+  {
+    id: '30jul',
+    date: '30/07/2026',
+    dateLong: '30 DE JULHO',
+    dayOfWeek: 'quarta-feira',
+    sessions: [
+      { time: 'das 14h às 18h', label: '14h–18h' },
+      { time: 'das 18h às 22h', label: '18h–22h' },
+    ],
+    antecipadoDeadline: '2026-07-28T23:59:59-03:00',
+  },
+]
+
+// Compatibilidade — dados do evento mais proximo (pra componentes simples)
+export const EVENT_DATE_LABEL = EVENTS[0].date
+export const EVENT_DATE_LONG = EVENTS[0].dateLong
+export const EVENT_DAY_OF_WEEK = EVENTS[0].dayOfWeek
+export const EVENT_TIME_LABEL = EVENTS[0].sessions[0].time
 export const EVENT_ADDRESS = 'Av. G, 101 — Atlântida, Xangri-Lá — RS, 95588-000'
 export const EVENT_THEME = 'Edição de Férias 🏖️'
 
-// Prazo do valor antecipado (ISO, fuso BR -03:00)
-export const ANTECIPADO_DEADLINE = '2026-07-28T23:59:59-03:00'
+// Prazo do antecipado — mais proximo
+export const ANTECIPADO_DEADLINE = EVENTS[0].antecipadoDeadline
 
 export const GOOGLE_MAPS_URL =
   'https://www.google.com/maps/search/?api=1&query=' +
   encodeURIComponent('Av. G, 101 - Atlântida, Xangri-lá - RS')
 
 // Mensagens padrao do WhatsApp em "tu"
-export const defaultWhatsappMessage = `Oi! Quero ingresso da Tardezinha de Férias ${EVENT_DATE_LABEL}.`
+export const defaultWhatsappMessage = `Oi! Quero ingresso da Tardezinha de Férias.`
 
 export const whatsappLink = (message: string = defaultWhatsappMessage) =>
   `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`

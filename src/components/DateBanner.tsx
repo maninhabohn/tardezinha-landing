@@ -1,9 +1,4 @@
-import {
-  EVENT_DATE_LONG,
-  EVENT_DAY_OF_WEEK,
-  EVENT_TIME_LABEL,
-  EVENT_THEME,
-} from '../lib/contact'
+import { EVENTS, EVENT_THEME } from '../lib/contact'
 
 const FLAG_COLORS = ['#ffe600', '#ec4899', '#16a34a', '#2563eb', '#f97316', '#dc2626']
 
@@ -36,7 +31,12 @@ export function DateBanner() {
         <span className="mx-2 hidden text-white/50 sm:inline">|</span>
         <br className="sm:hidden" />
         <span className="inline-block text-white/90">
-          {EVENT_DATE_LONG} · {EVENT_DAY_OF_WEEK} · {EVENT_TIME_LABEL}
+          {EVENTS.map((ev, i) => (
+            <span key={ev.id}>
+              {i > 0 && ' · '}
+              {ev.dateLong} ({ev.dayOfWeek.slice(0, 4)})
+            </span>
+          ))}
         </span>
       </p>
     </div>

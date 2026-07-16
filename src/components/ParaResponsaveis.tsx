@@ -45,7 +45,7 @@ export function ParaResponsaveis() {
             <strong className="text-sdb-purple">Vai viver tua noite.</strong>
           </p>
           <p className="mx-auto mt-4 max-w-3xl text-base text-sdb-text/80">
-            Das <strong>18h às 22h30</strong> a criançada fica brincando à vontade — brinquedos liberados, equipe de monitoria de olho, lanchonete no local e crepe cortesia. Tu? Tu vai pra onde quiser.
+            São <strong>4 horas</strong> com a criançada brincando à vontade — brinquedos liberados, equipe de monitoria de olho, pipoca e água cortesia. Tu? Tu vai pra onde quiser.
           </p>
         </div>
 
@@ -68,7 +68,7 @@ export function ParaResponsaveis() {
         {/* Promessa final */}
         <div className="mx-auto mt-12 max-w-3xl rounded-3xl bg-sdb-purple p-8 text-center text-white shadow-2xl">
           <p className="font-display text-2xl sm:text-3xl">
-            Volta às <strong className="text-sdb-yellow">22h30</strong> e pega um filho
+            Tu busca no final do turno e pega um filho
             <br />
             <strong className="text-sdb-yellow">cansado, alimentado e feliz</strong>.
           </p>
