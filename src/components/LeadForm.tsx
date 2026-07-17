@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { supabase, isSupabaseConfigured } from '../lib/supabase'
-import { WHATSAPP_NUMBER, whatsappLink } from '../lib/contact'
+import { whatsappLink } from '../lib/contact'
+import { getUtmParams } from '../lib/utm'
 
 type Status =
   | { kind: 'idle' }
@@ -10,15 +11,6 @@ type Status =
 
 // Edicao atual — atualizar quando virar a proxima
 const EDICAO = '2026-07-30'
-
-function getUtmParams() {
-  const params = new URLSearchParams(window.location.search)
-  return {
-    utm_source: params.get('utm_source'),
-    utm_medium: params.get('utm_medium'),
-    utm_campaign: params.get('utm_campaign'),
-  }
-}
 
 function sanitize(value: string) {
   return value.trim().slice(0, 200)
@@ -75,12 +67,10 @@ export function LeadForm() {
       window.fbq('track', 'Lead')
     }
 
-    // Redireciona pro WhatsApp pre-preenchido
-    const msg = encodeURIComponent(
-      `Oi! Quero ingresso da Tardezinha de Férias. Sou ${nomeClean} e levo ${criancasNum} criança${criancasNum > 1 ? 's' : ''}.`,
-    )
+    // Redireciona pro WhatsApp pre-preenchido (whatsappLink ja anexa [utm:...] se houver)
+    const msgTexto = `Oi! Quero ingresso da Tardezinha de Férias. Sou ${nomeClean} e levo ${criancasNum} criança${criancasNum > 1 ? 's' : ''}.`
     setTimeout(() => {
-      window.location.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`
+      window.location.href = whatsappLink(msgTexto)
     }, 1500)
   }
 

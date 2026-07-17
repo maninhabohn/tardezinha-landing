@@ -61,5 +61,10 @@ export const GOOGLE_MAPS_URL =
 // Mensagens padrao do WhatsApp em "tu"
 export const defaultWhatsappMessage = `Oi! Quero ingresso da Tardezinha de Férias.`
 
+import { getUtmSuffix } from './utm'
+
+// Anexa [utm:src/med/campaign/content] no texto quando a landing recebeu UTM.
+// O whatsapp-webhook do CRM extrai automaticamente esse marker (extrairUtmDoTexto)
+// e preenche clientes.utm_* — sem isso, não temos como comparar canais.
 export const whatsappLink = (message: string = defaultWhatsappMessage) =>
-  `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`
+  `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message + getUtmSuffix())}`

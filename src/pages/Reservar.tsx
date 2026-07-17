@@ -3,6 +3,7 @@ import { Logo } from '../components/Logo'
 import { DateBanner } from '../components/DateBanner'
 import { supabase, isSupabaseConfigured } from '../lib/supabase'
 import { whatsappLink, EVENTS } from '../lib/contact'
+import { getUtmParams } from '../lib/utm'
 
 interface CriancaForm {
   nome: string
@@ -168,7 +169,7 @@ export function Reservar() {
     }
 
     const whatsappNorm = '55' + whatsapp.replace(/\D/g, '')
-    const params = new URLSearchParams(window.location.search)
+    const utm = getUtmParams()
     const reservaId = crypto.randomUUID()
 
     const { error: errReserva } = await supabase
@@ -189,9 +190,9 @@ export function Reservar() {
         qtd_adultos_extra: qtdAdultos,
         aceitou_termo_responsabilidade: aceitouTermo,
         edicao: sessaoEscolhida,
-        utm_source: params.get('utm_source') || null,
-        utm_medium: params.get('utm_medium') || null,
-        utm_campaign: params.get('utm_campaign') || null,
+        utm_source: utm.utm_source,
+        utm_medium: utm.utm_medium,
+        utm_campaign: utm.utm_campaign,
         user_agent: navigator.userAgent,
       })
 
