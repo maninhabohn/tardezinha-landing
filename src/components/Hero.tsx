@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { EVENTS, EVENT_THEME } from '../lib/contact'
+import { EVENTS } from '../lib/contact'
 import { Logo } from './Logo'
 
 export function Hero() {
