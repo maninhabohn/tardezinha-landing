@@ -12,6 +12,7 @@ interface CriancaForm {
   alergiaDetalhes: string
   temNecessidade: boolean
   necessidadeDetalhes: string
+  desejo: string
   autorizouImagem: boolean
   autorizouAudio: boolean
 }
@@ -23,6 +24,7 @@ const criancaVazia = (): CriancaForm => ({
   alergiaDetalhes: '',
   temNecessidade: false,
   necessidadeDetalhes: '',
+  desejo: '',
   autorizouImagem: true,
   autorizouAudio: true,
 })
@@ -211,6 +213,7 @@ export function Reservar() {
       alergia_restricao_detalhes: c.temAlergia ? c.alergiaDetalhes.trim() : null,
       tem_necessidade_especial: c.temNecessidade,
       necessidade_especial_detalhes: c.temNecessidade ? c.necessidadeDetalhes.trim() : null,
+      desejo_favorito: c.desejo.trim() || null,
       autorizou_imagem: c.autorizouImagem,
       autorizou_audio: c.autorizouAudio,
     }))
@@ -532,6 +535,23 @@ export function Reservar() {
                     rows={2}
                   />
                 )}
+              </div>
+
+              {/* Desejo da criança — opcional, encanta no dia e vira termômetro do que a criançada quer */}
+              <div className="mt-3 rounded-lg bg-sdb-purple/5 p-3">
+                <label className="block">
+                  <span className="text-sm font-semibold text-gray-700">
+                    🎯 O que {c.nome.trim() ? c.nome.trim().split(' ')[0] : 'a criança'} mais ama brincar? <span className="font-normal text-gray-400">(opcional)</span>
+                  </span>
+                  <input
+                    type="text"
+                    value={c.desejo}
+                    onChange={e => updateCrianca(i, 'desejo', e.target.value)}
+                    placeholder="Nerf, escalada, tobogã, pintura de rosto..."
+                    className="mt-1 block w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:border-sdb-purple focus:ring-1 focus:ring-sdb-purple focus:outline-none bg-white"
+                  />
+                  <span className="mt-1 block text-xs text-gray-500">Assim a gente já prepara o carinho certo no dia 💛</span>
+                </label>
               </div>
 
               {/* Autorizações LGPD */}
