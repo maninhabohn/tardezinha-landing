@@ -38,7 +38,7 @@ export function Ingressos() {
                 Antecipado
               </p>
               <p className="mt-3 font-display text-6xl">
-                R$ <span className="text-sdb-yellow">38</span>
+                R$ <span className="text-sdb-yellow">45</span>
                 <span className="text-3xl">,00</span>
               </p>
               <p className="mt-3 text-sm text-white/80">Até 2 dias antes do evento</p>
@@ -54,7 +54,7 @@ export function Ingressos() {
               {expirou ? 'Valor único' : 'Na hora'}
             </p>
             <p className="mt-3 font-display text-6xl text-sdb-purple">
-              R$ 45<span className="text-3xl">,00</span>
+              R$ 50<span className="text-3xl">,00</span>
             </p>
             <p className="mt-3 text-sm text-sdb-text/70">
               Sujeito a disponibilidade
@@ -62,10 +62,13 @@ export function Ingressos() {
           </div>
         </div>
 
-        {/* Info adulto */}
+        {/* Info adulto + grupo */}
         <div className="mt-6 text-center">
           <p className="text-sm font-semibold text-sdb-text/70">
             👨‍👩‍👧 Adulto não paga entrada — paga apenas consumo no bar
+          </p>
+          <p className="mt-2 inline-block rounded-full bg-sdb-purple/10 px-4 py-1 text-sm font-bold text-sdb-purple">
+            👥 Grupo com 6 crianças ou mais: R$ 38 antecipado por criança
           </p>
         </div>
 

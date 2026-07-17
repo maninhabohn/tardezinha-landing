@@ -221,14 +221,17 @@ export function Reservar() {
 
     if (errCriancas) console.error('Erro ao salvar crianças:', errCriancas)
 
-    const valorPorCrianca = 38
+    // Preço antecipado: R$45 avulso; R$38 se for grupo de 6+ crianças
+    const ehGrupo = criancas.length >= 6
+    const valorPorCrianca = ehGrupo ? 38 : 45
     const totalEstimado = criancas.length * valorPorCrianca
     const idadesStr = criancas.map(c => {
       const dt = parseDateBR(c.dataNascimento)!
       return `${c.nome.split(' ')[0]} (${calcAge(dt)} anos)`
     }).join(', ')
 
-    const msg = `Oi! Acabei de garantir minha vaga na Tardezinha de Férias ${selectedOption?.eventDate} (${selectedOption?.sessionLabel}).\n\n📝 Nome: ${nome.trim()}\n👧 Crianças: ${idadesStr}\n💰 Estimativa: R$ ${totalEstimado.toFixed(2).replace('.', ',')}\n\nTô pronta pra fechar o Pix!`
+    const linhaValorGrupo = ehGrupo ? `\n👥 *Valor grupo (6+): R$ ${valorPorCrianca},00 por criança*` : ''
+    const msg = `Oi! Acabei de garantir minha vaga na Tardezinha de Férias ${selectedOption?.eventDate} (${selectedOption?.sessionLabel}).\n\n📝 Nome: ${nome.trim()}\n👧 Crianças: ${idadesStr}${linhaValorGrupo}\n💰 Estimativa: R$ ${totalEstimado.toFixed(2).replace('.', ',')}\n\nTô pronta pra fechar o Pix!`
     const url = whatsappLink(msg)
     setWhatsappUrl(url)
 
@@ -317,7 +320,10 @@ export function Reservar() {
         </p>
         <div className="mt-3 inline-block rounded-lg bg-sdb-purple/10 px-5 py-2">
           <p className="text-lg text-sdb-purple-dark font-bold">
-            R$38 antecipado · R$45 na hora · Adulto não paga
+            R$45 antecipado · R$50 na hora · Adulto não paga
+          </p>
+          <p className="mt-1 text-sm text-sdb-purple-dark/80">
+            👥 Grupo com 6+ crianças: R$38 antecipado
           </p>
         </div>
       </div>
