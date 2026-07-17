@@ -63,6 +63,12 @@ export const defaultWhatsappMessage = `Oi! Quero ingresso da Tardezinha de Féri
 
 import { getUtmSuffix } from './utm'
 
+export function trackWhatsappLead() {
+  if (typeof window.fbq === 'function') {
+    window.fbq('track', 'Lead')
+  }
+}
+
 // Anexa [utm:src/med/campaign/content] no texto quando a landing recebeu UTM.
 // O whatsapp-webhook do CRM extrai automaticamente esse marker (extrairUtmDoTexto)
 // e preenche clientes.utm_* — sem isso, não temos como comparar canais.

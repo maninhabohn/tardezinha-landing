@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { supabase, isSupabaseConfigured } from '../lib/supabase'
-import { whatsappLink } from '../lib/contact'
+import { whatsappLink, trackWhatsappLead } from '../lib/contact'
 import { getUtmParams } from '../lib/utm'
 
 type Status =
@@ -91,6 +91,7 @@ export function LeadForm() {
           href={whatsappLink('Oi! Quero ingresso da Tardezinha de Férias.')}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={trackWhatsappLead}
           className="mt-6 inline-block w-full rounded-full bg-emerald-500 px-6 py-4 font-display text-lg text-white shadow-lg transition hover:scale-[1.02] hover:bg-emerald-600 sm:w-auto sm:px-12"
         >
           💬 Falar no WhatsApp

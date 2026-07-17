@@ -3,6 +3,7 @@ import {
   INSTAGRAM_URL,
   WHATSAPP_LABEL,
   whatsappLink,
+  trackWhatsappLead,
 } from '../lib/contact'
 import { Logo } from './Logo'
 
@@ -24,6 +25,7 @@ export function Footer() {
             href={whatsappLink()}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={trackWhatsappLead}
             className="inline-flex items-center gap-2 font-semibold transition hover:text-sdb-yellow"
           >
             <svg

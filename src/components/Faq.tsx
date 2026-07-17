@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { whatsappLink } from '../lib/contact'
+import { whatsappLink, trackWhatsappLead } from '../lib/contact'
 
 type FaqItem = {
   pergunta: string
@@ -131,6 +131,7 @@ export function Faq() {
             href={whatsappLink('Oi! Tenho uma dúvida sobre a Tardezinha Show de Bola.')}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={trackWhatsappLead}
             className="mt-4 inline-block rounded-full bg-sdb-purple px-6 py-3 font-display text-white transition hover:bg-sdb-purple-dark hover:scale-105"
           >
             💬 Tirar dúvida no WhatsApp

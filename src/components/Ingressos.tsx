@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { whatsappLink } from '../lib/contact'
+import { whatsappLink, trackWhatsappLead } from '../lib/contact'
 import { Countdown, antecipadoExpirou } from './Countdown'
 import { LeadForm } from './LeadForm'
 
@@ -100,6 +100,7 @@ export function Ingressos() {
             href={whatsappLink(grupoMessage)}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={trackWhatsappLead}
             className="mt-4 inline-block rounded-full bg-sdb-purple px-6 py-2 text-sm font-bold text-white transition hover:bg-sdb-purple-dark"
           >
             Consultar valor de grupo →

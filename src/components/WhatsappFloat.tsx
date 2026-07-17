@@ -1,4 +1,4 @@
-import { whatsappLink } from '../lib/contact'
+import { whatsappLink, trackWhatsappLead } from '../lib/contact'
 
 /**
  * Botao flutuante de WhatsApp, sempre visivel no canto inferior direito.
@@ -10,6 +10,7 @@ export function WhatsappFloat() {
       href={whatsappLink()}
       target="_blank"
       rel="noopener noreferrer"
+      onClick={trackWhatsappLead}
       aria-label="Confirmar presença pelo WhatsApp"
       className="fixed right-4 bottom-4 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-emerald-500 text-white shadow-2xl ring-4 ring-emerald-200 transition hover:scale-110 hover:bg-emerald-600 sm:right-6 sm:bottom-6 sm:h-16 sm:w-16"
     >
