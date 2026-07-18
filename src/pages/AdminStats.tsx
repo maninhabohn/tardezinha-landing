@@ -33,8 +33,7 @@ interface Reserva {
   criancas: Crianca[] | null
 }
 
-// ─── Edições disponíveis (fonte única) ───────────────────────────────────────
-// Marker no banco → label bonito no admin + status (próxima/passada)
+// ─── Edições agendadas (fonte única — botões sempre visíveis, mesmo com 0 reservas) ─
 interface EdicaoInfo {
   marker: string       // valor exato em tardezinha_reservas.edicao
   label: string        // exibição no botão
@@ -42,20 +41,25 @@ interface EdicaoInfo {
   passada: boolean     // calculado no runtime
 }
 const HOJE_ISO = new Date().toISOString().slice(0, 10)
+const EDICOES_AGENDADAS: EdicaoInfo[] = [
+  { marker: '23jul|18h–22h',  label: '23/07 · 18h-22h',           data: '2026-07-23', passada: '2026-07-23' < HOJE_ISO },
+  { marker: '30jul|14h–18h',  label: '30/07 · Turno 1 (tarde)',   data: '2026-07-30', passada: '2026-07-30' < HOJE_ISO },
+  { marker: '30jul|18h–22h',  label: '30/07 · Turno 2 (noite)',   data: '2026-07-30', passada: '2026-07-30' < HOJE_ISO },
+]
 function edicaoInfo(marker: string): EdicaoInfo {
-  // Formatos conhecidos: "23jul|18h–22h", "30jul|14h–18h", "30jul|18h–22h", "tardezinha-2026-07-03"
-  if (marker.startsWith('23jul')) {
-    const sess = marker.split('|')[1] ?? ''
-    return { marker, label: `23/07 · ${sess}`, data: '2026-07-23', passada: '2026-07-23' < HOJE_ISO }
-  }
-  if (marker.startsWith('30jul')) {
-    const sess = marker.split('|')[1] ?? ''
-    return { marker, label: `30/07 · ${sess}`, data: '2026-07-30', passada: '2026-07-30' < HOJE_ISO }
-  }
+  const fixa = EDICOES_AGENDADAS.find(e => e.marker === marker)
+  if (fixa) return fixa
   if (marker.includes('2026-07-03') || marker.includes('2026-07-09')) {
     return { marker, label: 'Histórico · Junina 09/07', data: '2026-07-09', passada: true }
   }
   return { marker, label: marker, data: '', passada: false }
+}
+
+// URL do CRM pra abrir conversa (link do telefone)
+const CRM_WHATSAPP_URL = 'https://crm.showdebolars.com.br/whatsapp'
+function crmConversaLink(telefone: string): string {
+  const limpo = (telefone ?? '').replace(/\D/g, '')
+  return `${CRM_WHATSAPP_URL}?search=${limpo}`
 }
 
 interface Stats {
@@ -138,7 +142,8 @@ export function AdminStats() {
   const [expandedId, setExpandedId] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
-  const [edicaoAtiva, setEdicaoAtiva] = useState<string>('__futuras__')
+  const primeiraFutura = EDICOES_AGENDADAS.find(e => !e.passada)?.marker ?? '__todas__'
+  const [edicaoAtiva, setEdicaoAtiva] = useState<string>(primeiraFutura)
 
   const load = useCallback(async () => {
     if (key !== ADMIN_KEY) {
@@ -293,16 +298,11 @@ export function AdminStats() {
         </div>
       )}
 
-      {/* ─── Filtro por edição ─── */}
+      {/* ─── Filtro por edição (botões fixos das agendadas) ─── */}
       <div className="mx-auto max-w-5xl px-4 mt-4">
         <div className="bg-white rounded-xl shadow-sm p-3 flex flex-wrap gap-2 items-center">
           <span className="text-xs font-bold text-gray-500 mr-1">📅 Edição:</span>
-          <EdicaoBtn
-            label={`🔮 Próximas (${reservas.filter(r => r.edicao && !edicaoInfo(r.edicao).passada).length})`}
-            active={edicaoAtiva === '__futuras__'}
-            onClick={() => setEdicaoAtiva('__futuras__')}
-          />
-          {edicoes.filter(e => !e.passada).map(e => (
+          {EDICOES_AGENDADAS.filter(e => !e.passada).map(e => (
             <EdicaoBtn
               key={e.marker}
               label={`${e.label} (${reservas.filter(r => r.edicao === e.marker).length})`}
@@ -310,7 +310,7 @@ export function AdminStats() {
               onClick={() => setEdicaoAtiva(e.marker)}
             />
           ))}
-          {edicoes.some(e => e.passada) && (
+          {(edicoes.some(e => e.passada) || reservas.filter(r => r.edicao && edicaoInfo(r.edicao).passada).length > 0) && (
             <EdicaoBtn
               label={`📦 Histórico (${reservas.filter(r => r.edicao && edicaoInfo(r.edicao).passada).length})`}
               active={edicaoAtiva === '__historico__'}
@@ -412,10 +412,23 @@ export function AdminStats() {
                   <div className="border-t px-4 py-4 bg-gray-50/50 space-y-4">
                     {/* Info do responsável */}
                     <div className="grid grid-cols-2 gap-2 text-sm">
-                      <div>
-                        <span className="font-bold text-gray-600">WhatsApp:</span>{' '}
-                        <a href={`https://wa.me/${r.whatsapp_raw?.replace(/\D/g, '')}`} target="_blank" rel="noopener" className="text-green-600 underline">
-                          {r.whatsapp_raw}
+                      <div className="col-span-2 flex flex-wrap items-center gap-3">
+                        <span className="font-bold text-gray-600">📱 {r.whatsapp_raw}</span>
+                        <a
+                          href={crmConversaLink(r.whatsapp_raw)}
+                          target="_blank"
+                          rel="noopener"
+                          className="inline-flex items-center gap-1 rounded-full bg-purple-600 text-white px-3 py-1 text-xs font-bold hover:bg-purple-700 transition"
+                        >
+                          💬 Abrir conversa no CRM →
+                        </a>
+                        <a
+                          href={`https://wa.me/${r.whatsapp_raw?.replace(/\D/g, '')}`}
+                          target="_blank"
+                          rel="noopener"
+                          className="inline-flex items-center gap-1 rounded-full bg-green-500 text-white px-3 py-1 text-xs font-bold hover:bg-green-600 transition"
+                        >
+                          📲 WhatsApp direto
                         </a>
                       </div>
                       {r.email && <div><span className="font-bold text-gray-600">Email:</span> {r.email}</div>}
