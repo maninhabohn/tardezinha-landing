@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useMemo } from 'react'
 import { supabase } from '../lib/supabase'
 
 const ADMIN_KEY = (import.meta.env.VITE_ADMIN_KEY ?? '').replace(/^﻿/, '').trim()
@@ -29,7 +29,33 @@ interface Reserva {
   valor_total_centavos: number | null
   created_at: string
   contatado_at: string | null
+  edicao: string | null
   criancas: Crianca[] | null
+}
+
+// ─── Edições disponíveis (fonte única) ───────────────────────────────────────
+// Marker no banco → label bonito no admin + status (próxima/passada)
+interface EdicaoInfo {
+  marker: string       // valor exato em tardezinha_reservas.edicao
+  label: string        // exibição no botão
+  data: string         // YYYY-MM-DD pra ordenar/comparar com hoje
+  passada: boolean     // calculado no runtime
+}
+const HOJE_ISO = new Date().toISOString().slice(0, 10)
+function edicaoInfo(marker: string): EdicaoInfo {
+  // Formatos conhecidos: "23jul|18h–22h", "30jul|14h–18h", "30jul|18h–22h", "tardezinha-2026-07-03"
+  if (marker.startsWith('23jul')) {
+    const sess = marker.split('|')[1] ?? ''
+    return { marker, label: `23/07 · ${sess}`, data: '2026-07-23', passada: '2026-07-23' < HOJE_ISO }
+  }
+  if (marker.startsWith('30jul')) {
+    const sess = marker.split('|')[1] ?? ''
+    return { marker, label: `30/07 · ${sess}`, data: '2026-07-30', passada: '2026-07-30' < HOJE_ISO }
+  }
+  if (marker.includes('2026-07-03') || marker.includes('2026-07-09')) {
+    return { marker, label: 'Histórico · Junina 09/07', data: '2026-07-09', passada: true }
+  }
+  return { marker, label: marker, data: '', passada: false }
 }
 
 interface Stats {
@@ -108,11 +134,11 @@ export function AdminStats() {
   const key = params.get('key') || ''
 
   const [authed, setAuthed] = useState(false)
-  const [stats, setStats] = useState<Stats | null>(null)
   const [reservas, setReservas] = useState<Reserva[]>([])
   const [expandedId, setExpandedId] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [edicaoAtiva, setEdicaoAtiva] = useState<string>('__futuras__')
 
   const load = useCallback(async () => {
     if (key !== ADMIN_KEY) {
@@ -123,19 +149,10 @@ export function AdminStats() {
     setAuthed(true)
     setLoading(true)
 
-    const [statsRes, reservasRes] = await Promise.all([
-      supabase.rpc('admin_get_reservas_stats', { admin_key: key }),
-      supabase.rpc('admin_get_reservas', { admin_key: key }),
-    ])
-
-    if (statsRes.error) {
-      setError(`Erro stats: ${statsRes.error.message}`)
-    } else {
-      setStats(statsRes.data)
-    }
+    const reservasRes = await supabase.rpc('admin_get_reservas', { admin_key: key })
 
     if (reservasRes.error) {
-      setError(prev => prev + ` Erro reservas: ${reservasRes.error.message}`)
+      setError(`Erro reservas: ${reservasRes.error.message}`)
     } else {
       setReservas(reservasRes.data || [])
     }
@@ -144,6 +161,72 @@ export function AdminStats() {
   }, [key])
 
   useEffect(() => { load() }, [load])
+
+  // ── Edições disponíveis, calculadas a partir das reservas ─────────────────
+  const edicoes = useMemo(() => {
+    const markers = new Set<string>()
+    for (const r of reservas) if (r.edicao) markers.add(r.edicao)
+    return Array.from(markers).map(edicaoInfo).sort((a, b) => a.data.localeCompare(b.data))
+  }, [reservas])
+
+  // ── Reservas filtradas por edição selecionada ─────────────────────────────
+  const reservasFiltradas = useMemo(() => {
+    if (edicaoAtiva === '__todas__') return reservas
+    if (edicaoAtiva === '__futuras__') {
+      return reservas.filter(r => {
+        if (!r.edicao) return false
+        return !edicaoInfo(r.edicao).passada
+      })
+    }
+    if (edicaoAtiva === '__historico__') {
+      return reservas.filter(r => {
+        if (!r.edicao) return false
+        return edicaoInfo(r.edicao).passada
+      })
+    }
+    return reservas.filter(r => r.edicao === edicaoAtiva)
+  }, [reservas, edicaoAtiva])
+
+  // ── Stats calculados client-side em cima do filtro ────────────────────────
+  const stats: Stats = useMemo(() => {
+    const rs = reservasFiltradas
+    const por_status_map = new Map<string, number>()
+    const por_canal_map  = new Map<string, number>()
+    const por_cidade_map = new Map<string, number>()
+    const idades_map     = new Map<number, number>()
+    let receita = 0, alergia = 0, necessidade = 0, autImg = 0, autAudio = 0
+    let totalCriancas = 0, recorrentes = 0
+    for (const r of rs) {
+      por_status_map.set(r.status, (por_status_map.get(r.status) ?? 0) + 1)
+      por_canal_map.set(r.como_conheceu, (por_canal_map.get(r.como_conheceu) ?? 0) + 1)
+      por_cidade_map.set(r.cidade, (por_cidade_map.get(r.cidade) ?? 0) + 1)
+      if (r.status === 'pago' && r.valor_total_centavos) receita += r.valor_total_centavos
+      if (r.ja_veio_tardezinha) recorrentes++
+      totalCriancas += r.qtd_criancas
+      for (const c of r.criancas ?? []) {
+        if (c.tem_alergia_restricao) alergia++
+        if (c.tem_necessidade_especial) necessidade++
+        if (c.autorizou_imagem) autImg++
+        if (c.autorizou_audio) autAudio++
+        const idade = calcAge(c.data_nascimento)
+        idades_map.set(idade, (idades_map.get(idade) ?? 0) + 1)
+      }
+    }
+    return {
+      total_reservas: rs.length,
+      total_criancas: totalCriancas,
+      por_status: Array.from(por_status_map.entries()).map(([status, total]) => ({ status, total })),
+      por_canal: Array.from(por_canal_map.entries()).map(([como_conheceu, total]) => ({ como_conheceu, total })),
+      por_cidade: Array.from(por_cidade_map.entries()).map(([cidade, total]) => ({ cidade, total })),
+      recorrentes,
+      com_alergia: alergia,
+      com_necessidade: necessidade,
+      autorizou_imagem: autImg,
+      autorizou_audio: autAudio,
+      receita_pago_centavos: receita,
+      idades: Array.from(idades_map.entries()).map(([idade, total]) => ({ idade, total })).sort((a, b) => a.idade - b.idade),
+    }
+  }, [reservasFiltradas])
 
   async function updateStatus(reservaId: string, novoStatus: string, valorCentavos?: number) {
     const { error: err } = await supabase.rpc('admin_update_reserva_status', {
@@ -195,7 +278,7 @@ export function AdminStats() {
               🔄 Atualizar
             </button>
             <button
-              onClick={() => exportCSV(reservas)}
+              onClick={() => exportCSV(reservasFiltradas)}
               className="rounded-lg bg-purple-600 px-3 py-1.5 text-sm hover:bg-purple-500 transition"
             >
               📥 CSV
@@ -209,6 +292,38 @@ export function AdminStats() {
           <div className="bg-red-100 border border-red-400 text-red-700 rounded-lg p-3 text-sm">{error}</div>
         </div>
       )}
+
+      {/* ─── Filtro por edição ─── */}
+      <div className="mx-auto max-w-5xl px-4 mt-4">
+        <div className="bg-white rounded-xl shadow-sm p-3 flex flex-wrap gap-2 items-center">
+          <span className="text-xs font-bold text-gray-500 mr-1">📅 Edição:</span>
+          <EdicaoBtn
+            label={`🔮 Próximas (${reservas.filter(r => r.edicao && !edicaoInfo(r.edicao).passada).length})`}
+            active={edicaoAtiva === '__futuras__'}
+            onClick={() => setEdicaoAtiva('__futuras__')}
+          />
+          {edicoes.filter(e => !e.passada).map(e => (
+            <EdicaoBtn
+              key={e.marker}
+              label={`${e.label} (${reservas.filter(r => r.edicao === e.marker).length})`}
+              active={edicaoAtiva === e.marker}
+              onClick={() => setEdicaoAtiva(e.marker)}
+            />
+          ))}
+          {edicoes.some(e => e.passada) && (
+            <EdicaoBtn
+              label={`📦 Histórico (${reservas.filter(r => r.edicao && edicaoInfo(r.edicao).passada).length})`}
+              active={edicaoAtiva === '__historico__'}
+              onClick={() => setEdicaoAtiva('__historico__')}
+            />
+          )}
+          <EdicaoBtn
+            label={`Tudo (${reservas.length})`}
+            active={edicaoAtiva === '__todas__'}
+            onClick={() => setEdicaoAtiva('__todas__')}
+          />
+        </div>
+      </div>
 
       {/* Cards de resumo */}
       {stats && (
@@ -270,10 +385,10 @@ export function AdminStats() {
 
       {/* Tabela de reservas */}
       <div className="mx-auto max-w-5xl px-4 mt-8 pb-12">
-        <h2 className="font-bold text-gray-700 mb-3">📋 Reservas ({reservas.length})</h2>
+        <h2 className="font-bold text-gray-700 mb-3">📋 Reservas ({reservasFiltradas.length})</h2>
 
         <div className="space-y-3">
-          {reservas.map(r => {
+          {reservasFiltradas.map(r => {
             const expanded = expandedId === r.id
             const statusCfg = STATUS_LABELS[r.status] || { label: r.status, color: 'bg-gray-100 text-gray-700' }
 
@@ -362,15 +477,30 @@ export function AdminStats() {
             )
           })}
 
-          {reservas.length === 0 && (
+          {reservasFiltradas.length === 0 && (
             <div className="text-center py-12 text-gray-400">
               <p className="text-4xl mb-2">📭</p>
-              <p>Nenhuma reserva ainda.</p>
+              <p>Nenhuma reserva nessa edição ainda.</p>
             </div>
           )}
         </div>
       </div>
     </div>
+  )
+}
+
+function EdicaoBtn({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      className={`rounded-full px-3 py-1.5 text-xs font-bold transition ${
+        active
+          ? 'bg-purple-700 text-white shadow'
+          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+      }`}
+    >
+      {label}
+    </button>
   )
 }
 
