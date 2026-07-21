@@ -65,7 +65,7 @@ export function Atracoes() {
             A festa fica assim:
           </h2>
           <p className="mt-3 text-lg text-white/80">
-            Atrações liberadas + diversão garantida
+            Mais de 20 brinquedos liberados + diversão garantida
           </p>
         </div>
 

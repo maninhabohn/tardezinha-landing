@@ -33,7 +33,7 @@ export function Hero() {
 
         {/* Subtítulo edição de férias */}
         <p className="mt-4 font-display text-xl text-sdb-orange sm:text-2xl">
-          Férias escolares + 4 horas de diversão. Tu descansa, a criançada brinca.
+          Férias escolares + mais de 20 brinquedos + 4 horas de diversão.
         </p>
 
         {/* Jargão âncora da campanha — DESTAQUE */}
