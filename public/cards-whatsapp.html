@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cards WhatsApp — Tardezinha</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: 'Fredoka', sans-serif;
+  background: #e8e6de;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 60px;
+  padding: 40px 16px 80px;
+}
+
+.instructions {
+  max-width: 400px;
+  text-align: center;
+  font-size: 13px;
+  color: #888;
+  font-family: system-ui, sans-serif;
+  line-height: 1.5;
+  padding: 16px;
+  background: #fff;
+  border-radius: 12px;
+}
+
+.card-label {
+  font-size: 12px;
+  color: #999;
+  font-family: system-ui;
+  text-align: center;
+  margin-bottom: 8px;
+  letter-spacing: 0.5px;
+}
+
+/* ============ CARD 1 — PRINCIPAL COM FOTO ============ */
+.card1 {
+  width: 360px;
+  border-radius: 0;
+  overflow: hidden;
+  background: #fff;
+}
+
+.card1 .hero-img {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+  display: block;
+}
+
+.card1 .overlay-strip {
+  background: #7C3AED;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.card1 .overlay-strip .logo-mini {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255,255,255,0.4);
+  flex-shrink: 0;
+}
+
+.card1 .overlay-strip .title-block h1 {
+  color: #FDE68A;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.card1 .overlay-strip .title-block p {
+  color: rgba(255,255,255,0.8);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.card1 .body {
+  padding: 18px 20px 20px;
+}
+
+.card1 .tagline {
+  font-size: 16px;
+  font-weight: 600;
+  color: #7C3AED;
+  line-height: 1.35;
+  margin-bottom: 16px;
+}
+
+.card1 .date-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.card1 .date-chip {
+  flex: 1;
+  background: #F5F3FF;
+  border-radius: 10px;
+  padding: 10px 12px;
+  border-left: 4px solid #E8652B;
+}
+
+.card1 .date-chip .dia {
+  font-size: 15px;
+  font-weight: 700;
+  color: #E8652B;
+}
+
+.card1 .date-chip .hora {
+  font-size: 11px;
+  color: #666;
+  font-weight: 500;
+  margin-top: 3px;
+}
+
+.card1 .price-strip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.card1 .price-tag {
+  background: #7C3AED;
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.card1 .price-tag.outline {
+  background: transparent;
+  border: 2px solid #7C3AED;
+  color: #7C3AED;
+  font-size: 14px;
+}
+
+.card1 .price-label {
+  font-size: 11px;
+  color: #999;
+  font-weight: 500;
+}
+
+.card1 .adulto-line {
+  font-size: 12px;
+  color: #7C3AED;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
+.card1 .whats-btn {
+  display: block;
+  background: #25D366;
+  color: #fff;
+  text-align: center;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.card1 .footer-info {
+  margin-top: 12px;
+  font-size: 11px;
+  color: #aaa;
+  text-align: center;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+.card1 .footer-info strong {
+  color: #7C3AED;
+}
+
+/* ============ CARD 2 — COLLAGE COM DATAS ============ */
+.card2 {
+  width: 360px;
+  overflow: hidden;
+  background: #7C3AED;
+  border-radius: 0;
+}
+
+.card2 .photo-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3px;
+}
+
+.card2 .photo-grid img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  display: block;
+}
+
+.card2 .content {
+  padding: 20px;
+  text-align: center;
+}
+
+.card2 .edition-tag {
+  display: inline-block;
+  background: rgba(255,255,255,0.15);
+  color: #FDE68A;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 5px 14px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+
+.card2 h2 {
+  color: #fff;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.15;
+  margin-bottom: 14px;
+}
+
+.card2 .dates-block {
+  background: rgba(255,255,255,0.12);
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 14px;
+}
+
+.card2 .date-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.card2 .date-line + .date-line {
+  border-top: 1px solid rgba(255,255,255,0.15);
+}
+
+.card2 .date-line .horario {
+  font-size: 12px;
+  font-weight: 500;
+  color: #FDE68A;
+}
+
+.card2 .price-line {
+  color: #FDE68A;
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.card2 .adulto-note {
+  color: rgba(255,255,255,0.7);
+  font-size: 12px;
+  font-weight: 500;
+  margin-bottom: 14px;
+}
+
+.card2 .cta {
+  display: block;
+  background: #FDE68A;
+  color: #5B21B6;
+  text-align: center;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.card2 .local-line {
+  margin-top: 12px;
+  color: rgba(255,255,255,0.5);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.card2 .insta-line {
+  color: #FDE68A;
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 6px;
+}
+
+/* ============ CARD 3 — FOTO SINGLE + CTA SIMPLES ============ */
+.card3 {
+  width: 360px;
+  overflow: hidden;
+  background: #fff;
+  border-radius: 0;
+  position: relative;
+}
+
+.card3 .hero-full {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+  display: block;
+}
+
+.card3 .bottom-bar {
+  background: #7C3AED;
+  padding: 18px 20px;
+  text-align: center;
+}
+
+.card3 .bottom-bar h3 {
+  color: #FDE68A;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.card3 .bottom-bar p {
+  color: rgba(255,255,255,0.8);
+  font-size: 13px;
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+.card3 .bottom-bar .datas {
+  margin-top: 8px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.card3 .bottom-bar .insta {
+  margin-top: 6px;
+  color: #FDE68A;
+  font-size: 11px;
+  font-weight: 600;
+}
+</style>
+</head>
+<body>
+
+<div class="instructions">
+  <strong>Como usar:</strong> abre cada card no celular, faz print da tela (sem a barra de cima), recorta e manda nos grupos.<br>
+  Ou abre no PC, clica com botao direito > "Salvar imagem".
+</div>
+
+<!-- ========== CARD 1 — PRINCIPAL ========== -->
+<p class="card-label">CARD 1 — Flyer completo (foto + datas + preco)</p>
+<div class="card1">
+  <img class="hero-img" src="/fotos/IMG-20250713-WA0179.jpg" alt="Criancada na Tardezinha">
+  <div class="overlay-strip">
+    <img class="logo-mini" src="/fotos/IMG-20250711-WA0207.jpg" alt="Show de Bola">
+    <div class="title-block">
+      <h1>Tardezinha de Ferias</h1>
+      <p>Casa de Festas Show de Bola</p>
+    </div>
+  </div>
+  <div class="body">
+    <p class="tagline">4 horas pra ti. 4 horas pra criancada.<br>A familia agradece.</p>
+
+    <div class="date-row">
+      <div class="date-chip">
+        <div class="dia">23/07 qui</div>
+        <div class="hora">18h as 22h</div>
+      </div>
+      <div class="date-chip">
+        <div class="dia">30/07 qui</div>
+        <div class="hora">14h-18h e 18h-22h</div>
+      </div>
+    </div>
+
+    <div class="price-strip">
+      <span class="price-tag">R$ 38</span>
+      <span class="price-label">antecipado</span>
+      <span class="price-tag outline">R$ 45</span>
+      <span class="price-label">na hora</span>
+    </div>
+
+    <p class="adulto-line">Adulto nao paga entrada</p>
+
+    <a class="whats-btn" href="https://wa.me/5551998181165?text=Oi!%20Quero%20ingresso%20da%20Tardezinha%20de%20F%C3%A9rias.">
+      Garantir vaga pelo WhatsApp
+    </a>
+
+    <p class="footer-info">
+      Av. G, 101 — Atlantida, Xangri-La/RS<br>
+      500m2 cobertos — chova ou faca sol<br>
+      <strong>@casashowdebolaoficial</strong>
+    </p>
+  </div>
+</div>
+
+<!-- ========== CARD 2 — COLLAGE ========== -->
+<p class="card-label">CARD 2 — Mosaico de fotos + info (cria desejo)</p>
+<div class="card2">
+  <div class="photo-grid">
+    <img src="/fotos/giro.jpg" alt="Giro Radical">
+    <img src="/fotos/IMG-20250713-WA0167.jpg" alt="Piscina de bolinha">
+    <img src="/fotos/escalada.jpg" alt="Escalada">
+    <img src="/fotos/IMG-20250713-WA0179.jpg" alt="Turma reunida">
+  </div>
+  <div class="content">
+    <span class="edition-tag">Ferias Escolares</span>
+    <h2>A casa mais legal<br>do litoral te espera</h2>
+    <div class="dates-block">
+      <div class="date-line">
+        <span>23/07 quinta</span>
+        <span class="horario">18h as 22h</span>
+      </div>
+      <div class="date-line">
+        <span>30/07 quinta</span>
+        <span class="horario">14h-18h / 18h-22h</span>
+      </div>
+    </div>
+    <div class="price-line">R$ 38 antecipado</div>
+    <div class="adulto-note">Adulto nao paga entrada</div>
+    <a class="cta" href="https://wa.me/5551998181165?text=Oi!%20Quero%20ingresso%20da%20Tardezinha%20de%20F%C3%A9rias.">
+      Quero garantir minha vaga
+    </a>
+    <p class="local-line">
+      Casa de Festas Show de Bola<br>
+      Av. G, 101 — Atlantida, Xangri-La/RS
+    </p>
+    <p class="insta-line">@casashowdebolaoficial</p>
+  </div>
+</div>
+
+<!-- ========== CARD 3 — FOTO IMPACTO ========== -->
+<p class="card-label">CARD 3 — Foto de impacto (rapido, pra mandar no grupo)</p>
+<div class="card3">
+  <img class="hero-full" src="/fotos/IMG-20250713-WA0179.jpg" alt="Criancada na Tardezinha">
+  <div class="bottom-bar">
+    <h3>Tardezinha de Ferias</h3>
+    <p>Tu descansa. A criancada brinca.</p>
+    <div class="datas">23/07 e 30/07 — Atlantida/RS</div>
+    <div class="insta">@casashowdebolaoficial</div>
+  </div>
+</div>
+
+</body>
+</html>
