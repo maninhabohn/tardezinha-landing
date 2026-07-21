@@ -13,6 +13,7 @@ import { WhatsappFloat } from './components/WhatsappFloat'
 import { Reveal } from './components/Reveal'
 import { Reservar } from './pages/Reservar'
 import { AdminStats } from './pages/AdminStats'
+import { Grupo } from './pages/Grupo'
 
 function Home() {
   return (
@@ -37,6 +38,7 @@ function App() {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/reservar" element={<Reservar />} />
+      <Route path="/grupo" element={<Grupo />} />
       <Route path="/admin/tardezinha-stats" element={<AdminStats />} />
     </Routes>
   )
