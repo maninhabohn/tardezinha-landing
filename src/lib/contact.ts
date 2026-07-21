@@ -27,7 +27,7 @@ export const EVENTS: TardezinhaEvent[] = [
     date: '23/07/2026',
     dateLong: '23 DE JULHO',
     dayOfWeek: 'quinta-feira',
-    sessions: [{ time: 'das 18h às 22h', label: '18h–22h' }],
+    sessions: [{ time: 'das 14h às 18h', label: '14h–18h' }],
     antecipadoDeadline: '2026-07-21T23:59:59-03:00',
   },
   {

@@ -42,7 +42,7 @@ interface EdicaoInfo {
 }
 const HOJE_ISO = new Date().toISOString().slice(0, 10)
 const EDICOES_AGENDADAS: EdicaoInfo[] = [
-  { marker: '23jul|18h–22h',  label: '23/07 · 18h-22h',           data: '2026-07-23', passada: '2026-07-23' < HOJE_ISO },
+  { marker: '23jul|14h–18h',  label: '23/07 · 14h-18h',           data: '2026-07-23', passada: '2026-07-23' < HOJE_ISO },
   { marker: '30jul|14h–18h',  label: '30/07 · Turno 1 (tarde)',   data: '2026-07-30', passada: '2026-07-30' < HOJE_ISO },
   { marker: '30jul|18h–22h',  label: '30/07 · Turno 2 (noite)',   data: '2026-07-30', passada: '2026-07-30' < HOJE_ISO },
 ]
