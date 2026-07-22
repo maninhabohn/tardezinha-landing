@@ -202,19 +202,19 @@ export function Grupo() {
     <div className="min-h-screen bg-gray-50">
       <DateBanner />
 
-      <div className="bg-amber-50 border-b border-amber-200 px-4 pt-6 pb-6 text-center">
+      <div className="bg-sdb-purple border-b border-sdb-purple-dark px-4 pt-6 pb-6 text-center">
         <Logo size={100} className="mb-3" />
-        <h1 className="text-2xl font-bold text-gray-800 leading-tight sm:text-3xl">
+        <h1 className="text-2xl font-bold text-white leading-tight sm:text-3xl">
           Inscrição de Grupo 🎂
         </h1>
-        <p className="mt-2 text-base text-gray-600">
+        <p className="mt-2 text-base text-white/80">
           Aniversário na Tardezinha! Preenche uma vez pra todo o grupo.
         </p>
-        <div className="mt-3 inline-block rounded-lg bg-sdb-purple/10 px-5 py-2">
-          <p className="text-lg text-sdb-purple-dark font-bold">
+        <div className="mt-3 inline-block rounded-lg bg-white/15 px-5 py-2">
+          <p className="text-lg text-sdb-yellow font-bold">
             R$ 38,00 por criança (grupo 6+)
           </p>
-          <p className="mt-1 text-sm text-sdb-purple-dark/80">
+          <p className="mt-1 text-sm text-white/70">
             Adulto não paga entrada
           </p>
         </div>
