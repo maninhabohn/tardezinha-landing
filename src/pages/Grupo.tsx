@@ -3,6 +3,7 @@ import { Logo } from '../components/Logo'
 import { DateBanner } from '../components/DateBanner'
 import { supabase, isSupabaseConfigured } from '../lib/supabase'
 import { EVENTS } from '../lib/contact'
+import { getUtmParams } from '../lib/utm'
 
 interface Convidado {
   nome: string
@@ -68,6 +69,12 @@ export function Grupo() {
     return null
   }
 
+  function eventoData(edicao: string): string {
+    if (edicao.startsWith('23jul')) return '2026-07-23'
+    if (edicao.startsWith('30jul')) return '2026-07-30'
+    return '2026-07-23'
+  }
+
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
     const err = validate()
@@ -82,31 +89,63 @@ export function Grupo() {
     }
 
     const totalCriancas = 1 + convidados.length
+    const whatsappNorm = '55' + orgWhatsapp.replace(/\D/g, '')
+    const utm = getUtmParams()
+    const reservaId = crypto.randomUUID()
 
-    const { error } = await supabase
-      .from('tardezinha_grupos')
+    const obsTexto = [
+      `GRUPO/ANIVERSÁRIO: ${aniversariante.trim()}`,
+      observacoes.trim() ? `Obs: ${observacoes.trim()}` : '',
+      convidados.map((c, i) => `Convidado ${i + 1}: ${c.nome.trim()} — Resp: ${c.responsavel.trim()} (${c.telefone.trim()})`).join('\n'),
+    ].filter(Boolean).join('\n')
+
+    const { error: errReserva } = await supabase
+      .from('tardezinha_reservas')
       .insert({
-        edicao: sessao,
-        organizadora_nome: orgNome.trim(),
-        organizadora_whatsapp: '55' + orgWhatsapp.replace(/\D/g, ''),
-        aniversariante_nome: aniversariante.trim(),
-        criancas: convidados.map(c => ({
-          nome: c.nome.trim(),
-          responsavel: c.responsavel.trim(),
-          telefone: c.telefone.trim(),
-        })),
+        id: reservaId,
+        nome_responsavel: orgNome.trim(),
+        whatsapp_normalizado: whatsappNorm,
+        whatsapp_raw: orgWhatsapp,
         qtd_criancas: totalCriancas,
-        observacoes: observacoes.trim() || null,
-        autorizou_imagem: autorizouImagem,
-        autorizou_audio: autorizouAudio,
+        aceitou_termo_responsabilidade: true,
+        edicao: sessao,
+        evento_data: eventoData(sessao),
+        notas_internas: obsTexto,
+        utm_source: utm.utm_source,
+        utm_medium: utm.utm_medium,
+        utm_campaign: utm.utm_campaign,
+        user_agent: navigator.userAgent,
       })
 
-    if (error) {
-      console.error('[Grupo] erro:', error.message)
+    if (errReserva) {
+      console.error('[Grupo] erro reserva:', errReserva.message)
       setErro('Deu ruim salvando. Tenta de novo ou chama no WhatsApp.')
       setStep('form')
       return
     }
+
+    const todasCriancas = [
+      { nome: aniversariante.trim(), responsavel: orgNome.trim(), telefone: orgWhatsapp },
+      ...convidados,
+    ]
+
+    const criancasPayload = todasCriancas.map(c => ({
+      reserva_id: reservaId,
+      nome_completo: c.nome.trim(),
+      data_nascimento: null,
+      tem_alergia_restricao: false,
+      alergia_restricao_detalhes: null,
+      tem_necessidade_especial: false,
+      necessidade_especial_detalhes: null,
+      autorizou_imagem: autorizouImagem,
+      autorizou_audio: autorizouAudio,
+    }))
+
+    const { error: errCriancas } = await supabase
+      .from('tardezinha_reserva_criancas')
+      .insert(criancasPayload)
+
+    if (errCriancas) console.error('[Grupo] erro crianças:', errCriancas.message)
 
     if (typeof window.fbq === 'function') {
       window.fbq('track', 'Lead')
