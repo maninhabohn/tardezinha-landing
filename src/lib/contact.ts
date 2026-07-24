@@ -23,14 +23,6 @@ export interface TardezinhaEvent {
 
 export const EVENTS: TardezinhaEvent[] = [
   {
-    id: '23jul',
-    date: '23/07/2026',
-    dateLong: '23 DE JULHO',
-    dayOfWeek: 'quinta-feira',
-    sessions: [{ time: 'das 14h às 18h', label: '14h–18h' }],
-    antecipadoDeadline: '2026-07-21T23:59:59-03:00',
-  },
-  {
     id: '30jul',
     date: '30/07/2026',
     dateLong: '30 DE JULHO',
