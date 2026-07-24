@@ -45,3 +45,274 @@ h3 {
   font-weight: 700;
   letter-spacing: -0.5px;
 }
+
+/* ========== PASSAPORTE ========== */
+.passaporte-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #4a148c 0%, #7b1fa2 40%, #9c27b0 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 1rem 3rem;
+}
+
+.passaporte-header {
+  text-align: center;
+  color: white;
+  margin-bottom: 2rem;
+}
+.passaporte-header h1 {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  margin: 0.75rem 0 0.5rem;
+}
+.passaporte-sub {
+  font-size: 1.05rem;
+  opacity: 0.92;
+  line-height: 1.6;
+  max-width: 340px;
+  margin: 0 auto;
+}
+
+.passaporte-busca {
+  background: white;
+  border-radius: 1.25rem;
+  padding: 2rem 1.5rem;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+}
+.passaporte-busca form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.passaporte-busca label {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--color-sdb-text);
+}
+.passaporte-busca input {
+  padding: 0.85rem 1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 0.75rem;
+  font-size: 1.1rem;
+  font-family: var(--font-sans);
+  transition: border-color 0.2s;
+}
+.passaporte-busca input:focus {
+  outline: none;
+  border-color: var(--color-sdb-purple);
+}
+.passaporte-busca button[type="submit"] {
+  background: var(--color-sdb-purple);
+  color: white;
+  border: none;
+  padding: 0.9rem;
+  border-radius: 0.75rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  font-family: var(--font-display);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.passaporte-busca button[type="submit"]:hover {
+  background: var(--color-sdb-purple-dark);
+}
+.passaporte-busca button[type="submit"]:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.passaporte-msg {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+.passaporte-msg.info {
+  background: #fef3c7;
+  color: #92400e;
+}
+.passaporte-msg.info a {
+  color: var(--color-sdb-purple);
+  font-weight: 700;
+}
+.passaporte-msg.erro {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.passaporte-resultado {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.passaporte-card {
+  background: white;
+  border-radius: 1.25rem;
+  padding: 1.75rem 1.5rem;
+  width: 100%;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+}
+
+.passaporte-card-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.passaporte-emoji {
+  font-size: 2.5rem;
+}
+.passaporte-card-header h2 {
+  margin: 0;
+  font-size: 1.4rem;
+  color: var(--color-sdb-purple);
+}
+.passaporte-contagem {
+  margin: 0.15rem 0 0;
+  font-size: 0.95rem;
+  color: #6b7280;
+  font-weight: 600;
+}
+
+.selos-grid {
+  display: flex;
+  justify-content: center;
+  gap: 1.25rem;
+  margin: 1.5rem 0;
+}
+
+.selo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+.selo-circulo {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 800;
+  font-family: var(--font-display);
+  transition: all 0.3s;
+}
+.selo-ativo .selo-circulo {
+  background: linear-gradient(135deg, var(--color-sdb-purple), #9c27b0);
+  color: white;
+  box-shadow: 0 4px 14px rgba(123, 31, 162, 0.4);
+  transform: scale(1);
+  animation: selo-pop 0.5s ease-out;
+}
+.selo-vazio .selo-circulo {
+  background: #f3f4f6;
+  color: #d1d5db;
+  border: 3px dashed #d1d5db;
+}
+.selo-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #6b7280;
+}
+.selo-ativo .selo-label {
+  color: var(--color-sdb-purple);
+}
+
+@keyframes selo-pop {
+  0% { transform: scale(0.5); opacity: 0; }
+  60% { transform: scale(1.15); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.passaporte-premio {
+  text-align: center;
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  border-radius: 1rem;
+  padding: 1.5rem 1rem;
+  margin-top: 0.5rem;
+}
+.premio-badge {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+}
+.passaporte-premio h3 {
+  color: #92400e;
+  margin: 0 0 0.5rem;
+  font-size: 1.2rem;
+}
+.passaporte-premio p {
+  color: #78350f;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin: 0 0 1rem;
+}
+
+.passaporte-proximo {
+  text-align: center;
+  margin-top: 0.5rem;
+}
+.passaporte-proximo p {
+  color: #6b7280;
+  font-weight: 600;
+  margin: 0 0 1rem;
+  font-size: 1rem;
+}
+
+.passaporte-cta {
+  display: block;
+  background: var(--color-sdb-purple);
+  color: white;
+  text-align: center;
+  padding: 0.85rem 1.5rem;
+  border-radius: 0.75rem;
+  font-weight: 700;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+.passaporte-cta:hover {
+  background: var(--color-sdb-purple-dark);
+}
+.passaporte-cta.premio {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+.passaporte-cta.premio:hover {
+  background: linear-gradient(135deg, #d97706, #b45309);
+}
+
+.passaporte-outro {
+  background: transparent;
+  border: 2px solid rgba(255,255,255,0.5);
+  color: white;
+  padding: 0.65rem 1.5rem;
+  border-radius: 0.75rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.passaporte-outro:hover {
+  background: rgba(255,255,255,0.15);
+  border-color: white;
+}
+
+.passaporte-footer {
+  margin-top: auto;
+  padding-top: 2rem;
+  text-align: center;
+  color: rgba(255,255,255,0.6);
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+.passaporte-footer p { margin: 0; }

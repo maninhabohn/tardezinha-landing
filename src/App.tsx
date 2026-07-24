@@ -14,6 +14,7 @@ import { Reveal } from './components/Reveal'
 import { Reservar } from './pages/Reservar'
 import { AdminStats } from './pages/AdminStats'
 import { Grupo } from './pages/Grupo'
+import { Passaporte } from './pages/Passaporte'
 
 function Home() {
   return (
@@ -39,6 +40,7 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/reservar" element={<Reservar />} />
       <Route path="/grupo" element={<Grupo />} />
+      <Route path="/passaporte" element={<Passaporte />} />
       <Route path="/admin/tardezinha-stats" element={<AdminStats />} />
     </Routes>
   )
