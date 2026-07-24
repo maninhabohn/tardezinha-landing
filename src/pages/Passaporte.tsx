@@ -10,7 +10,7 @@ interface PassaporteData {
   nome: string | null
 }
 
-const SELOS_META = 3
+const SELOS_META = 4
 
 const EDICAO_LABELS: Record<string, string> = {
   '09jul': '09/07',
@@ -94,7 +94,7 @@ export function Passaporte() {
       <div className="passaporte-campaign">
         <span className="campaign-tag">Campanha de fidelização</span>
         <p className="campaign-text">
-          Colecione <strong>3 presenças</strong> e ganhe{' '}
+          Colecione <strong>4 presenças</strong> e ganhe{' '}
           <strong>1 ingresso cortesia!</strong>
         </p>
       </div>
