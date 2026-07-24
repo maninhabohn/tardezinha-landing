@@ -11,11 +11,19 @@ interface PassaporteData {
 }
 
 const SELOS_META = 3
+
 const EDICAO_LABELS: Record<string, string> = {
   '09jul': '09/07',
   '23jul': '23/07',
   '30jul': '30/07',
 }
+
+const FIGURINHAS = [
+  { foto: '/fotos/giro.jpg', nome: 'Giro Radical' },
+  { foto: '/fotos/nerf.jpg', nome: 'Nerf Inflável' },
+  { foto: '/fotos/toboga-mario.jpg', nome: 'Tobogã do Mario' },
+  { foto: '/fotos/escalada-2.jpg', nome: 'Escalada' },
+]
 
 function maskPhone(v: string) {
   const d = v.replace(/\D/g, '').slice(0, 11)
@@ -31,7 +39,7 @@ function normalizePhone(raw: string): string {
 
 export function Passaporte() {
   useEffect(() => {
-    document.title = 'Passaporte da Tardezinha — Show de Bola'
+    document.title = 'Álbum de Figurinhas — Tardezinha Show de Bola'
   }, [])
 
   const [telefone, setTelefone] = useState('')
@@ -75,17 +83,24 @@ export function Passaporte() {
 
   return (
     <div className="passaporte-page">
+      {/* Header */}
       <header className="passaporte-header">
-        <Logo />
-        <h1>Passaporte da Tardezinha</h1>
-        <p className="passaporte-sub">
-          A cada edição que tu participa, ganha um selo.
-          <br />
-          <strong>Juntou {SELOS_META}? O próximo ingresso é cortesia!</strong>
-        </p>
+        <Logo size={56} className="passaporte-logo" />
+        <h1>Álbum de Figurinhas</h1>
+        <p className="passaporte-sub">Tardezinha Show de Bola</p>
       </header>
 
-      {status === 'idle' || status === 'loading' || status === 'not-found' || status === 'error' ? (
+      {/* Campaign banner — sempre visível */}
+      <div className="passaporte-campaign">
+        <span className="campaign-tag">Campanha de fidelização</span>
+        <p className="campaign-text">
+          Colecione <strong>3 presenças</strong> e ganhe{' '}
+          <strong>1 ingresso cortesia!</strong>
+        </p>
+      </div>
+
+      {/* Busca */}
+      {(status === 'idle' || status === 'loading' || status === 'not-found' || status === 'error') && (
         <section className="passaporte-busca">
           <form onSubmit={handleBuscar}>
             <label htmlFor="tel-passaporte">Digita o WhatsApp que usou na inscrição:</label>
@@ -99,7 +114,7 @@ export function Passaporte() {
               autoFocus
             />
             <button type="submit" disabled={status === 'loading'}>
-              {status === 'loading' ? 'Buscando...' : '🔍 Ver meu passaporte'}
+              {status === 'loading' ? 'Buscando...' : 'Ver meu álbum'}
             </button>
           </form>
 
@@ -110,7 +125,7 @@ export function Passaporte() {
                 <br />
                 Confere se é o mesmo WhatsApp que usou no formulário, ou{' '}
                 <a
-                  href={whatsappLink('Oi! Quero saber sobre o Passaporte da Tardezinha.')}
+                  href={whatsappLink('Oi! Quero saber sobre o Álbum de Figurinhas da Tardezinha.')}
                   onClick={trackWhatsappLead}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -127,72 +142,122 @@ export function Passaporte() {
             </div>
           )}
         </section>
-      ) : null}
+      )}
 
+      {/* Resultado */}
       {status === 'found' && data && (
         <section className="passaporte-resultado">
+          {/* Card principal */}
           <div className="passaporte-card">
-            <div className="passaporte-card-header">
-              <span className="passaporte-emoji">🎫</span>
+            {/* Greeting */}
+            <div className="passaporte-greet">
               <div>
-                <h2>Olá, {firstName}!</h2>
-                <p className="passaporte-contagem">
-                  {ganhou
-                    ? '🎉 Tu completou o passaporte!'
-                    : `${data.total_edicoes} de ${SELOS_META} selos`}
+                <p className="greet-name">Oi, {firstName}!</p>
+                <p className="greet-sub">
+                  {ganhou ? 'Álbum completo!' : 'Teu álbum tá quase completo'}
                 </p>
               </div>
             </div>
 
-            <div className="selos-grid">
-              {Array.from({ length: SELOS_META }).map((_, i) => {
-                const preenchido = i < data.total_edicoes
-                const edicaoId = data.edicoes[i]
-                return (
-                  <div key={i} className={`selo ${preenchido ? 'selo-ativo' : 'selo-vazio'}`}>
-                    <div className="selo-circulo">
-                      {preenchido ? '✓' : `${i + 1}`}
+            {/* Selos de presença */}
+            <div className="presenca-section">
+              <p className="presenca-label">Presenças confirmadas</p>
+              <div className="presenca-row">
+                {Array.from({ length: SELOS_META }).map((_, i) => {
+                  const preenchido = i < data.total_edicoes
+                  const edicaoId = data.edicoes[i]
+                  return (
+                    <div key={i} className={`selo-presenca ${preenchido ? 'selo-ativo' : 'selo-vazio'}`}>
+                      <div className="selo-circulo">
+                        {preenchido ? '⭐' : `${i + 1}`}
+                      </div>
+                      <span className="selo-data">
+                        {preenchido
+                          ? EDICAO_LABELS[edicaoId] ?? edicaoId
+                          : 'Próxima'}
+                      </span>
                     </div>
-                    <span className="selo-label">
-                      {preenchido
-                        ? EDICAO_LABELS[edicaoId] ?? edicaoId
-                        : `Edição ${i + 1}`}
-                    </span>
-                  </div>
-                )
-              })}
+                  )
+                })}
+              </div>
             </div>
 
+            {/* Barra de progresso */}
+            <div className="progress-section">
+              <div className="progress-labels">
+                <span>Progresso</span>
+                <strong>{data.total_edicoes} / {SELOS_META}{ganhou ? ' ✓' : ''}</strong>
+              </div>
+              <div className="progress-bar">
+                <div
+                  className={`progress-fill ${ganhou ? 'fill-completo' : ''}`}
+                  style={{ width: `${Math.min(100, (data.total_edicoes / SELOS_META) * 100)}%` }}
+                />
+              </div>
+            </div>
+
+            <div className="section-divider" />
+
+            {/* Figurinhas dos brinquedos */}
+            <div className="figurinhas-section">
+              <p className="figurinhas-label">Figurinhas das atrações</p>
+              <div className="figurinhas-grid">
+                {FIGURINHAS.map((fig, i) => {
+                  const colada = i < data.total_edicoes
+                  return (
+                    <div key={fig.nome} className={`figurinha ${colada ? 'fig-colada' : 'fig-preview'}`}>
+                      <img src={fig.foto} alt={fig.nome} loading="lazy" />
+                      {colada ? (
+                        <>
+                          <span className="fig-check">✓</span>
+                          <span className="fig-tag">Colada!</span>
+                          <div className="fig-badge">
+                            <p className="fig-name">{fig.nome}</p>
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <div className="fig-overlay">
+                            <span className="fig-lock">🔒</span>
+                            <span className="fig-soon">Em breve</span>
+                          </div>
+                          <div className="fig-badge">
+                            <p className="fig-name">{fig.nome}</p>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+
+            {/* CTA / Prêmio */}
             {ganhou ? (
-              <div className="passaporte-premio">
-                <div className="premio-badge">🎁</div>
-                <h3>Ingresso cortesia liberado!</h3>
-                <p>
-                  Na próxima edição da Tardezinha, tu tem 1 ingresso grátis.
-                  <br />
-                  Fala com a equipe pra garantir.
+              <div className="premio-box">
+                <div className="premio-icon">🎁</div>
+                <h3 className="premio-title">Álbum completo!</h3>
+                <p className="premio-desc">
+                  Teu próximo ingresso é por nossa conta. Fala com a equipe pra resgatar.
                 </p>
                 <a
-                  href={whatsappLink(`Oi! Completei o Passaporte da Tardezinha e quero resgatar meu ingresso cortesia! Meu telefone: ${telefone}`)}
+                  href={whatsappLink(`Oi! Completei o Álbum de Figurinhas da Tardezinha e quero resgatar meu ingresso cortesia! Meu telefone: ${telefone}`)}
                   onClick={trackWhatsappLead}
-                  className="passaporte-cta premio"
+                  className="premio-cta"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Resgatar meu ingresso 🎉
+                  Resgatar ingresso cortesia 🎉
                 </a>
               </div>
             ) : (
               <div className="passaporte-proximo">
-                <p>
+                <p className="proximo-texto">
                   {faltam === 1
-                    ? 'Falta só mais 1 edição pro ingresso cortesia!'
-                    : `Faltam ${faltam} edições pro ingresso cortesia.`}
+                    ? 'Falta só mais 1 presença pro ingresso cortesia!'
+                    : `Faltam ${faltam} presenças pro ingresso cortesia.`}
                 </p>
-                <a
-                  href="/reservar"
-                  className="passaporte-cta"
-                >
+                <a href="/reservar" className="passaporte-cta">
                   Garantir vaga na próxima edição →
                 </a>
               </div>
@@ -214,7 +279,7 @@ export function Passaporte() {
 
       <footer className="passaporte-footer">
         <p>
-          Passaporte da Tardezinha · Casa de Festas Show de Bola
+          Álbum de Figurinhas · Tardezinha Show de Bola
           <br />
           Atlântida · Xangri-Lá · RS
         </p>

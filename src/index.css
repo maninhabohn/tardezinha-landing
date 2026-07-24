@@ -46,41 +46,78 @@ h3 {
   letter-spacing: -0.5px;
 }
 
-/* ========== PASSAPORTE ========== */
+/* ========== ÁLBUM DE FIGURINHAS (Passaporte) ========== */
 .passaporte-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #4a148c 0%, #7b1fa2 40%, #9c27b0 100%);
+  background: linear-gradient(145deg, var(--color-sdb-purple-dark) 0%, #2d1450 50%, #1a0f30 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 2rem 1rem 3rem;
 }
 
+/* Header */
 .passaporte-header {
   text-align: center;
   color: white;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
+}
+.passaporte-logo {
+  border-radius: 50%;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
 }
 .passaporte-header h1 {
   font-family: var(--font-display);
-  font-size: 2rem;
-  margin: 0.75rem 0 0.5rem;
+  font-size: 1.75rem;
+  margin: 0.75rem 0 0.25rem;
+  color: var(--color-sdb-yellow);
+  letter-spacing: 0.5px;
 }
 .passaporte-sub {
-  font-size: 1.05rem;
-  opacity: 0.92;
-  line-height: 1.6;
-  max-width: 340px;
-  margin: 0 auto;
+  font-size: 0.95rem;
+  color: rgba(255,255,255,0.7);
+  margin: 0;
+  letter-spacing: 0.3px;
 }
 
+/* Campaign banner */
+.passaporte-campaign {
+  background: linear-gradient(135deg, rgba(255,140,0,0.18), rgba(255,140,0,0.06));
+  border: 1px solid rgba(255,140,0,0.3);
+  border-radius: 1rem;
+  padding: 0.85rem 1.25rem;
+  margin-bottom: 1.25rem;
+  text-align: center;
+  width: 100%;
+  max-width: 400px;
+}
+.campaign-tag {
+  display: block;
+  font-size: 0.65rem;
+  color: var(--color-sdb-yellow);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 0.25rem;
+}
+.campaign-text {
+  font-size: 0.9rem;
+  color: white;
+  margin: 0;
+  line-height: 1.5;
+}
+.campaign-text strong {
+  color: var(--color-sdb-yellow);
+}
+
+/* Busca */
 .passaporte-busca {
   background: white;
   border-radius: 1.25rem;
-  padding: 2rem 1.5rem;
+  padding: 1.75rem 1.5rem;
   width: 100%;
   max-width: 400px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
 }
 .passaporte-busca form {
   display: flex;
@@ -124,6 +161,7 @@ h3 {
   cursor: wait;
 }
 
+/* Messages */
 .passaporte-msg {
   margin-top: 1rem;
   padding: 1rem;
@@ -144,6 +182,7 @@ h3 {
   color: #991b1b;
 }
 
+/* Resultado */
 .passaporte-resultado {
   width: 100%;
   max-width: 400px;
@@ -154,78 +193,89 @@ h3 {
 }
 
 .passaporte-card {
-  background: white;
+  background: linear-gradient(160deg, #2a1548 0%, #1a0f30 100%);
+  border: 1px solid rgba(255,255,255,0.08);
   border-radius: 1.25rem;
-  padding: 1.75rem 1.5rem;
+  padding: 1.5rem 1.25rem;
   width: 100%;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
 }
 
-.passaporte-card-header {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
+/* Greeting */
+.passaporte-greet {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.25rem;
 }
-.passaporte-emoji {
-  font-size: 2.5rem;
-}
-.passaporte-card-header h2 {
+.greet-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-sdb-yellow);
   margin: 0;
-  font-size: 1.4rem;
-  color: var(--color-sdb-purple);
+  font-family: var(--font-display);
 }
-.passaporte-contagem {
+.greet-sub {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.7);
   margin: 0.15rem 0 0;
-  font-size: 0.95rem;
-  color: #6b7280;
-  font-weight: 600;
 }
 
-.selos-grid {
+/* Selos de presença */
+.presenca-section {
+  margin-bottom: 1.25rem;
+}
+.presenca-label {
+  font-size: 0.65rem;
+  color: rgba(255,255,255,0.45);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0 0 0.6rem;
+  font-weight: 700;
+}
+.presenca-row {
   display: flex;
-  justify-content: center;
-  gap: 1.25rem;
-  margin: 1.5rem 0;
+  gap: 1rem;
 }
-
-.selo {
+.selo-presenca {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.3rem;
 }
 .selo-circulo {
-  width: 72px;
-  height: 72px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
-  font-weight: 800;
-  font-family: var(--font-display);
+  font-size: 1.25rem;
   transition: all 0.3s;
 }
 .selo-ativo .selo-circulo {
-  background: linear-gradient(135deg, var(--color-sdb-purple), #9c27b0);
-  color: white;
-  box-shadow: 0 4px 14px rgba(123, 31, 162, 0.4);
-  transform: scale(1);
+  background: linear-gradient(135deg, var(--color-sdb-yellow), #ffaa00);
+  box-shadow: 0 3px 14px rgba(255,140,0,0.35);
   animation: selo-pop 0.5s ease-out;
 }
 .selo-vazio .selo-circulo {
-  background: #f3f4f6;
-  color: #d1d5db;
-  border: 3px dashed #d1d5db;
+  background: rgba(255,255,255,0.05);
+  border: 2px dashed rgba(255,255,255,0.18);
+  color: rgba(255,255,255,0.15);
+  font-size: 0.85rem;
+  font-weight: 800;
+  font-family: var(--font-display);
 }
-.selo-label {
-  font-size: 0.8rem;
+.selo-data {
+  font-size: 0.7rem;
   font-weight: 700;
-  color: #6b7280;
 }
-.selo-ativo .selo-label {
-  color: var(--color-sdb-purple);
+.selo-ativo .selo-data {
+  color: var(--color-sdb-yellow);
+}
+.selo-vazio .selo-data {
+  color: rgba(255,255,255,0.25);
 }
 
 @keyframes selo-pop {
@@ -234,85 +284,253 @@ h3 {
   100% { transform: scale(1); opacity: 1; }
 }
 
-.passaporte-premio {
-  text-align: center;
-  background: linear-gradient(135deg, #fef3c7, #fde68a);
-  border-radius: 1rem;
-  padding: 1.5rem 1rem;
-  margin-top: 0.5rem;
+/* Barra de progresso */
+.progress-section {
+  margin-bottom: 1rem;
 }
-.premio-badge {
-  font-size: 3rem;
-  margin-bottom: 0.5rem;
+.progress-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.45);
+  margin-bottom: 0.35rem;
 }
-.passaporte-premio h3 {
-  color: #92400e;
-  margin: 0 0 0.5rem;
-  font-size: 1.2rem;
+.progress-labels strong {
+  color: var(--color-sdb-yellow);
 }
-.passaporte-premio p {
-  color: #78350f;
-  font-size: 0.95rem;
-  line-height: 1.5;
-  margin: 0 0 1rem;
+.progress-bar {
+  height: 7px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--color-sdb-yellow), #ffaa00);
+  transition: width 0.6s ease;
+}
+.progress-fill.fill-completo {
+  background: linear-gradient(90deg, var(--color-sdb-yellow), #4caf50);
 }
 
+/* Divider */
+.section-divider {
+  height: 1px;
+  background: rgba(255,255,255,0.08);
+  margin-bottom: 1rem;
+}
+
+/* Figurinhas dos brinquedos */
+.figurinhas-section {
+  margin-bottom: 1.25rem;
+}
+.figurinhas-label {
+  font-size: 0.65rem;
+  color: rgba(255,255,255,0.45);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0 0 0.6rem;
+  font-weight: 700;
+}
+.figurinhas-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+}
+
+.figurinha {
+  border-radius: 0.75rem;
+  overflow: hidden;
+  position: relative;
+  aspect-ratio: 1;
+}
+.figurinha img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Figurinha colada */
+.fig-colada {
+  border: 2.5px solid var(--color-sdb-yellow);
+  box-shadow: 0 2px 12px rgba(255,140,0,0.25);
+}
+.fig-check {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--color-sdb-yellow);
+  color: var(--color-sdb-purple-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 900;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+.fig-tag {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  background: rgba(0,0,0,0.5);
+  color: var(--color-sdb-yellow);
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+.fig-badge {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0,0,0,0.85));
+  padding: 1.25rem 0.5rem 0.4rem;
+}
+.fig-name {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: white;
+  margin: 0;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+}
+
+/* Figurinha preview (bloqueada) */
+.fig-preview {
+  border: 2.5px solid rgba(255,255,255,0.12);
+}
+.fig-preview img {
+  filter: saturate(0.25) brightness(0.4);
+}
+.fig-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  background: rgba(0,0,0,0.15);
+}
+.fig-lock {
+  font-size: 1.4rem;
+  opacity: 0.7;
+}
+.fig-soon {
+  font-size: 0.55rem;
+  color: rgba(255,255,255,0.55);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.fig-preview .fig-name {
+  color: rgba(255,255,255,0.45);
+}
+
+/* Prêmio */
+.premio-box {
+  background: linear-gradient(135deg, rgba(76,175,80,0.12), rgba(76,175,80,0.05));
+  border: 1.5px solid rgba(76,175,80,0.3);
+  border-radius: 0.85rem;
+  padding: 1.25rem 1rem;
+  text-align: center;
+  margin-top: 0.25rem;
+}
+.premio-icon {
+  font-size: 1.75rem;
+  margin-bottom: 0.3rem;
+}
+.premio-title {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #4caf50;
+  margin: 0 0 0.3rem;
+  font-family: var(--font-display);
+}
+.premio-desc {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.7);
+  line-height: 1.5;
+  margin: 0 0 0.85rem;
+}
+.premio-cta {
+  display: block;
+  text-align: center;
+  background: linear-gradient(135deg, #4caf50, #388e3c);
+  color: white;
+  padding: 0.75rem;
+  border-radius: 0.65rem;
+  font-size: 0.9rem;
+  font-weight: 800;
+  font-family: var(--font-display);
+  text-decoration: none;
+  box-shadow: 0 3px 12px rgba(76,175,80,0.3);
+  transition: opacity 0.2s;
+}
+.premio-cta:hover {
+  opacity: 0.9;
+}
+
+/* CTA próxima edição */
 .passaporte-proximo {
   text-align: center;
-  margin-top: 0.5rem;
+  margin-top: 0.25rem;
 }
-.passaporte-proximo p {
-  color: #6b7280;
+.proximo-texto {
+  color: rgba(255,255,255,0.7);
   font-weight: 600;
-  margin: 0 0 1rem;
-  font-size: 1rem;
+  margin: 0 0 0.85rem;
+  font-size: 0.9rem;
 }
-
 .passaporte-cta {
   display: block;
-  background: var(--color-sdb-purple);
-  color: white;
+  background: linear-gradient(135deg, var(--color-sdb-yellow), #ffaa00);
+  color: var(--color-sdb-purple-dark);
   text-align: center;
   padding: 0.85rem 1.5rem;
   border-radius: 0.75rem;
-  font-weight: 700;
+  font-weight: 800;
   font-family: var(--font-display);
-  font-size: 1.05rem;
+  font-size: 1rem;
   text-decoration: none;
-  transition: background 0.2s;
+  box-shadow: 0 3px 14px rgba(255,140,0,0.3);
+  transition: opacity 0.2s;
 }
 .passaporte-cta:hover {
-  background: var(--color-sdb-purple-dark);
-}
-.passaporte-cta.premio {
-  background: linear-gradient(135deg, #f59e0b, #d97706);
-}
-.passaporte-cta.premio:hover {
-  background: linear-gradient(135deg, #d97706, #b45309);
+  opacity: 0.9;
 }
 
+/* Botão consultar outro */
 .passaporte-outro {
   background: transparent;
-  border: 2px solid rgba(255,255,255,0.5);
-  color: white;
-  padding: 0.65rem 1.5rem;
+  border: 2px solid rgba(255,255,255,0.35);
+  color: rgba(255,255,255,0.8);
+  padding: 0.6rem 1.5rem;
   border-radius: 0.75rem;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
+  font-family: var(--font-sans);
 }
 .passaporte-outro:hover {
-  background: rgba(255,255,255,0.15);
-  border-color: white;
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.6);
+  color: white;
 }
 
+/* Footer */
 .passaporte-footer {
   margin-top: auto;
   padding-top: 2rem;
   text-align: center;
-  color: rgba(255,255,255,0.6);
-  font-size: 0.85rem;
+  color: rgba(255,255,255,0.35);
+  font-size: 0.8rem;
   line-height: 1.5;
 }
 .passaporte-footer p { margin: 0; }
