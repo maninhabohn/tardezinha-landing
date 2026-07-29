@@ -76,6 +76,7 @@ export interface PainelPedido {
   status: 'recebido' | 'preparando' | 'entregue' | 'cancelado'
 }
 export interface PainelCrianca { nome: string; status: string }
+export interface PainelAutorizado { nome: string; cpf: string | null }
 export interface PainelReserva {
   id: string
   nome: string
@@ -84,6 +85,7 @@ export interface PainelReserva {
   qtd_criancas: number
   entrada_ref_centavos: number
   criancas: PainelCrianca[]
+  autorizados: PainelAutorizado[]
   pedidos: PainelPedido[]
   consumo_centavos: number
 }

@@ -203,6 +203,23 @@ function FamiliaCard({
             </div>
           </div>
 
+          {/* Autorizados a retirar — controle de porta */}
+          <div className="rounded-lg border-2 border-amber-300 bg-amber-50 p-3">
+            <p className="text-xs font-bold text-amber-700 mb-1.5">🔐 SÓ PODE RETIRAR A CRIANÇA</p>
+            {r.autorizados.length === 0 ? (
+              <p className="text-xs text-amber-700/70">Ninguém cadastrado — confirma com o responsável antes de liberar.</p>
+            ) : (
+              <ul className="space-y-1">
+                {r.autorizados.map((a, i) => (
+                  <li key={i} className="flex items-center justify-between gap-2 text-sm">
+                    <span className="font-semibold text-gray-800">{a.nome}</span>
+                    <span className="text-xs text-gray-500">{a.cpf ? `CPF ${a.cpf}` : 'sem CPF'}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+
           {/* Pedidos */}
           <div>
             <p className="text-xs font-bold text-gray-500 mb-1">PEDIDOS</p>
