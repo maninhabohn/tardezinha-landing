@@ -228,7 +228,7 @@ export function Reservar() {
   function setLancheQtd(id: string, qtd: number) {
     setLanche(prev => ({ ...prev, [id]: Math.max(0, qtd) }))
   }
-  const lancheTotal = cardapio.reduce((s, it) => s + (lanche[it.id] ?? 0) * it.preco_centavos, 0)
+  const lancheTotal = cardapio.reduce((s, it) => s + (lanche[it.id] ?? 0) * (it.preco_centavos ?? 0), 0)
 
   function ativas() { return criancas.filter(c => c.ativo) }
 
@@ -346,7 +346,7 @@ export function Reservar() {
         reserva_id: reservaId,
         cardapio_id: it.id,
         item_nome: it.nome,
-        preco_unit_centavos: it.preco_centavos,
+        preco_unit_centavos: it.preco_centavos ?? 0,
         qtd: lanche[it.id],
         origem: 'reserva',
         status: 'recebido',
@@ -706,7 +706,7 @@ export function Reservar() {
         {cardapio.length > 0 && (
           <fieldset className="mb-6 rounded-xl bg-white border border-gray-200 p-5 shadow-sm">
             <legend className="text-base font-bold text-gray-700 px-2">🍽️ Quer deixar lanche reservado?</legend>
-            <p className="mt-2 text-sm text-gray-500">Opcional. Tu reserva agora e <strong>paga na saída</strong>. Ajuda a cozinha a se preparar.</p>
+            <p className="mt-2 text-sm text-gray-500">Opcional. Tu reserva agora e <strong>paga no dia, no bar</strong>. Ajuda a cozinha a se preparar.</p>
             <div className="mt-3 space-y-2">
               {cardapio.map(it => {
                 const q = lanche[it.id] ?? 0
@@ -714,7 +714,7 @@ export function Reservar() {
                   <div key={it.id} className="flex items-center justify-between gap-3 rounded-lg border border-gray-200 p-3">
                     <div className="min-w-0">
                       <p className="text-sm font-semibold text-gray-800">{it.nome}</p>
-                      <p className="text-xs text-gray-500">{formatBRL(it.preco_centavos)}{it.descricao ? ` · ${it.descricao}` : ''}</p>
+                      <p className="text-xs text-gray-500">{it.preco_centavos != null ? formatBRL(it.preco_centavos) : 'a confirmar'}{it.descricao ? ` · ${it.descricao}` : ''}</p>
                     </div>
                     <div className="flex items-center gap-2 shrink-0">
                       <button type="button" onClick={() => setLancheQtd(it.id, q - 1)} className="h-8 w-8 rounded-full border border-gray-300 text-lg font-bold text-gray-600">−</button>
@@ -726,7 +726,7 @@ export function Reservar() {
               })}
             </div>
             {lancheTotal > 0 && (
-              <p className="mt-3 text-right text-sm font-semibold text-gray-700">Lanche reservado: {formatBRL(lancheTotal)} <span className="font-normal text-gray-400">(paga na saída)</span></p>
+              <p className="mt-3 text-right text-sm font-semibold text-gray-700">Lanche reservado: {formatBRL(lancheTotal)} <span className="font-normal text-gray-400">(paga no bar, no dia)</span></p>
             )}
           </fieldset>
         )}

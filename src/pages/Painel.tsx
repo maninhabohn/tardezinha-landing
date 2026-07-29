@@ -67,7 +67,6 @@ export function Painel() {
   const visiveis = turnoFiltro === 'todos' ? reservas : reservas.filter(r => r.turno === turnoFiltro)
 
   const totalCriancas = visiveis.reduce((s, r) => s + (r.qtd_criancas ?? 0), 0)
-  const totalConsumo = visiveis.reduce((s, r) => s + r.consumo_centavos, 0)
   const totalChegaram = visiveis.filter(r => r.chegou).length
   const pedidosPendentes = visiveis.reduce(
     (s, r) => s + r.pedidos.filter(p => p.status === 'recebido' || p.status === 'preparando').length, 0)
@@ -86,7 +85,7 @@ export function Painel() {
           </button>
         </div>
         {/* KPIs */}
-        <div className="mt-3 grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
+        <div className="mt-3 grid grid-cols-3 gap-2 text-center">
           <div className="rounded-lg bg-white/10 py-2">
             <p className="text-xl font-bold">{totalChegaram}<span className="text-sm text-white/70">/{visiveis.length}</span></p>
             <p className="text-[11px] text-white/80">chegaram</p>
@@ -98,10 +97,6 @@ export function Painel() {
           <div className="rounded-lg bg-white/10 py-2">
             <p className="text-xl font-bold">{pedidosPendentes}</p>
             <p className="text-[11px] text-white/80">pedidos abertos</p>
-          </div>
-          <div className="rounded-lg bg-white/10 py-2">
-            <p className="text-xl font-bold">{formatBRL(totalConsumo)}</p>
-            <p className="text-[11px] text-white/80">consumo</p>
           </div>
         </div>
       </header>
@@ -133,14 +128,12 @@ export function Painel() {
         ))}
       </div>
 
-      {/* Rodapé de fechamento */}
+      {/* Link rápido pra tela da cozinha */}
       {visiveis.length > 0 && (
-        <div className="mt-6 px-4">
-          <div className="rounded-xl bg-white p-4 shadow-sm border border-gray-200 text-center">
-            <p className="text-sm text-gray-500">Consumo total a receber na saída</p>
-            <p className="text-2xl font-bold text-sdb-purple">{formatBRL(totalConsumo)}</p>
-            <p className="text-[11px] text-gray-400 mt-1">(entrada já foi paga na inscrição — é só referência)</p>
-          </div>
+        <div className="mt-6 px-4 text-center">
+          <a href={`/cozinha?k=${key}`} className="text-sm font-semibold text-sdb-purple underline">
+            🍽️ Abrir a Tela da Cozinha →
+          </a>
         </div>
       )}
     </div>
@@ -161,8 +154,8 @@ function FamiliaCard({
   const [salvando, setSalvando] = useState(false)
   const [chegLoad, setChegLoad] = useState(false)
 
-  const totalSaida = r.consumo_centavos
   const pago = r.status === 'pago'
+  const pedidosAbertosFam = r.pedidos.filter(p => p.status === 'recebido' || p.status === 'preparando').length
 
   async function toggleChegou() {
     setChegLoad(true)
@@ -182,7 +175,7 @@ function FamiliaCard({
     const item = cardapio.find(c => c.id === addItem)
     if (!item) return
     setSalvando(true)
-    await addPedido(chave, r.id, item.nome, item.preco_centavos, addQtd)
+    await addPedido(chave, r.id, item.nome, item.preco_centavos ?? 0, addQtd)
     setSalvando(false)
     setAddQtd(1)
     onChange()
@@ -202,10 +195,11 @@ function FamiliaCard({
             </div>
             <p className="text-xs text-gray-500 mt-0.5">{r.turno} · {r.qtd_criancas} criança(s)</p>
           </div>
-          <div className="text-right shrink-0">
-            <p className="text-[11px] text-gray-400">a pagar na saída</p>
-            <p className={`font-bold ${totalSaida > 0 ? 'text-sdb-purple' : 'text-gray-300'}`}>{formatBRL(totalSaida)}</p>
-          </div>
+          {pedidosAbertosFam > 0 && (
+            <div className="shrink-0">
+              <span className="rounded-full bg-sdb-purple/10 text-sdb-purple text-xs font-bold px-2.5 py-1 whitespace-nowrap">🍽️ {pedidosAbertosFam}</span>
+            </div>
+          )}
         </button>
         <button
           onClick={toggleChegou}
@@ -259,6 +253,7 @@ function FamiliaCard({
                   <div className="min-w-0">
                     <p className="text-sm text-gray-800">
                       <strong>{p.qtd}×</strong> {p.item}
+                      {p.preco_unit_centavos > 0 && <span className="text-gray-400"> · {formatBRL(p.preco_unit_centavos * p.qtd)}</span>}
                       {p.origem === 'evento' && <span className="ml-1 text-[10px] text-amber-600">(no dia)</span>}
                     </p>
                     {p.obs && <p className="text-[11px] text-gray-400">{p.obs}</p>}
@@ -286,7 +281,7 @@ function FamiliaCard({
                   className="flex-1 rounded-lg border border-gray-300 px-2 py-2 text-sm"
                 >
                   {cardapio.map(c => (
-                    <option key={c.id} value={c.id}>{c.nome} · {formatBRL(c.preco_centavos)}</option>
+                    <option key={c.id} value={c.id}>{c.nome}{c.preco_centavos != null ? ` · ${formatBRL(c.preco_centavos)}` : ''}</option>
                   ))}
                 </select>
                 <input
@@ -302,18 +297,7 @@ function FamiliaCard({
             </div>
           )}
 
-          {/* Fica */}
-          <div className="rounded-lg border border-dashed border-gray-300 p-3 text-sm">
-            <p className="font-bold text-gray-700 mb-1">Fechamento (fica)</p>
-            <div className="flex justify-between text-gray-500">
-              <span>Entrada ({r.qtd_criancas} criança(s)) — já paga</span>
-              <span>{formatBRL(r.entrada_ref_centavos)}</span>
-            </div>
-            <div className="flex justify-between text-gray-800 font-semibold mt-0.5">
-              <span>Consumo a pagar na saída</span>
-              <span>{formatBRL(totalSaida)}</span>
-            </div>
-          </div>
+          <p className="text-[11px] text-gray-400 text-center">💰 Pagamento do lanche é no bar, na hora. A portaria não recebe dinheiro.</p>
         </div>
       )}
     </div>

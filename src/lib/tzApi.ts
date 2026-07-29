@@ -48,7 +48,7 @@ export interface CardapioItem {
   id: string
   nome: string
   descricao: string | null
-  preco_centavos: number
+  preco_centavos: number | null
   ordem: number
 }
 
@@ -74,6 +74,7 @@ export interface PainelPedido {
   obs: string | null
   origem: 'reserva' | 'evento'
   status: 'recebido' | 'preparando' | 'entregue' | 'cancelado'
+  categoria?: string
 }
 export interface PainelCrianca { nome: string; status: string }
 export interface PainelAutorizado { nome: string; cpf: string | null }

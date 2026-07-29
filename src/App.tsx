@@ -16,6 +16,7 @@ import { AdminStats } from './pages/AdminStats'
 import { Grupo } from './pages/Grupo'
 import { Passaporte } from './pages/Passaporte'
 import { Painel } from './pages/Painel'
+import { Cozinha } from './pages/Cozinha'
 
 function Home() {
   return (
@@ -43,6 +44,7 @@ function App() {
       <Route path="/grupo" element={<Grupo />} />
       <Route path="/passaporte" element={<Passaporte />} />
       <Route path="/painel" element={<Painel />} />
+      <Route path="/cozinha" element={<Cozinha />} />
       <Route path="/admin/tardezinha-stats" element={<AdminStats />} />
     </Routes>
   )
