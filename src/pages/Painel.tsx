@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react'
 import {
-  fetchPainel, setPedidoStatus, addPedido, fetchCardapio,
+  fetchPainel, setPedidoStatus, addPedido, fetchCardapio, setCheckin,
   formatBRL, type PainelReserva, type CardapioItem, type PainelPedido,
 } from '../lib/tzApi'
 
@@ -68,6 +68,7 @@ export function Painel() {
 
   const totalCriancas = visiveis.reduce((s, r) => s + (r.qtd_criancas ?? 0), 0)
   const totalConsumo = visiveis.reduce((s, r) => s + r.consumo_centavos, 0)
+  const totalChegaram = visiveis.filter(r => r.chegou).length
   const pedidosPendentes = visiveis.reduce(
     (s, r) => s + r.pedidos.filter(p => p.status === 'recebido' || p.status === 'preparando').length, 0)
 
@@ -85,10 +86,10 @@ export function Painel() {
           </button>
         </div>
         {/* KPIs */}
-        <div className="mt-3 grid grid-cols-3 gap-2 text-center">
+        <div className="mt-3 grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
           <div className="rounded-lg bg-white/10 py-2">
-            <p className="text-xl font-bold">{visiveis.length}</p>
-            <p className="text-[11px] text-white/80">famílias</p>
+            <p className="text-xl font-bold">{totalChegaram}<span className="text-sm text-white/70">/{visiveis.length}</span></p>
+            <p className="text-[11px] text-white/80">chegaram</p>
           </div>
           <div className="rounded-lg bg-white/10 py-2">
             <p className="text-xl font-bold">{totalCriancas}</p>
@@ -97,6 +98,10 @@ export function Painel() {
           <div className="rounded-lg bg-white/10 py-2">
             <p className="text-xl font-bold">{pedidosPendentes}</p>
             <p className="text-[11px] text-white/80">pedidos abertos</p>
+          </div>
+          <div className="rounded-lg bg-white/10 py-2">
+            <p className="text-xl font-bold">{formatBRL(totalConsumo)}</p>
+            <p className="text-[11px] text-white/80">consumo</p>
           </div>
         </div>
       </header>
@@ -154,8 +159,17 @@ function FamiliaCard({
   const [addItem, setAddItem] = useState<string>(cardapio[0]?.id ?? '')
   const [addQtd, setAddQtd] = useState(1)
   const [salvando, setSalvando] = useState(false)
+  const [chegLoad, setChegLoad] = useState(false)
 
   const totalSaida = r.consumo_centavos
+  const pago = r.status === 'pago'
+
+  async function toggleChegou() {
+    setChegLoad(true)
+    await setCheckin(chave, r.id, !r.chegou)
+    setChegLoad(false)
+    onChange()
+  }
 
   async function mudarStatus(p: PainelPedido) {
     const next = STATUS_NEXT[p.status]
@@ -177,16 +191,31 @@ function FamiliaCard({
   return (
     <div className="rounded-xl bg-white shadow-sm border border-gray-200 overflow-hidden">
       {/* Cabeçalho da família */}
-      <button onClick={() => setAberto(a => !a)} className="w-full flex items-center justify-between gap-3 p-4 text-left">
-        <div className="min-w-0">
-          <p className="font-bold text-gray-800 truncate">{r.nome}</p>
-          <p className="text-xs text-gray-500">{r.turno} · {r.qtd_criancas} criança(s)</p>
-        </div>
-        <div className="text-right shrink-0">
-          <p className="text-[11px] text-gray-400">a pagar na saída</p>
-          <p className={`font-bold ${totalSaida > 0 ? 'text-sdb-purple' : 'text-gray-300'}`}>{formatBRL(totalSaida)}</p>
-        </div>
-      </button>
+      <div className={`flex items-stretch ${r.chegou ? 'bg-emerald-50' : ''}`}>
+        <button onClick={() => setAberto(a => !a)} className="flex-1 min-w-0 flex items-center justify-between gap-3 p-4 text-left">
+          <div className="min-w-0">
+            <div className="flex items-center gap-2 flex-wrap">
+              <p className="font-bold text-gray-800 truncate">{r.nome}</p>
+              {pago
+                ? <span className="rounded-full bg-emerald-100 text-emerald-700 text-[10px] font-bold px-2 py-0.5">✅ PAGO</span>
+                : <span className="rounded-full bg-amber-100 text-amber-700 text-[10px] font-bold px-2 py-0.5">⏳ PENDENTE</span>}
+            </div>
+            <p className="text-xs text-gray-500 mt-0.5">{r.turno} · {r.qtd_criancas} criança(s)</p>
+          </div>
+          <div className="text-right shrink-0">
+            <p className="text-[11px] text-gray-400">a pagar na saída</p>
+            <p className={`font-bold ${totalSaida > 0 ? 'text-sdb-purple' : 'text-gray-300'}`}>{formatBRL(totalSaida)}</p>
+          </div>
+        </button>
+        <button
+          onClick={toggleChegou}
+          disabled={chegLoad}
+          className={`shrink-0 w-[74px] flex flex-col items-center justify-center gap-0.5 border-l text-xs font-bold transition disabled:opacity-50 ${r.chegou ? 'bg-emerald-500 text-white border-emerald-500' : 'bg-white text-gray-500 border-gray-200 active:bg-gray-50'}`}
+        >
+          <span className="text-lg leading-none">{r.chegou ? '🟢' : '✔'}</span>
+          {r.chegou ? 'Na casa' : 'Chegou'}
+        </button>
+      </div>
 
       {aberto && (
         <div className="border-t border-gray-100 p-4 space-y-4">

@@ -82,6 +82,7 @@ export interface PainelReserva {
   nome: string
   turno: string
   status: string
+  chegou: boolean
   qtd_criancas: number
   entrada_ref_centavos: number
   criancas: PainelCrianca[]
@@ -105,6 +106,14 @@ export async function setPedidoStatus(key: string, pedidoId: string, status: Pai
     p_key: key, p_pedido_id: pedidoId, p_status: status,
   })
   if (error) { console.error('[tzApi] pedido_status:', error); return { ok: false } }
+  return data as { ok: boolean }
+}
+
+export async function setCheckin(key: string, reservaId: string, chegou: boolean) {
+  const { data, error } = await supabase.rpc('tardezinha_checkin', {
+    p_key: key, p_reserva_id: reservaId, p_chegou: chegou,
+  })
+  if (error) { console.error('[tzApi] checkin:', error); return { ok: false } }
   return data as { ok: boolean }
 }
 
