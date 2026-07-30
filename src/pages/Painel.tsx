@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react'
 import {
-  fetchPainel, setPedidoStatus, addPedido, fetchCardapio, setCheckin,
+  fetchPainel, setPedidoStatus, addPedido, fetchCardapio, setCheckin, setConsumoPago,
   formatBRL, type PainelReserva, type CardapioItem, type PainelPedido,
 } from '../lib/tzApi'
 
@@ -79,6 +79,7 @@ export function Painel() {
   const totalChegaram = visiveis.filter(r => r.chegou).length
   const pedidosPendentes = visiveis.reduce(
     (s, r) => s + r.pedidos.filter(p => p.status === 'recebido' || p.status === 'preparando').length, 0)
+  const totalReceber = visiveis.filter(r => !r.consumo_pago).reduce((s, r) => s + r.consumo_centavos, 0)
 
   return (
     <div className="min-h-screen bg-gray-100 pb-16">
@@ -94,7 +95,7 @@ export function Painel() {
           </button>
         </div>
         {/* KPIs */}
-        <div className="mt-3 grid grid-cols-3 gap-2 text-center">
+        <div className="mt-3 grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
           <div className="rounded-lg bg-white/10 py-2">
             <p className="text-xl font-bold">{totalChegaram}<span className="text-sm text-white/70">/{visiveis.length}</span></p>
             <p className="text-[11px] text-white/80">chegaram</p>
@@ -106,6 +107,10 @@ export function Painel() {
           <div className="rounded-lg bg-white/10 py-2">
             <p className="text-xl font-bold">{pedidosPendentes}</p>
             <p className="text-[11px] text-white/80">pedidos abertos</p>
+          </div>
+          <div className="rounded-lg bg-white/10 py-2">
+            <p className="text-xl font-bold">{formatBRL(totalReceber)}</p>
+            <p className="text-[11px] text-white/80">a receber</p>
           </div>
         </div>
       </header>
@@ -162,14 +167,21 @@ function FamiliaCard({
   const [addQtd, setAddQtd] = useState(1)
   const [salvando, setSalvando] = useState(false)
   const [chegLoad, setChegLoad] = useState(false)
+  const [pagLoad, setPagLoad] = useState(false)
 
   const pago = r.status === 'pago'
-  const pedidosAbertosFam = r.pedidos.filter(p => p.status === 'recebido' || p.status === 'preparando').length
 
   async function toggleChegou() {
     setChegLoad(true)
     await setCheckin(chave, r.id, !r.chegou)
     setChegLoad(false)
+    onChange()
+  }
+
+  async function togglePago() {
+    setPagLoad(true)
+    await setConsumoPago(chave, r.id, !r.consumo_pago)
+    setPagLoad(false)
     onChange()
   }
 
@@ -210,9 +222,11 @@ function FamiliaCard({
             </div>
             <p className="text-xs text-gray-500 mt-0.5">{r.turno} · {r.qtd_criancas} criança(s)</p>
           </div>
-          {pedidosAbertosFam > 0 && (
-            <div className="shrink-0">
-              <span className="rounded-full bg-sdb-purple/10 text-sdb-purple text-xs font-bold px-2.5 py-1 whitespace-nowrap">🍽️ {pedidosAbertosFam}</span>
+          {r.consumo_centavos > 0 && (
+            <div className="text-right shrink-0">
+              <p className="text-[10px] text-gray-400 leading-none">lanches</p>
+              <p className={`font-bold whitespace-nowrap ${r.consumo_pago ? 'text-gray-300 line-through' : 'text-sdb-purple'}`}>{formatBRL(r.consumo_centavos)}</p>
+              {r.consumo_pago && <p className="text-[9px] text-emerald-600 font-bold leading-none">✓ pago</p>}
             </div>
           )}
         </button>
@@ -319,7 +333,21 @@ function FamiliaCard({
             </div>
           )}
 
-          <p className="text-[11px] text-gray-400 text-center">💰 Pagamento do lanche é no bar, na hora. A portaria não recebe dinheiro.</p>
+          {r.consumo_centavos > 0 ? (
+            <div className={`rounded-lg p-3 text-center ${r.consumo_pago ? 'bg-gray-100 border border-gray-200' : 'bg-emerald-50 border-2 border-emerald-300'}`}>
+              <p className="text-xs text-gray-500">Total dos lanches {r.consumo_pago ? '— pago ✓' : '— cobrar (Pix ou dinheiro)'}</p>
+              <p className={`text-3xl font-extrabold ${r.consumo_pago ? 'text-gray-400 line-through' : 'text-emerald-700'}`}>{formatBRL(r.consumo_centavos)}</p>
+              <button
+                onClick={togglePago}
+                disabled={pagLoad}
+                className={`mt-2 w-full rounded-lg py-3 text-sm font-bold transition disabled:opacity-50 ${r.consumo_pago ? 'bg-gray-200 text-gray-600' : 'bg-emerald-500 text-white active:scale-[0.99]'}`}
+              >
+                {r.consumo_pago ? '↩ Desfazer (marcar não pago)' : '✓ Recebi o pagamento'}
+              </button>
+            </div>
+          ) : (
+            <p className="text-[11px] text-gray-400 text-center">Sem lanche reservado. A portaria não recebe dinheiro — pagamento é no bar.</p>
+          )}
         </div>
       )}
     </div>
