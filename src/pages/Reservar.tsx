@@ -70,8 +70,10 @@ const SESSION_OPTIONS = EVENTS.flatMap(ev =>
     label: `${ev.date} (${ev.dayOfWeek.slice(0, 4)}) — ${s.label}`,
     eventDate: ev.date,
     sessionLabel: s.label,
+    soldOut: !!s.soldOut,
   }))
 )
+const ALGUM_ESGOTADO = SESSION_OPTIONS.some(o => o.soldOut)
 
 const CANAIS = [
   { value: 'instagram', label: 'Instagram (@casashowdebolaoficial)' },
@@ -538,15 +540,24 @@ export function Reservar() {
         {/* Data e turno */}
         <fieldset className="mb-6 rounded-xl bg-white border-2 border-sdb-purple/30 p-5 shadow-sm">
           <legend className="text-base font-bold text-sdb-purple px-2">📅 Qual data e turno?</legend>
+          {ALGUM_ESGOTADO && (
+            <div className="mt-2 rounded-lg bg-amber-50 border border-amber-300 p-3 text-sm font-semibold text-amber-800">
+              ⚠️ O turno da <strong>tarde (14h–18h) esgotou!</strong> Corre que ainda tem vaga no turno da <strong>noite (18h–22h)</strong> 🌙
+            </div>
+          )}
           <div className="mt-3 space-y-2">
             {SESSION_OPTIONS.map(opt => (
               <label key={opt.value}
-                className={`flex items-center gap-3 cursor-pointer rounded-lg border-2 p-4 transition ${sessaoEscolhida === opt.value ? 'border-sdb-purple bg-sdb-purple/5' : 'border-gray-200 hover:border-sdb-purple/30'}`}>
+                className={`flex items-center gap-3 rounded-lg border-2 p-4 transition ${opt.soldOut ? 'cursor-not-allowed border-gray-200 bg-gray-100 opacity-70' : sessaoEscolhida === opt.value ? 'cursor-pointer border-sdb-purple bg-sdb-purple/5' : 'cursor-pointer border-gray-200 hover:border-sdb-purple/30'}`}>
                 <input type="radio" name="sessao" value={opt.value}
+                  disabled={opt.soldOut}
                   checked={sessaoEscolhida === opt.value}
                   onChange={() => setSessaoEscolhida(opt.value)}
                   className="accent-sdb-purple w-5 h-5" />
-                <span className="text-base font-semibold text-gray-800">{opt.label}</span>
+                <span className={`text-base font-semibold ${opt.soldOut ? 'text-gray-400' : 'text-gray-800'}`}>
+                  {opt.label}
+                  {opt.soldOut && <span className="ml-2 align-middle rounded-full bg-red-100 text-red-600 text-xs font-bold px-2 py-0.5">ESGOTADO</span>}
+                </span>
               </label>
             ))}
           </div>

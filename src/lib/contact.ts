@@ -10,6 +10,7 @@ export const INSTAGRAM_URL = `https://instagram.com/${INSTAGRAM_HANDLE}`
 export interface EventSession {
   time: string   // "das 18h às 22h"
   label: string  // "18h–22h"
+  soldOut?: boolean // turno esgotado — desabilita a escolha e mostra aviso
 }
 
 export interface TardezinhaEvent {
@@ -28,7 +29,7 @@ export const EVENTS: TardezinhaEvent[] = [
     dateLong: '30 DE JULHO',
     dayOfWeek: 'quinta-feira',
     sessions: [
-      { time: 'das 14h às 18h', label: '14h–18h' },
+      { time: 'das 14h às 18h', label: '14h–18h', soldOut: true },
       { time: 'das 18h às 22h', label: '18h–22h' },
     ],
     antecipadoDeadline: '2026-07-28T23:59:59-03:00',

@@ -62,8 +62,9 @@ export function Hero() {
                 🏖️ {ev.date} ({ev.dayOfWeek.slice(0, 4)})
               </p>
               {ev.sessions.map((s, i) => (
-                <p key={i} className="mt-1 font-display text-lg text-sdb-orange/80 sm:text-xl">
-                  {s.time}
+                <p key={i} className="mt-1 font-display text-lg sm:text-xl">
+                  <span className={s.soldOut ? 'text-sdb-text/40 line-through' : 'text-sdb-orange/80'}>{s.time}</span>
+                  {s.soldOut && <span className="ml-2 align-middle rounded-full bg-red-100 px-2 py-0.5 font-sans text-xs font-bold text-red-600">ESGOTADO</span>}
                 </p>
               ))}
             </div>
