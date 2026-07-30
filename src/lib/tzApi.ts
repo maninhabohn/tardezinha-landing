@@ -81,6 +81,7 @@ export interface PainelAutorizado { nome: string; cpf: string | null }
 export interface PainelReserva {
   id: string
   nome: string
+  whatsapp: string | null
   turno: string
   status: string
   chegou: boolean
