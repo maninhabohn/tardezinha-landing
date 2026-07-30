@@ -17,6 +17,7 @@ import { Grupo } from './pages/Grupo'
 import { Passaporte } from './pages/Passaporte'
 import { Painel } from './pages/Painel'
 import { Cozinha } from './pages/Cozinha'
+import { Central } from './pages/Central'
 
 function Home() {
   return (
@@ -45,6 +46,7 @@ function App() {
       <Route path="/passaporte" element={<Passaporte />} />
       <Route path="/painel" element={<Painel />} />
       <Route path="/cozinha" element={<Cozinha />} />
+      <Route path="/central" element={<Central />} />
       <Route path="/admin/tardezinha-stats" element={<AdminStats />} />
     </Routes>
   )
