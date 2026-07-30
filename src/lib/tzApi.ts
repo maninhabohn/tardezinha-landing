@@ -73,7 +73,7 @@ export interface PainelPedido {
   preco_unit_centavos: number
   obs: string | null
   origem: 'reserva' | 'evento'
-  status: 'recebido' | 'preparando' | 'entregue' | 'cancelado'
+  status: 'recebido' | 'preparando' | 'entregue' | 'finalizado' | 'cancelado'
   categoria?: string
 }
 export interface PainelCrianca { nome: string; status: string }

@@ -10,14 +10,23 @@ import {
 const STATUS_NEXT: Record<string, PainelPedido['status'] | null> = {
   recebido: 'preparando',
   preparando: 'entregue',
-  entregue: null,
+  entregue: 'finalizado',
+  finalizado: null,
   cancelado: null,
 }
 const STATUS_LABEL: Record<string, string> = {
   recebido: '🟡 Recebido',
   preparando: '🔵 Preparando',
   entregue: '🟢 Entregue',
+  finalizado: '⚪ Concluído',
   cancelado: '⚫ Cancelado',
+}
+const STATUS_BTN: Record<string, string> = {
+  recebido: 'bg-amber-50 text-amber-700 border-amber-200',
+  preparando: 'bg-sky-50 text-sky-700 border-sky-200',
+  entregue: 'bg-emerald-50 text-emerald-700 border-emerald-300',
+  finalizado: 'bg-gray-100 text-gray-400 border-gray-200',
+  cancelado: 'bg-gray-100 text-gray-400 border-gray-200',
 }
 
 function getKey(): string {
@@ -268,7 +277,7 @@ function FamiliaCard({
                     <button
                       onClick={() => mudarStatus(p)}
                       disabled={!STATUS_NEXT[p.status]}
-                      className="rounded-md bg-white border border-gray-300 px-2 py-1 text-xs font-semibold disabled:opacity-60"
+                      className={`rounded-md border px-2 py-1 text-xs font-semibold disabled:opacity-70 ${STATUS_BTN[p.status] ?? 'bg-white border-gray-300'}`}
                     >
                       {STATUS_LABEL[p.status]}
                     </button>
