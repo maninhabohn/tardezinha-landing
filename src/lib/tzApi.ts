@@ -68,6 +68,7 @@ export async function fetchCardapio(): Promise<CardapioItem[]> {
 // ---------- Painel da cozinha / fica (gated por chave) ----------
 export interface PainelPedido {
   id: string
+  senha?: number
   item: string
   qtd: number
   preco_unit_centavos: number
@@ -118,6 +119,17 @@ export async function setCheckin(key: string, reservaId: string, chegou: boolean
   })
   if (error) { console.error('[tzApi] checkin:', error); return { ok: false } }
   return data as { ok: boolean }
+}
+
+export async function walkin(
+  key: string, turno: string, crianca: string, responsavel?: string, whatsapp?: string,
+) {
+  const { data, error } = await supabase.rpc('tardezinha_walkin', {
+    p_key: key, p_turno: turno, p_crianca: crianca,
+    p_responsavel: responsavel ?? null, p_whatsapp: whatsapp ?? null,
+  })
+  if (error) { console.error('[tzApi] walkin:', error); return { ok: false } }
+  return data as { ok: boolean; id?: string; motivo?: string }
 }
 
 export async function setConsumoPago(key: string, reservaId: string, pago: boolean) {

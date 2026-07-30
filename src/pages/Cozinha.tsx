@@ -7,6 +7,7 @@ import { fetchPainel, type PainelReserva } from '../lib/tzApi'
 
 interface Fila {
   pedidoId: string
+  senha?: number
   item: string
   qtd: number
   obs: string | null
@@ -60,15 +61,16 @@ export function Cozinha() {
       // só o que a cozinha prepara (bebidas do bar não entram)
       if ((p.status === 'recebido' || p.status === 'preparando') && p.categoria !== 'bar') {
         fila.push({
-          pedidoId: p.id, item: p.item, qtd: p.qtd, obs: p.obs,
-          familia: r.nome, turno: r.turno, status: p.status,
+          pedidoId: p.id, senha: p.senha, item: p.item, qtd: p.qtd, obs: p.obs,
+          familia: r.criancas.map(c => c.nome).join(', ') || r.nome, turno: r.turno, status: p.status,
         })
       }
     })
   })
-  // novos primeiro, depois em preparo
-  const novos = fila.filter(f => f.status === 'recebido')
-  const preparando = fila.filter(f => f.status === 'preparando')
+  // ordena pela SENHA (ordem de chegada) dentro de cada grupo
+  const porSenha = (a: Fila, b: Fila) => (a.senha ?? 0) - (b.senha ?? 0)
+  const novos = fila.filter(f => f.status === 'recebido').sort(porSenha)
+  const preparando = fila.filter(f => f.status === 'preparando').sort(porSenha)
 
   return (
     <div className="min-h-screen bg-gray-900 text-white pb-10">
@@ -110,11 +112,14 @@ export function Cozinha() {
 function FilaCard({ f, destaque = false }: { f: Fila; destaque?: boolean }) {
   return (
     <div className={`rounded-2xl p-4 flex items-center gap-4 ${destaque ? 'bg-amber-500/15 border-2 border-amber-500' : 'bg-gray-800 border border-gray-700'}`}>
-      <div className="text-4xl font-black tabular-nums w-16 text-center shrink-0">{f.qtd}×</div>
+      <div className="w-20 text-center shrink-0">
+        <div className="text-4xl font-black tabular-nums leading-none">{f.senha != null ? `#${f.senha}` : '—'}</div>
+        <div className="text-[11px] uppercase tracking-wide text-gray-400 mt-1">senha</div>
+      </div>
       <div className="min-w-0 flex-1">
-        <p className="text-2xl font-extrabold leading-tight">{f.item}</p>
+        <p className="text-2xl font-extrabold leading-tight">{f.qtd}× {f.item}</p>
         {f.obs && <p className="text-amber-300 text-sm font-semibold mt-0.5">⚠️ {f.obs}</p>}
-        <p className="text-gray-400 text-sm mt-1 truncate">{f.familia} · {f.turno.replace('30jul|', '')}</p>
+        <p className="text-gray-400 text-sm mt-1 truncate">👧 {f.familia} · {f.turno.replace('30jul|', '')}</p>
       </div>
     </div>
   )

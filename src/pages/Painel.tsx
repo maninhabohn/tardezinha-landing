@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react'
 import {
-  fetchPainel, setPedidoStatus, addPedido, fetchCardapio, setCheckin, setConsumoPago,
+  fetchPainel, setPedidoStatus, addPedido, fetchCardapio, setCheckin, setConsumoPago, walkin,
   formatBRL, type PainelReserva, type CardapioItem, type PainelPedido,
 } from '../lib/tzApi'
 
@@ -42,6 +42,12 @@ export function Painel() {
   const [cardapio, setCardapio] = useState<CardapioItem[]>([])
   const [turnoFiltro, setTurnoFiltro] = useState<string>('todos')
   const [busca, setBusca] = useState('')
+  const [walkinOpen, setWalkinOpen] = useState(false)
+  const [wCrianca, setWCrianca] = useState('')
+  const [wResp, setWResp] = useState('')
+  const [wWhats, setWWhats] = useState('')
+  const [wTurno, setWTurno] = useState('')
+  const [wSaving, setWSaving] = useState(false)
 
   const carregar = useCallback(async () => {
     if (!key) { setStatus('negado'); return }
@@ -80,6 +86,7 @@ export function Painel() {
     .filter(r => {
       if (!qBusca) return true
       if (r.nome.toLowerCase().includes(qBusca)) return true
+      if (r.criancas.some(c => c.nome.toLowerCase().includes(qBusca))) return true
       if (qDigitos && (r.whatsapp || '').replace(/\D/g, '').includes(qDigitos)) return true
       return false
     })
@@ -89,6 +96,17 @@ export function Painel() {
   const pedidosPendentes = visiveis.reduce(
     (s, r) => s + r.pedidos.filter(p => p.status === 'recebido' || p.status === 'preparando').length, 0)
   const totalReceber = visiveis.filter(r => !r.consumo_pago).reduce((s, r) => s + r.consumo_centavos, 0)
+
+  async function addWalkin() {
+    if (!wCrianca.trim() || !wTurno) return
+    setWSaving(true)
+    const res = await walkin(key, wTurno, wCrianca, wResp, wWhats)
+    setWSaving(false)
+    if (res.ok) {
+      setWCrianca(''); setWResp(''); setWWhats(''); setWalkinOpen(false)
+      carregar()
+    }
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 pb-16">
@@ -154,6 +172,37 @@ export function Painel() {
         </div>
       )}
 
+      {/* Adicionar criança na hora (walk-in) */}
+      <div className="px-4 pt-1 pb-1">
+        {!walkinOpen ? (
+          <button
+            onClick={() => { setWalkinOpen(true); setWTurno(turnos[0] ?? '') }}
+            className="w-full rounded-lg border-2 border-dashed border-sdb-purple/40 py-2.5 text-sm font-bold text-sdb-purple active:bg-sdb-purple/5"
+          >➕ Adicionar criança na hora</button>
+        ) : (
+          <div className="rounded-xl bg-white border-2 border-sdb-purple/40 p-4 shadow-sm space-y-2">
+            <p className="text-sm font-bold text-sdb-purple">➕ Nova inscrição na hora</p>
+            <input value={wCrianca} onChange={e => setWCrianca(e.target.value)} placeholder="Nome da CRIANÇA *" autoFocus
+              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-sdb-purple focus:outline-none" />
+            <input value={wResp} onChange={e => setWResp(e.target.value)} placeholder="Responsável (opcional)"
+              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-sdb-purple focus:outline-none" />
+            <input value={wWhats} onChange={e => setWWhats(e.target.value)} placeholder="WhatsApp (opcional)" inputMode="tel"
+              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-sdb-purple focus:outline-none" />
+            <select value={wTurno} onChange={e => setWTurno(e.target.value)}
+              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm bg-white focus:border-sdb-purple focus:outline-none">
+              {turnos.map(t => <option key={t} value={t}>Turno {t.replace('30jul|', '')}</option>)}
+            </select>
+            <div className="flex gap-2 pt-1">
+              <button onClick={() => setWalkinOpen(false)} className="flex-1 rounded-lg border border-gray-300 py-2.5 text-sm font-semibold text-gray-600">Cancelar</button>
+              <button onClick={addWalkin} disabled={wSaving || !wCrianca.trim()}
+                className="flex-1 rounded-lg bg-sdb-purple py-2.5 text-sm font-bold text-white disabled:opacity-50">
+                {wSaving ? 'Adicionando…' : 'Adicionar'}
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+
       {/* Lista de famílias */}
       <div className="space-y-3 px-4">
         {visiveis.length === 0 && (
@@ -190,8 +239,21 @@ function FamiliaCard({
   const [salvando, setSalvando] = useState(false)
   const [chegLoad, setChegLoad] = useState(false)
   const [pagLoad, setPagLoad] = useState(false)
+  const [copiado, setCopiado] = useState(false)
 
   const pago = r.status === 'pago'
+  const nomesCriancas = r.criancas.map(c => c.nome).filter(Boolean)
+  const tituloCard = nomesCriancas.length ? nomesCriancas.join(' · ') : r.nome
+  const abertos = r.pedidos.filter(p => p.status === 'recebido' || p.status === 'preparando')
+  const telDig = (r.whatsapp || '').replace(/\D/g, '')
+  const telZap = telDig.length >= 12 ? telDig : '55' + telDig
+
+  function copiarTel() {
+    if (!r.whatsapp) return
+    navigator.clipboard?.writeText(r.whatsapp)
+      .then(() => { setCopiado(true); setTimeout(() => setCopiado(false), 1500) })
+      .catch(() => {})
+  }
 
   async function toggleChegou() {
     setChegLoad(true)
@@ -237,20 +299,27 @@ function FamiliaCard({
         <button onClick={() => setAberto(a => !a)} className="flex-1 min-w-0 flex items-center justify-between gap-3 p-4 text-left">
           <div className="min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
-              <p className="font-bold text-gray-800 truncate">{r.nome}</p>
-              {pago
-                ? <span className="rounded-full bg-emerald-100 text-emerald-700 text-[10px] font-bold px-2 py-0.5">✅ PAGO</span>
-                : <span className="rounded-full bg-amber-100 text-amber-700 text-[10px] font-bold px-2 py-0.5">⏳ PENDENTE</span>}
+              <p className="font-bold text-gray-800 truncate">{tituloCard}</p>
+              {!pago && <span className="rounded-full bg-amber-100 text-amber-700 text-[10px] font-bold px-2 py-0.5">⏳ ENTRADA</span>}
             </div>
-            <p className="text-xs text-gray-500 mt-0.5">{r.turno} · {r.qtd_criancas} criança(s)</p>
+            <p className="text-xs text-gray-500 mt-0.5">resp. {r.nome} · {r.turno.replace('30jul|', '')}</p>
             {r.whatsapp && <p className="text-xs font-semibold text-gray-600 mt-0.5">📱 {r.whatsapp}</p>}
+            {abertos.length > 0 && (
+              <div className="flex flex-wrap gap-1 mt-1">
+                {abertos.map(p => (
+                  <span key={p.id} className="rounded bg-gray-800 text-white text-[10px] font-bold px-1.5 py-0.5">#{p.senha} {p.item.split(' ')[0]}</span>
+                ))}
+              </div>
+            )}
           </div>
-          {r.consumo_centavos > 0 && (
+          {r.consumo_centavos > 0 ? (
             <div className="text-right shrink-0">
               <p className="text-[10px] text-gray-400 leading-none">lanches</p>
               <p className={`font-bold whitespace-nowrap ${r.consumo_pago ? 'text-gray-300 line-through' : 'text-sdb-purple'}`}>{formatBRL(r.consumo_centavos)}</p>
               {r.consumo_pago && <p className="text-[9px] text-emerald-600 font-bold leading-none">✓ pago</p>}
             </div>
+          ) : (
+            <span className="shrink-0 rounded-full bg-emerald-50 text-emerald-600 text-[10px] font-bold px-2 py-1 whitespace-nowrap">✓ nada a pagar</span>
           )}
         </button>
         <button
@@ -265,6 +334,17 @@ function FamiliaCard({
 
       {aberto && (
         <div className="border-t border-gray-100 p-4 space-y-4">
+          {/* Contato do responsável — a porta liga/manda zap pros pais */}
+          {r.whatsapp && (
+            <div className="rounded-lg bg-emerald-50 border border-emerald-200 p-2.5">
+              <p className="text-[11px] text-emerald-800 mb-1.5">📱 <strong>{r.nome}</strong> · {r.whatsapp}</p>
+              <div className="flex gap-2">
+                <a href={`tel:+${telZap}`} className="flex-1 rounded-md bg-emerald-500 text-white text-xs font-bold py-2 text-center active:scale-95">📞 Ligar</a>
+                <a href={`https://wa.me/${telZap}`} target="_blank" rel="noopener noreferrer" className="flex-1 rounded-md bg-emerald-600 text-white text-xs font-bold py-2 text-center active:scale-95">💬 Zap</a>
+                <button onClick={copiarTel} className="flex-1 rounded-md border border-gray-300 bg-white text-gray-700 text-xs font-bold py-2 active:scale-95">{copiado ? '✓ Copiado' : '⧉ Copiar'}</button>
+              </div>
+            </div>
+          )}
           {/* Crianças */}
           <div>
             <p className="text-xs font-bold text-gray-500 mb-1">CRIANÇAS</p>
@@ -304,6 +384,7 @@ function FamiliaCard({
                 <div key={p.id} className="flex items-center justify-between gap-2 rounded-lg bg-gray-50 px-3 py-2">
                   <div className="min-w-0">
                     <p className="text-sm text-gray-800">
+                      {p.senha != null && <span className="mr-1.5 rounded bg-gray-800 text-white text-[10px] font-bold px-1.5 py-0.5 align-middle">#{p.senha}</span>}
                       <strong>{p.qtd}×</strong> {p.item}
                       {p.preco_unit_centavos > 0 && <span className="text-gray-400"> · {formatBRL(p.preco_unit_centavos * p.qtd)}</span>}
                       {p.origem === 'evento' && <span className="ml-1 text-[10px] text-amber-600">(no dia)</span>}
