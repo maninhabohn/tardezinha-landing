@@ -260,7 +260,7 @@ export function Reservar() {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
     const err = validate()
-    if (err) { setErro(err); return }
+    if (err) { setErro(err); window.scrollTo({ top: 0, behavior: 'smooth' }); return }
     setErro('')
     setStep('enviando')
 
@@ -811,8 +811,8 @@ export function Reservar() {
           </div>
         </fieldset>
 
-        <button type="submit" disabled={!aceitouTermo}
-          className="w-full rounded-xl bg-sdb-purple py-4 text-lg font-bold text-white shadow-lg transition hover:bg-sdb-purple-dark disabled:opacity-40 disabled:hover:bg-sdb-purple">
+        <button type="submit"
+          className="w-full rounded-xl bg-sdb-purple py-4 text-lg font-bold text-white shadow-lg transition hover:bg-sdb-purple-dark active:scale-[0.99]">
           {retornante ? 'CONFIRMAR PRESENÇA →' : 'GARANTIR MINHA VAGA →'}
         </button>
         <p className="mt-2 text-center text-xs text-gray-400">Teus dados são usados só pra organizar a Tardezinha e te avisar das próximas edições.</p>

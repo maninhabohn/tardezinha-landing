@@ -171,6 +171,12 @@ function FamiliaCard({
     onChange()
   }
 
+  async function cancelarPedido(p: PainelPedido) {
+    if (!window.confirm(`Cancelar ${p.qtd}× ${p.item}? (pra trocar, cancela e adiciona o certo)`)) return
+    await setPedidoStatus(chave, p.id, 'cancelado')
+    onChange()
+  }
+
   async function adicionar() {
     const item = cardapio.find(c => c.id === addItem)
     if (!item) return
@@ -258,13 +264,20 @@ function FamiliaCard({
                     </p>
                     {p.obs && <p className="text-[11px] text-gray-400">{p.obs}</p>}
                   </div>
-                  <button
-                    onClick={() => mudarStatus(p)}
-                    disabled={!STATUS_NEXT[p.status]}
-                    className="shrink-0 rounded-md bg-white border border-gray-300 px-2 py-1 text-xs font-semibold disabled:opacity-60"
-                  >
-                    {STATUS_LABEL[p.status]}
-                  </button>
+                  <div className="flex items-center gap-1.5 shrink-0">
+                    <button
+                      onClick={() => mudarStatus(p)}
+                      disabled={!STATUS_NEXT[p.status]}
+                      className="rounded-md bg-white border border-gray-300 px-2 py-1 text-xs font-semibold disabled:opacity-60"
+                    >
+                      {STATUS_LABEL[p.status]}
+                    </button>
+                    <button
+                      onClick={() => cancelarPedido(p)}
+                      title="Cancelar / trocar pedido"
+                      className="rounded-md border border-red-200 text-red-500 px-2 py-1 text-xs font-bold hover:bg-red-50 active:scale-95"
+                    >✕</button>
+                  </div>
                 </div>
               ))}
             </div>
