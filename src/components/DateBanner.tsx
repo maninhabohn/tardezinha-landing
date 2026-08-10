@@ -26,7 +26,7 @@ export function DateBanner() {
       <Bandeirinhas />
       <p className="font-display text-sm font-bold tracking-wide text-sdb-yellow sm:text-base pt-1">
         <span className="inline-block">
-          🏖️ {EVENT_THEME}
+          🎈 {EVENT_THEME}
         </span>
         <span className="mx-2 hidden text-white/50 sm:inline">|</span>
         <br className="sm:hidden" />

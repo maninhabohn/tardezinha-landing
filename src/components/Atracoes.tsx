@@ -59,7 +59,7 @@ export function Atracoes() {
       <div className="mx-auto max-w-6xl">
         <div className="text-center">
           <p className="mb-2 inline-block rounded-full bg-sdb-yellow px-4 py-1 text-sm font-bold text-sdb-purple uppercase">
-            Edição de Férias 🏖️
+            Tardezinha de Domingo 🎈
           </p>
           <h2 className="font-display text-4xl text-sdb-yellow sm:text-5xl">
             A festa fica assim:

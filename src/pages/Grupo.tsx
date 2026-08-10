@@ -28,7 +28,7 @@ const SESSION_OPTIONS = EVENTS.flatMap(ev =>
 )
 
 export function Grupo() {
-  useEffect(() => { document.title = 'Inscrição de Grupo — Tardezinha de Férias' }, [])
+  useEffect(() => { document.title = 'Inscrição de Grupo — Tardezinha de Domingo' }, [])
   const [step, setStep] = useState<'form' | 'enviando' | 'ok'>('form')
 
   const [sessao, setSessao] = useState(SESSION_OPTIONS[0]?.value ?? '')

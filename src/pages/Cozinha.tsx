@@ -119,7 +119,7 @@ function FilaCard({ f, destaque = false }: { f: Fila; destaque?: boolean }) {
       <div className="min-w-0 flex-1">
         <p className="text-2xl font-extrabold leading-tight">{f.qtd}× {f.item}</p>
         {f.obs && <p className="text-amber-300 text-sm font-semibold mt-0.5">⚠️ {f.obs}</p>}
-        <p className="text-gray-400 text-sm mt-1 truncate">👧 {f.familia} · {f.turno.replace('30jul|', '')}</p>
+        <p className="text-gray-400 text-sm mt-1 truncate">👧 {f.familia} · {f.turno.replace(/^[^|]+\|/, '')}</p>
       </div>
     </div>
   )

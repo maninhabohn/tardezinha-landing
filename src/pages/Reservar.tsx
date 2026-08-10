@@ -93,7 +93,7 @@ const TERMO_TEXTO = `DECLARO QUE:
 type Modo = 'escolha' | 'confirmar_cpf' | 'form'
 
 export function Reservar() {
-  useEffect(() => { document.title = 'Inscrição — Tardezinha de Férias' }, [])
+  useEffect(() => { document.title = 'Inscrição — Tardezinha de Domingo' }, [])
 
   const tokenUrl = new URLSearchParams(window.location.search).get('c') ?? ''
 
@@ -372,7 +372,7 @@ export function Reservar() {
       ? `\n🍽️ Lanche reservado (paga na saída): ${pedidos.map(p => `${p.qtd}× ${p.item_nome}`).join(', ')}`
       : ''
     const saudacao = retornante ? 'Oi! Quero confirmar minha presença' : 'Oi! Acabei de garantir minha vaga'
-    const msg = `${saudacao} na Tardezinha de Férias ${selectedOption?.eventDate} (${selectedOption?.sessionLabel}).\n\n📝 Nome: ${nome.trim()}\n👧 Crianças: ${idadesStr}${linhaValorGrupo}\n💰 Estimativa ingresso: R$ ${totalEstimado.toFixed(2).replace('.', ',')}${linhaLanche}\n\nTô pronta pra fechar o Pix!`
+    const msg = `${saudacao} na Tardezinha de Domingo ${selectedOption?.eventDate} (${selectedOption?.sessionLabel}).\n\n📝 Nome: ${nome.trim()}\n👧 Crianças: ${idadesStr}${linhaValorGrupo}\n💰 Estimativa ingresso: R$ ${totalEstimado.toFixed(2).replace('.', ',')}${linhaLanche}\n\nTô pronta pra fechar o Pix!`
     setWhatsappUrl(whatsappLink(msg))
 
     if (typeof window.fbq === 'function') window.fbq('track', 'Lead')
@@ -412,7 +412,7 @@ export function Reservar() {
           </a>
           <div className="mt-10 rounded-2xl bg-white p-6 text-left shadow-md border border-gray-200">
             <p className="text-lg font-bold text-gray-800 mb-3">Enquanto isso, anota:</p>
-            <p className="mb-1 text-gray-700">🏖️ <strong>{selectedOption?.label}</strong> · Edição de Férias</p>
+            <p className="mb-1 text-gray-700">🎈 <strong>{selectedOption?.label}</strong> · Tardezinha de Domingo</p>
             <p className="mb-1 text-gray-700">📍 Av. G, 101 — Atlântida, Xangri-Lá — RS</p>
             <p className="mt-4 text-sm text-gray-500 font-semibold">Pix em até 24h pra garantir a vaga.</p>
           </div>
@@ -429,7 +429,7 @@ export function Reservar() {
         <DateBanner />
         <div className="bg-amber-50 border-b border-amber-200 px-4 pt-6 pb-6 text-center">
           <Logo size={100} className="mb-3" />
-          <h1 className="text-2xl font-bold text-gray-800 sm:text-3xl">Tardezinha de Férias 🏖️</h1>
+          <h1 className="text-2xl font-bold text-gray-800 sm:text-3xl">Tardezinha de Domingo 🎈</h1>
           <p className="mt-2 text-base text-gray-600">É tua primeira vez ou tu já é da casa?</p>
         </div>
         <div className="mx-auto max-w-lg px-4 py-8 space-y-5">
@@ -456,7 +456,7 @@ export function Reservar() {
               é só conferir e confirmar. A gente te manda no WhatsApp 💚
             </p>
             <a
-              href={whatsappLink('Oi! Já sou cliente e quero confirmar minha presença na Tardezinha de quinta. Pode me mandar o link?')}
+              href={whatsappLink('Oi! Já sou cliente e quero confirmar minha presença na Tardezinha de domingo. Pode me mandar o link?')}
               target="_blank" rel="noopener noreferrer"
               className="mt-4 inline-block rounded-xl bg-emerald-500 px-6 py-3 text-sm font-bold text-white shadow"
             >Quero meu link de acesso rápido →</a>
@@ -476,7 +476,7 @@ export function Reservar() {
             <Logo size={90} className="mb-3" />
             <h1 className="text-2xl font-bold text-gray-800">Que bom te ver de novo! 💚</h1>
             <p className="mt-2 text-gray-600">
-              Confirma teu <strong>CPF</strong> pra abrir teu cadastro e garantir a vaga de quinta.
+              Confirma teu <strong>CPF</strong> pra abrir teu cadastro e garantir a vaga de domingo.
             </p>
           </div>
           <form onSubmit={handleUnlock} className="rounded-2xl bg-white border border-gray-200 p-6 shadow-sm">
@@ -519,12 +519,12 @@ export function Reservar() {
         <h1 className="text-2xl font-bold text-gray-800 leading-tight sm:text-3xl">
           {retornante
             ? <>Confirma tua vaga,<br />{nomeSaudacao || 'de novo'} 💚</>
-            : <>Garante tua vaga na<br />Tardezinha de Férias 🏖️</>}
+            : <>Garante tua vaga na<br />Tardezinha de Domingo 🎈</>}
         </h1>
         <p className="mt-2 text-base text-gray-600">
           {retornante
             ? 'Teu cadastro já tá aqui — é só conferir, marcar quem vai e confirmar.'
-            : 'Férias escolares + 4 horas de diversão. Tu descansa, a criançada brinca.'}
+            : 'Domingo à tarde + 4 horas de diversão. Tu descansa, a criançada brinca.'}
         </p>
         <div className="mt-3 inline-block rounded-lg bg-sdb-purple/10 px-5 py-2">
           <p className="text-lg text-sdb-purple-dark font-bold">R$45 antecipado · R$50 na hora · Adulto não paga</p>

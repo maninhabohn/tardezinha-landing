@@ -21,7 +21,7 @@ export function Hero() {
 
         {/* Kicker — pre-titulo */}
         <p className="font-display text-sm uppercase tracking-[0.25em] text-sdb-pink">
-          🏖️ Edição de Férias · Julho 2026
+          🎈 Tardezinha de Domingo · Agosto 2026
         </p>
 
         {/* Titulo principal */}
@@ -31,9 +31,9 @@ export function Hero() {
           <span className="text-sdb-purple-dark">SHOW DE BOLA</span>
         </h1>
 
-        {/* Subtítulo edição de férias */}
+        {/* Subtítulo — domingo à tarde */}
         <p className="mt-4 font-display text-xl text-sdb-orange sm:text-2xl">
-          Férias escolares + mais de 20 brinquedos + 4 horas de diversão.
+          Domingo à tarde + mais de 20 brinquedos + 4 horas de diversão.
         </p>
 
         {/* Jargão âncora da campanha — DESTAQUE */}
@@ -47,7 +47,7 @@ export function Hero() {
 
         {/* Descrição complementar */}
         <p className="mx-auto mt-6 max-w-xl text-base text-sdb-text/85 sm:text-lg">
-          Férias escolares — deixa a criançada com a gente e vai pro happy hour, pro jantar, pro beach tênis. A gente cuida. Tu busca um filho{' '}
+          Domingo à tarde — deixa a criançada com a gente e recarrega: um café sem pressa, um cochilo, o rolê dos amigos. A gente cuida. Tu busca um filho{' '}
           <strong className="text-sdb-purple">cansado, alimentado e feliz</strong>.
         </p>
 
@@ -59,7 +59,7 @@ export function Hero() {
               className="inline-block rotate-[-1deg] rounded-2xl bg-white px-7 py-5 shadow-xl ring-4 ring-sdb-orange/40"
             >
               <p className="font-display text-xl text-sdb-orange sm:text-2xl">
-                🏖️ {ev.date} ({ev.dayOfWeek.slice(0, 4)})
+                🎈 {ev.date} ({ev.dayOfWeek.slice(0, 3)})
               </p>
               {ev.sessions.map((s, i) => (
                 <p key={i} className="mt-1 font-display text-lg sm:text-xl">

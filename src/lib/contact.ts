@@ -24,15 +24,14 @@ export interface TardezinhaEvent {
 
 export const EVENTS: TardezinhaEvent[] = [
   {
-    id: '30jul',
-    date: '30/07/2026',
-    dateLong: '30 DE JULHO',
-    dayOfWeek: 'quinta-feira',
+    id: '16ago',
+    date: '16/08/2026',
+    dateLong: '16 DE AGOSTO',
+    dayOfWeek: 'domingo',
     sessions: [
-      { time: 'das 14h às 18h', label: '14h–18h', soldOut: true },
-      { time: 'das 18h às 22h', label: '18h–22h' },
+      { time: 'das 14h às 18h', label: '14h–18h', soldOut: false },
     ],
-    antecipadoDeadline: '2026-07-28T23:59:59-03:00',
+    antecipadoDeadline: '2026-08-14T23:59:59-03:00',
   },
 ]
 
@@ -42,7 +41,7 @@ export const EVENT_DATE_LONG = EVENTS[0].dateLong
 export const EVENT_DAY_OF_WEEK = EVENTS[0].dayOfWeek
 export const EVENT_TIME_LABEL = EVENTS[0].sessions[0].time
 export const EVENT_ADDRESS = 'Av. G, 101 — Atlântida, Xangri-Lá — RS, 95588-000'
-export const EVENT_THEME = 'Edição de Férias 🏖️'
+export const EVENT_THEME = 'Tardezinha de Domingo'
 
 // Prazo do antecipado — mais proximo
 export const ANTECIPADO_DEADLINE = EVENTS[0].antecipadoDeadline
@@ -52,7 +51,7 @@ export const GOOGLE_MAPS_URL =
   encodeURIComponent('Av. G, 101 - Atlântida, Xangri-lá - RS')
 
 // Mensagens padrao do WhatsApp em "tu"
-export const defaultWhatsappMessage = `Oi! Quero ingresso da Tardezinha de Férias.`
+export const defaultWhatsappMessage = `Oi! Quero ingresso da Tardezinha de Domingo.`
 
 import { getUtmSuffix } from './utm'
 

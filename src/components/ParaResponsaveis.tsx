@@ -11,14 +11,14 @@ const opcoes: Opcao[] = [
     descricao: 'Começa cedo, termina no horário',
   },
   {
-    emoji: '🍽️',
-    titulo: 'Jantar',
-    descricao: 'Com calma, sem correria',
+    emoji: '☕',
+    titulo: 'Café da Tarde',
+    descricao: 'Quentinho, sentado, sem pressa',
   },
   {
-    emoji: '🏖️',
-    titulo: 'Beach Tênis',
-    descricao: 'Aquela partida que tu não consegue marcar',
+    emoji: '😴',
+    titulo: 'Cochilo de Domingo',
+    descricao: 'O luxo de dormir de tarde',
   },
   {
     emoji: '👯',
@@ -36,13 +36,13 @@ export function ParaResponsaveis() {
             E pra ti, mãe e pai
           </p>
           <h2 className="font-display text-5xl text-sdb-purple sm:text-6xl">
-            A NOITE
+            A TARDE
             <br />
             <span className="text-sdb-pink">É TUA</span>
           </h2>
           <p className="mx-auto mt-6 max-w-2xl text-lg text-sdb-text sm:text-xl">
             Deixa a criançada com a gente.{' '}
-            <strong className="text-sdb-purple">Vai viver tua noite.</strong>
+            <strong className="text-sdb-purple">Vai viver tua tarde.</strong>
           </p>
           <p className="mx-auto mt-4 max-w-3xl text-base text-sdb-text/80">
             São <strong>4 horas</strong> com a criançada brincando à vontade — mais de 20 brinquedos liberados, equipe de monitoria de olho, pipoca e água cortesia. Tu? Tu vai pra onde quiser.

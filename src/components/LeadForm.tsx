@@ -10,7 +10,7 @@ type Status =
   | { kind: 'error'; message: string }
 
 // Edicao atual — atualizar quando virar a proxima
-const EDICAO = '2026-07-30'
+const EDICAO = '2026-08-16'
 
 function sanitize(value: string) {
   return value.trim().slice(0, 200)
@@ -68,7 +68,7 @@ export function LeadForm() {
     }
 
     // Redireciona pro WhatsApp pre-preenchido (whatsappLink ja anexa [utm:...] se houver)
-    const msgTexto = `Oi! Quero ingresso da Tardezinha de Férias. Sou ${nomeClean} e levo ${criancasNum} criança${criancasNum > 1 ? 's' : ''}.`
+    const msgTexto = `Oi! Quero ingresso da Tardezinha de Domingo. Sou ${nomeClean} e levo ${criancasNum} criança${criancasNum > 1 ? 's' : ''}.`
     setTimeout(() => {
       window.location.href = whatsappLink(msgTexto)
     }, 1500)
@@ -88,7 +88,7 @@ export function LeadForm() {
           Chama no WhatsApp que a gente fecha rapidinho.
         </p>
         <a
-          href={whatsappLink('Oi! Quero ingresso da Tardezinha de Férias.')}
+          href={whatsappLink('Oi! Quero ingresso da Tardezinha de Domingo.')}
           target="_blank"
           rel="noopener noreferrer"
           onClick={trackWhatsappLead}

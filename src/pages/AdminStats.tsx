@@ -45,6 +45,7 @@ const EDICOES_AGENDADAS: EdicaoInfo[] = [
   { marker: '23jul|14h–18h',  label: '23/07 · 14h-18h',           data: '2026-07-23', passada: '2026-07-23' < HOJE_ISO },
   { marker: '30jul|14h–18h',  label: '30/07 · Turno 1 (tarde)',   data: '2026-07-30', passada: '2026-07-30' < HOJE_ISO },
   { marker: '30jul|18h–22h',  label: '30/07 · Turno 2 (noite)',   data: '2026-07-30', passada: '2026-07-30' < HOJE_ISO },
+  { marker: '16ago|14h–18h',  label: '16/08 · 14h-18h (domingo)', data: '2026-08-16', passada: '2026-08-16' < HOJE_ISO },
 ]
 function edicaoInfo(marker: string): EdicaoInfo {
   const fixa = EDICOES_AGENDADAS.find(e => e.marker === marker)
@@ -133,7 +134,7 @@ function exportCSV(reservas: Reserva[]) {
 }
 
 export function AdminStats() {
-  useEffect(() => { document.title = 'Controle de Inscrições — Admin Tardezinha de Férias' }, [])
+  useEffect(() => { document.title = 'Controle de Inscrições — Admin Tardezinha de Domingo' }, [])
   const params = new URLSearchParams(window.location.search)
   const key = params.get('key') || ''
 
@@ -272,7 +273,7 @@ export function AdminStats() {
       <header className="bg-purple-800 text-white px-4 py-4">
         <div className="mx-auto max-w-5xl flex items-center justify-between">
           <div>
-            <h1 className="text-xl font-bold">Tardezinha Férias — Admin</h1>
+            <h1 className="text-xl font-bold">Tardezinha Domingo — Admin</h1>
             <p className="text-sm text-purple-200">Painel de reservas</p>
           </div>
           <div className="flex gap-2">
