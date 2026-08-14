@@ -6,6 +6,9 @@ import { useEffect, useState } from 'react'
 // nas próprias páginas (elas checam no banco) — aqui é só pra montar os links.
 
 const BASE = 'https://tardezinha.showdebolars.com.br'
+// O Admin usa uma chave PRÓPRIA (?key=), diferente da chave do painel (?k=).
+// Sem ela a página abre em "Chave inválida" — era o link quebrado da central.
+const ADMIN_KEY = (import.meta.env.VITE_ADMIN_KEY ?? '').replace(/^﻿/, '').trim()
 
 interface LinkCard {
   nome: string
@@ -25,9 +28,10 @@ function buildCards(k: string): LinkCard[] {
   ]
   if (!k) return publicos
   const equipe: LinkCard[] = [
+    { nome: 'Inscritos', desc: 'Quantos já se inscreveram + a lista de nomes. Só o básico.', ico: '🧾', url: `${BASE}/inscritos?k=${k}`, grad: 'linear-gradient(150deg,#6d5bd0,#43349b)', team: true },
     { nome: 'Painel · Bar/Recepção', desc: 'Recepção confere · Bar recebe pedido. Uso no dia.', ico: '🛎️', url: `${BASE}/painel?k=${k}`, grad: 'linear-gradient(150deg,#12b57e,#0a7d58)', team: true },
     { nome: 'Tela da Cozinha', desc: 'Só leitura — o que preparar. Põe num tablet/TV.', ico: '🍳', url: `${BASE}/cozinha?k=${k}`, grad: 'linear-gradient(150deg,#b5642c,#7d3f17)', team: true },
-    { nome: 'Admin', desc: 'Números das inscrições — visão interna.', ico: '📊', url: `${BASE}/admin/tardezinha-stats`, grad: 'linear-gradient(150deg,#3b7bf0,#2350c4)', team: true },
+    { nome: 'Admin · Inscritos', desc: 'Lista de inscritos + números das inscrições.', ico: '📊', url: `${BASE}/admin/tardezinha-stats?key=${ADMIN_KEY}`, grad: 'linear-gradient(150deg,#3b7bf0,#2350c4)', team: true },
   ]
   return [...publicos, ...equipe]
 }

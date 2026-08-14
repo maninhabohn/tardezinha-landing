@@ -18,6 +18,7 @@ import { Passaporte } from './pages/Passaporte'
 import { Painel } from './pages/Painel'
 import { Cozinha } from './pages/Cozinha'
 import { Central } from './pages/Central'
+import { Inscritos } from './pages/Inscritos'
 
 function Home() {
   return (
@@ -47,6 +48,7 @@ function App() {
       <Route path="/painel" element={<Painel />} />
       <Route path="/cozinha" element={<Cozinha />} />
       <Route path="/central" element={<Central />} />
+      <Route path="/inscritos" element={<Inscritos />} />
       <Route path="/admin/tardezinha-stats" element={<AdminStats />} />
     </Routes>
   )
