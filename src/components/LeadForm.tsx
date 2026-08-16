@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { supabase, isSupabaseConfigured } from '../lib/supabase'
-import { whatsappLink, trackWhatsappLead } from '../lib/contact'
+import { whatsappLink, trackWhatsappLead, INSCRICOES_ABERTAS } from '../lib/contact'
 import { getUtmParams } from '../lib/utm'
 
 type Status =
@@ -68,7 +68,10 @@ export function LeadForm() {
     }
 
     // Redireciona pro WhatsApp pre-preenchido (whatsappLink ja anexa [utm:...] se houver)
-    const msgTexto = `Oi! Quero ingresso da Tardezinha de Domingo. Sou ${nomeClean} e levo ${criancasNum} criança${criancasNum > 1 ? 's' : ''}.`
+    const plural = criancasNum > 1 ? 's' : ''
+    const msgTexto = INSCRICOES_ABERTAS
+      ? `Oi! Quero ingresso da Tardezinha de Domingo. Sou ${nomeClean} e levo ${criancasNum} criança${plural}.`
+      : `Oi! Quero saber da data nova da Tardezinha. Sou ${nomeClean} e levo ${criancasNum} criança${plural}.`
     setTimeout(() => {
       window.location.href = whatsappLink(msgTexto)
     }, 1500)
@@ -82,13 +85,19 @@ export function LeadForm() {
       <div className="rounded-3xl bg-white p-6 text-center shadow-lg sm:p-8">
         <p className="text-5xl">📱</p>
         <h3 className="mt-3 font-display text-2xl text-sdb-purple sm:text-3xl">
-          Garante tua vaga agora
+          {INSCRICOES_ABERTAS ? 'Garante tua vaga agora' : 'Quer saber da próxima Tardezinha?'}
         </h3>
         <p className="mt-2 text-sm text-sdb-text/70">
-          Chama no WhatsApp que a gente fecha rapidinho.
+          {INSCRICOES_ABERTAS
+            ? 'Chama no WhatsApp que a gente fecha rapidinho.'
+            : 'Chama no WhatsApp que a gente te avisa da data nova.'}
         </p>
         <a
-          href={whatsappLink('Oi! Quero ingresso da Tardezinha de Domingo.')}
+          href={whatsappLink(
+            INSCRICOES_ABERTAS
+              ? 'Oi! Quero ingresso da Tardezinha de Domingo.'
+              : 'Oi! Quero saber da data nova da Tardezinha.',
+          )}
           target="_blank"
           rel="noopener noreferrer"
           onClick={trackWhatsappLead}
@@ -108,7 +117,11 @@ export function LeadForm() {
           Beleza! Tô te levando pro WhatsApp agora.
         </h3>
         <p className="mt-2 text-base text-emerald-700">
-          Manda <strong>"oi"</strong> que a gente fecha tua vaga em 5 minutos.
+          {INSCRICOES_ABERTAS ? (
+            <>Manda <strong>"oi"</strong> que a gente fecha tua vaga em 5 minutos.</>
+          ) : (
+            <>Tá anotado. Assim que a data nova sair, tu é a primeira a saber.</>
+          )}
         </p>
       </div>
     )
@@ -122,10 +135,14 @@ export function LeadForm() {
     >
       <div className="text-center">
         <h3 className="font-display text-2xl text-sdb-purple sm:text-3xl">
-          Garante tua vaga em 30 segundos
+          {INSCRICOES_ABERTAS
+            ? 'Garante tua vaga em 30 segundos'
+            : 'Quer saber da próxima Tardezinha?'}
         </h3>
         <p className="mt-2 text-sm text-sdb-text/70">
-          A gente te chama no WhatsApp pra fechar.
+          {INSCRICOES_ABERTAS
+            ? 'A gente te chama no WhatsApp pra fechar.'
+            : 'Deixa teu contato que a gente te avisa assim que a data nova sair.'}
         </p>
       </div>
 
@@ -207,7 +224,11 @@ export function LeadForm() {
         disabled={isSubmitting}
         className="mt-6 w-full rounded-full bg-emerald-500 px-6 py-4 font-display text-lg text-white shadow-lg transition hover:scale-[1.02] hover:bg-emerald-600 disabled:cursor-not-allowed disabled:opacity-60"
       >
-        {isSubmitting ? 'Enviando...' : 'Quero garantir minha vaga →'}
+        {isSubmitting
+          ? 'Enviando...'
+          : INSCRICOES_ABERTAS
+            ? 'Quero garantir minha vaga →'
+            : 'Me avisa da próxima →'}
       </button>
 
       <p className="mt-3 text-center text-xs text-sdb-text/50">

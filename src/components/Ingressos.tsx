@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { whatsappLink, trackWhatsappLead } from '../lib/contact'
+import { whatsappLink, trackWhatsappLead, INSCRICOES_ABERTAS, AVISO_FECHADO } from '../lib/contact'
 import { Countdown, antecipadoExpirou } from './Countdown'
 import { LeadForm } from './LeadForm'
 
@@ -8,6 +8,33 @@ const grupoMessage =
 
 export function Ingressos() {
   const expirou = antecipadoExpirou()
+
+  // Inscricoes fechadas: nada de preco, countdown ou "garante tua vaga".
+  // Fica so o aviso + a lista de espera pra proxima data.
+  if (!INSCRICOES_ABERTAS) {
+    return (
+      <section id="ingressos" className="bg-sdb-yellow px-6 py-20">
+        <div className="mx-auto max-w-2xl">
+          <div className="rounded-3xl bg-white p-8 text-center shadow-xl">
+            <p className="text-5xl">🌧️</p>
+            <h2 className="mt-4 font-display text-3xl text-sdb-purple sm:text-4xl">
+              {AVISO_FECHADO.titulo}
+            </h2>
+            <p className="mt-4 text-base leading-relaxed text-sdb-text/80">
+              {AVISO_FECHADO.texto}
+            </p>
+            <p className="mt-4 text-base font-semibold text-sdb-purple">
+              {AVISO_FECHADO.chamada}
+            </p>
+          </div>
+
+          <div className="mt-8">
+            <LeadForm />
+          </div>
+        </div>
+      </section>
+    )
+  }
 
   return (
     <section id="ingressos" className="bg-sdb-yellow px-6 py-20">

@@ -1,4 +1,4 @@
-import { EVENTS, EVENT_THEME } from '../lib/contact'
+import { EVENTS, EVENT_THEME, INSCRICOES_ABERTAS, AVISO_FECHADO } from '../lib/contact'
 
 const FLAG_COLORS = ['#ffe600', '#ec4899', '#16a34a', '#2563eb', '#f97316', '#dc2626']
 
@@ -21,6 +21,17 @@ function Bandeirinhas() {
 }
 
 export function DateBanner() {
+  // Inscricoes fechadas: a tarja avisa antes de qualquer coisa.
+  if (!INSCRICOES_ABERTAS) {
+    return (
+      <div className="sticky top-0 z-50 bg-sdb-purple-dark px-4 py-3 text-center shadow-lg">
+        <p className="font-display text-sm font-bold tracking-wide text-sdb-yellow sm:text-base">
+          🌧️ {AVISO_FECHADO.tarja} — nova data em breve
+        </p>
+      </div>
+    )
+  }
+
   return (
     <div className="sticky top-0 z-50 bg-sdb-purple-dark px-4 py-3 text-center shadow-lg relative">
       <Bandeirinhas />

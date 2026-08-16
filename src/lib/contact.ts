@@ -35,6 +35,21 @@ export const EVENTS: TardezinhaEvent[] = [
   },
 ]
 
+// ⛔ KILL SWITCH DAS INSCRICOES
+// A edicao de 16/08/2026 foi ADIADA: Instagram bloqueado (canal que enche a Tardezinha)
+// + chuva forte na madrugada = poucas criancas inscritas.
+// Vira pra `true` quando a proxima data estiver definida em EVENTS acima.
+export const INSCRICOES_ABERTAS = false
+
+export const AVISO_FECHADO = {
+  tarja: 'Edição de 16/08 adiada',
+  titulo: 'A Tardezinha de 16/08 foi adiada',
+  texto:
+    'Ficamos com pouquíssimas crianças inscritas e a chuva forte da madrugada trouxe as desistências que faltavam. Tardezinha boa é com corredor cheio e amiguinho pra correr junto — então preferimos remarcar a fazer pela metade.',
+  chamada:
+    'Deixa teu contato que tu é a primeira a saber da data nova. Quem já estava inscrito tem a vaga guardada.',
+}
+
 // Compatibilidade — dados do evento mais proximo (pra componentes simples)
 export const EVENT_DATE_LABEL = EVENTS[0].date
 export const EVENT_DATE_LONG = EVENTS[0].dateLong

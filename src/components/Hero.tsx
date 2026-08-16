@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { EVENTS } from '../lib/contact'
+import { EVENTS, INSCRICOES_ABERTAS } from '../lib/contact'
 import { Logo } from './Logo'
 
 export function Hero() {
@@ -63,10 +63,15 @@ export function Hero() {
               </p>
               {ev.sessions.map((s, i) => (
                 <p key={i} className="mt-1 font-display text-lg sm:text-xl">
-                  <span className={s.soldOut ? 'text-sdb-text/40 line-through' : 'text-sdb-orange/80'}>{s.time}</span>
+                  <span className={s.soldOut || !INSCRICOES_ABERTAS ? 'text-sdb-text/40 line-through' : 'text-sdb-orange/80'}>{s.time}</span>
                   {s.soldOut && <span className="ml-2 align-middle rounded-full bg-red-100 px-2 py-0.5 font-sans text-xs font-bold text-red-600">ESGOTADO</span>}
                 </p>
               ))}
+              {!INSCRICOES_ABERTAS && (
+                <p className="mt-2 inline-block rounded-full bg-sdb-purple/10 px-3 py-1 font-sans text-xs font-bold uppercase text-sdb-purple">
+                  Adiada
+                </p>
+              )}
             </div>
           ))}
         </div>
@@ -79,15 +84,31 @@ export function Hero() {
 
         {/* CTA direto */}
         <div className="mt-10">
-          <Link
-            to="/reservar"
-            className="inline-flex items-center gap-3 rounded-full bg-sdb-pink px-8 py-4 font-display text-lg text-white shadow-xl ring-4 ring-sdb-pink/30 transition hover:scale-105 hover:bg-sdb-purple sm:text-xl"
-          >
-            🎟️ GARANTIR MINHA VAGA
-          </Link>
-          <p className="mt-3 text-sm font-semibold text-sdb-text/70">
-            🔥 A última edição esgotou. Não fica de fora.
-          </p>
+          {INSCRICOES_ABERTAS ? (
+            <>
+              <Link
+                to="/reservar"
+                className="inline-flex items-center gap-3 rounded-full bg-sdb-pink px-8 py-4 font-display text-lg text-white shadow-xl ring-4 ring-sdb-pink/30 transition hover:scale-105 hover:bg-sdb-purple sm:text-xl"
+              >
+                🎟️ GARANTIR MINHA VAGA
+              </Link>
+              <p className="mt-3 text-sm font-semibold text-sdb-text/70">
+                🔥 A última edição esgotou. Não fica de fora.
+              </p>
+            </>
+          ) : (
+            <>
+              <a
+                href="#ingressos"
+                className="inline-flex items-center gap-3 rounded-full bg-sdb-purple px-8 py-4 font-display text-lg text-white shadow-xl ring-4 ring-sdb-purple/30 transition hover:scale-105 sm:text-xl"
+              >
+                🔔 QUERO SABER DA PRÓXIMA
+              </a>
+              <p className="mt-3 text-sm font-semibold text-sdb-text/70">
+                A edição de 16/08 foi adiada — a data nova sai em breve.
+              </p>
+            </>
+          )}
         </div>
       </div>
     </section>
