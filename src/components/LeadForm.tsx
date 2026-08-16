@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { supabase, isSupabaseConfigured } from '../lib/supabase'
-import { whatsappLink, trackWhatsappLead, INSCRICOES_ABERTAS } from '../lib/contact'
+import { whatsappLink, trackWhatsappLead, INSCRICOES_ABERTAS, WHATSAPP_ATIVO } from '../lib/contact'
 import { getUtmParams } from '../lib/utm'
 
 type Status =
@@ -67,6 +67,10 @@ export function LeadForm() {
       window.fbq('track', 'Lead')
     }
 
+    // Com o WhatsApp fora do ar, mandar pra la e beco sem saida: o lead ja esta salvo,
+    // entao a tela de sucesso encerra o fluxo.
+    if (!WHATSAPP_ATIVO) return
+
     // Redireciona pro WhatsApp pre-preenchido (whatsappLink ja anexa [utm:...] se houver)
     const plural = criancasNum > 1 ? 's' : ''
     const msgTexto = INSCRICOES_ABERTAS
@@ -114,10 +118,12 @@ export function LeadForm() {
       <div className="rounded-3xl bg-emerald-50 border-2 border-emerald-300 p-8 text-center">
         <p className="text-5xl">✅</p>
         <h3 className="mt-3 font-display text-2xl text-emerald-800">
-          Beleza! Tô te levando pro WhatsApp agora.
+          {WHATSAPP_ATIVO ? 'Beleza! Tô te levando pro WhatsApp agora.' : 'Prontinho, tá anotado!'}
         </h3>
         <p className="mt-2 text-base text-emerald-700">
-          {INSCRICOES_ABERTAS ? (
+          {!WHATSAPP_ATIVO ? (
+            <>Assim que a data nova sair, tu é a primeira a saber.</>
+          ) : INSCRICOES_ABERTAS ? (
             <>Manda <strong>"oi"</strong> que a gente fecha tua vaga em 5 minutos.</>
           ) : (
             <>Tá anotado. Assim que a data nova sair, tu é a primeira a saber.</>

@@ -1,7 +1,7 @@
 import { Logo } from './Logo'
 import { DateBanner } from './DateBanner'
 import { LeadForm } from './LeadForm'
-import { AVISO_FECHADO, whatsappLink, trackWhatsappLead } from '../lib/contact'
+import { AVISO_FECHADO, whatsappLink, trackWhatsappLead, WHATSAPP_ATIVO } from '../lib/contact'
 
 const avisoMessage = 'Oi! Vi que a Tardezinha de 16/08 foi adiada. Quero saber da data nova.'
 
@@ -26,15 +26,17 @@ export function InscricoesFechadas() {
             {AVISO_FECHADO.chamada}
           </p>
 
-          <a
-            href={whatsappLink(avisoMessage)}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={trackWhatsappLead}
-            className="mt-6 inline-block w-full rounded-full bg-emerald-500 px-6 py-4 font-display text-lg text-white shadow-lg transition hover:scale-[1.02] hover:bg-emerald-600 sm:w-auto sm:px-10"
-          >
-            💬 Falar no WhatsApp
-          </a>
+          {WHATSAPP_ATIVO && (
+            <a
+              href={whatsappLink(avisoMessage)}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={trackWhatsappLead}
+              className="mt-6 inline-block w-full rounded-full bg-emerald-500 px-6 py-4 font-display text-lg text-white shadow-lg transition hover:scale-[1.02] hover:bg-emerald-600 sm:w-auto sm:px-10"
+            >
+              💬 Falar no WhatsApp
+            </a>
+          )}
         </div>
 
         <div className="mt-8 text-left">

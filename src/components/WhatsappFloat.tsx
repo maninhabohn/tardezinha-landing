@@ -1,10 +1,13 @@
-import { whatsappLink, trackWhatsappLead } from '../lib/contact'
+import { whatsappLink, trackWhatsappLead, WHATSAPP_ATIVO } from '../lib/contact'
 
 /**
  * Botao flutuante de WhatsApp, sempre visivel no canto inferior direito.
  * No mobile, fica grandao pra facilitar o toque.
+ * Some enquanto o numero estiver bloqueado — botao que nao responde e pior que botao nenhum.
  */
 export function WhatsappFloat() {
+  if (!WHATSAPP_ATIVO) return null
+
   return (
     <a
       href={whatsappLink()}

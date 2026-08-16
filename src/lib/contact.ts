@@ -36,10 +36,14 @@ export const EVENTS: TardezinhaEvent[] = [
 ]
 
 // ⛔ KILL SWITCH DAS INSCRICOES
-// A edicao de 16/08/2026 foi ADIADA: Instagram bloqueado (canal que enche a Tardezinha)
-// + chuva forte na madrugada = poucas criancas inscritas.
+// A edicao de 16/08/2026 foi ADIADA: WhatsApp da Casa de Festas bloqueado (o canal que
+// convida e fecha a Tardezinha) + chuva forte na madrugada = poucas criancas inscritas.
 // Vira pra `true` quando a proxima data estiver definida em EVENTS acima.
 export const INSCRICOES_ABERTAS = false
+
+// Enquanto o WhatsApp estiver bloqueado, os botoes de "Falar no WhatsApp" levam pro vazio.
+// Voltar pra `true` assim que o numero estiver respondendo de novo.
+export const WHATSAPP_ATIVO = false
 
 export const AVISO_FECHADO = {
   tarja: 'Edição de 16/08 adiada',
