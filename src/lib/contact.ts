@@ -41,9 +41,17 @@ export const EVENTS: TardezinhaEvent[] = [
 // Vira pra `true` quando a proxima data estiver definida em EVENTS acima.
 export const INSCRICOES_ABERTAS = false
 
+// 01/09/2026 (Jack): SEPARADO do de cima de proposito.
+// A venda de ingresso avulso (/reservar) depende de ter uma edicao marcada em EVENTS -- e nao tem.
+// Ja a FESTA DE GRUPO (/grupo) funciona sem data marcada: a mae PEDE o domingo e a casa abre.
+// Por isso /grupo abre agora e /reservar segue fechado. Um interruptor so obrigaria a escolher
+// entre deixar dinheiro na mesa ou vender ingresso pra data que nao existe.
+export const GRUPO_ABERTO = true
+
 // Enquanto o WhatsApp estiver bloqueado, os botoes de "Falar no WhatsApp" levam pro vazio.
 // Voltar pra `true` assim que o numero estiver respondendo de novo.
-export const WHATSAPP_ATIVO = false
+// 01/09/2026: numero DESBLOQUEADO -- conferido no banco (456 mensagens enviadas em 24h).
+export const WHATSAPP_ATIVO = true
 
 export const AVISO_FECHADO = {
   tarja: 'Edição de 16/08 adiada',

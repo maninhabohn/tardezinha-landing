@@ -39,6 +39,8 @@ export function Grupo() {
   const [observacoes, setObservacoes] = useState('')
   const [autorizouImagem, setAutorizouImagem] = useState(true)
   const [autorizouAudio, setAutorizouAudio] = useState(true)
+  const [querOutraData, setQuerOutraData] = useState(false)
+  const [dataDesejada, setDataDesejada] = useState('')
   const [erro, setErro] = useState('')
 
   function addConvidado() {
@@ -54,7 +56,16 @@ export function Grupo() {
   }
 
   function validate(): string | null {
-    if (!sessao) return 'Escolhe a data e o turno'
+    if (querOutraData && !dataDesejada) return 'Escolhe o domingo que tu quer'
+    if (!querOutraData && !sessao) return 'Escolhe a data e o turno'
+    // 01/09/2026 (Maninha): sao DOIS patamares.
+    //   6+  -> garante o DESCONTO (R$38 por crianca) numa edicao que ja existe
+    //   12+ -> garante a CASA ABERTA (a casa abre um domingo novo pra ela)
+    const totalDoGrupo = 1 + convidados.length
+    if (querOutraData && totalDoGrupo < 12)
+      return 'Pra gente abrir um domingo so pra tua turma sao 12 criancas (contando o aniversariante). Com 6 ou mais tu ja garante o valor de grupo numa data que ja existe.'
+    if (totalDoGrupo < 6)
+      return 'O valor de grupo comeca em 6 criancas (contando o aniversariante). Chama a gente no WhatsApp que a gente ve o melhor jeito.'
     if (!orgNome.trim()) return 'Preenche teu nome'
     const digits = orgWhatsapp.replace(/\D/g, '')
     if (digits.length < 10) return 'WhatsApp precisa ter DDD + número'
@@ -69,10 +80,16 @@ export function Grupo() {
     return null
   }
 
-  function eventoData(edicao: string): string {
-    if (edicao.startsWith('23jul')) return '2026-07-23'
-    if (edicao.startsWith('30jul')) return '2026-07-30'
-    return '2026-07-23'
+  // 01/09/2026 (Jack): isto estava travado em 23/07 e 30/07, com FALLBACK pra 23/07 --
+  // qualquer grupo inscrito depois daquelas edicoes era gravado com data de julho.
+  // Agora: se a mae escolheu uma edicao existente, sai de EVENTS; se ela pediu um domingo
+  // novo (que e o coracao da oferta de grupo), sai da data que ela mesma escolheu.
+  function eventoData(edicao: string): string | null {
+    if (querOutraData) return dataDesejada || null
+    const ev = EVENTS.find(e => edicao.startsWith(e.id))
+    if (!ev) return null
+    const [d, m, a] = ev.date.split('/')
+    return `${a}-${m}-${d}`
   }
 
   async function handleSubmit(e: FormEvent) {
@@ -147,6 +164,28 @@ export function Grupo() {
 
     if (errCriancas) console.error('[Grupo] erro crianças:', errCriancas.message)
 
+    // 01/09/2026 (Jack): grava TAMBEM em tardezinha_grupos -- e a tabela que o painel da
+    // equipe le (tardezinha_grupo_painel): piso, lista fechando 3 dias antes, quanto a mae paga.
+    const dataDoEvento = eventoData(sessao)
+    const { error: errGrupo } = await supabase
+      .from('tardezinha_grupos')
+      .insert({
+        edicao: querOutraData ? `pedido:${dataDesejada}` : sessao,
+        evento_data: dataDoEvento,
+        organizadora_nome: orgNome.trim(),
+        organizadora_whatsapp: whatsappNorm,
+        aniversariante_nome: aniversariante.trim(),
+        qtd_criancas: totalCriancas,
+        criancas: todasCriancas.map(c => ({
+          nome: c.nome.trim(), responsavel: c.responsavel.trim(), telefone: c.telefone,
+        })),
+        observacoes: observacoes.trim() || null,
+        autorizou_imagem: autorizouImagem,
+        autorizou_audio: autorizouAudio,
+        status: querOutraData ? 'data_pedida' : 'aberto',
+      })
+    if (errGrupo) console.error('[Grupo] erro tardezinha_grupos:', errGrupo.message)
+
     if (typeof window.fbq === 'function') {
       window.fbq('track', 'Lead')
     }
@@ -212,10 +251,13 @@ export function Grupo() {
         </p>
         <div className="mt-3 inline-block rounded-lg bg-white/15 px-5 py-2">
           <p className="text-lg text-sdb-yellow font-bold">
-            R$ 38,00 por criança (grupo 6+)
+            R$ 38,00 por criança (a partir de 6)
           </p>
           <p className="mt-1 text-sm text-white/70">
             Adulto não paga entrada
+          </p>
+          <p className="mt-1 text-sm text-white/70">
+            A partir de 12, a casa abre um domingo só pra tua turma
           </p>
         </div>
       </div>
@@ -236,13 +278,47 @@ export function Grupo() {
               <label
                 key={opt.value}
                 className={`flex items-center gap-3 cursor-pointer rounded-lg border-2 p-4 transition ${
-                  sessao === opt.value ? 'border-sdb-purple bg-sdb-purple/5' : 'border-gray-200 hover:border-sdb-purple/30'
+                  !querOutraData && sessao === opt.value ? 'border-sdb-purple bg-sdb-purple/5' : 'border-gray-200 hover:border-sdb-purple/30'
                 }`}
               >
-                <input type="radio" name="sessao" value={opt.value} checked={sessao === opt.value} onChange={() => setSessao(opt.value)} className="accent-sdb-purple w-5 h-5" />
+                <input type="radio" name="sessao" value={opt.value}
+                  checked={!querOutraData && sessao === opt.value}
+                  onChange={() => { setQuerOutraData(false); setSessao(opt.value) }}
+                  className="accent-sdb-purple w-5 h-5" />
                 <span className="text-base font-semibold text-gray-800">{opt.label}</span>
               </label>
             ))}
+
+            {/* 01/09/2026: o coracao da oferta de grupo -- a mae PEDE o domingo e a casa abre. */}
+            <label
+              className={`flex items-center gap-3 cursor-pointer rounded-lg border-2 p-4 transition ${
+                querOutraData ? 'border-sdb-purple bg-sdb-purple/5' : 'border-gray-200 hover:border-sdb-purple/30'
+              }`}
+            >
+              <input type="radio" name="sessao" checked={querOutraData}
+                onChange={() => setQuerOutraData(true)}
+                className="accent-sdb-purple w-5 h-5" />
+              <span className="text-base font-semibold text-gray-800">
+                Quero abrir outro domingo
+              </span>
+            </label>
+
+            {querOutraData && (
+              <div className="rounded-lg bg-sdb-purple/5 border border-sdb-purple/20 p-4">
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Qual domingo tu quer?
+                </label>
+                <input
+                  type="date"
+                  value={dataDesejada}
+                  onChange={e => setDataDesejada(e.target.value)}
+                  className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-base focus:border-sdb-purple focus:outline-none"
+                />
+                <p className="mt-2 text-sm text-gray-600">
+                  A gente confirma no WhatsApp. A data e tua assim que as 12 criancas estiverem na lista.
+                </p>
+              </div>
+            )}
           </div>
         </fieldset>
 

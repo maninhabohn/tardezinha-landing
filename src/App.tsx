@@ -20,7 +20,7 @@ import { Cozinha } from './pages/Cozinha'
 import { Central } from './pages/Central'
 import { Inscritos } from './pages/Inscritos'
 import { InscricoesFechadas } from './components/InscricoesFechadas'
-import { INSCRICOES_ABERTAS } from './lib/contact'
+import { INSCRICOES_ABERTAS, GRUPO_ABERTO } from './lib/contact'
 
 function Home() {
   return (
@@ -47,7 +47,7 @@ function App() {
       {/* Com as inscricoes fechadas, os 2 formularios viram tela de aviso.
           Reabrir = INSCRICOES_ABERTAS true em lib/contact.ts */}
       <Route path="/reservar" element={INSCRICOES_ABERTAS ? <Reservar /> : <InscricoesFechadas />} />
-      <Route path="/grupo" element={INSCRICOES_ABERTAS ? <Grupo /> : <InscricoesFechadas />} />
+      <Route path="/grupo" element={GRUPO_ABERTO ? <Grupo /> : <InscricoesFechadas />} />
       <Route path="/passaporte" element={<Passaporte />} />
       <Route path="/painel" element={<Painel />} />
       <Route path="/cozinha" element={<Cozinha />} />
