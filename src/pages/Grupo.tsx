@@ -20,12 +20,17 @@ function maskPhone(v: string) {
   return `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`
 }
 
-const SESSION_OPTIONS = EVENTS.flatMap(ev =>
-  ev.sessions.map(s => ({
+// 01/09/2026: so oferece edicao que ainda NAO passou. Antes mostrava 16/08, que ja tinha ido.
+const hojeISO = new Date().toISOString().slice(0, 10)
+const SESSION_OPTIONS = EVENTS.flatMap(ev => {
+  const [d, m, a] = ev.date.split('/')
+  const iso = `${a}-${m}-${d}`
+  if (iso < hojeISO) return []
+  return ev.sessions.map(s => ({
     value: `${ev.id}|${s.label}`,
     label: `${ev.date} (${ev.dayOfWeek.slice(0, 4)}) — ${s.label}`,
   }))
-)
+})
 
 export function Grupo() {
   useEffect(() => { document.title = 'Inscrição de Grupo — Tardezinha de Domingo' }, [])
@@ -39,7 +44,7 @@ export function Grupo() {
   const [observacoes, setObservacoes] = useState('')
   const [autorizouImagem, setAutorizouImagem] = useState(true)
   const [autorizouAudio, setAutorizouAudio] = useState(true)
-  const [querOutraData, setQuerOutraData] = useState(false)
+  const [querOutraData, setQuerOutraData] = useState(SESSION_OPTIONS.length === 0)
   const [dataDesejada, setDataDesejada] = useState('')
   const [erro, setErro] = useState('')
 
@@ -239,8 +244,6 @@ export function Grupo() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <DateBanner />
-
       <div className="bg-sdb-purple border-b border-sdb-purple-dark px-4 pt-6 pb-6 text-center">
         <Logo size={100} className="mb-3" />
         <h1 className="text-2xl font-bold text-white leading-tight sm:text-3xl">
@@ -257,7 +260,7 @@ export function Grupo() {
             Adulto não paga entrada
           </p>
           <p className="mt-1 text-sm text-white/70">
-            A partir de 12, a casa abre um domingo só pra tua turma
+            A partir de 12, a gente abre um domingo pra tua turma
           </p>
         </div>
       </div>
