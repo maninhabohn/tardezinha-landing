@@ -53,13 +53,21 @@ export const GRUPO_ABERTO = true
 // 01/09/2026: numero DESBLOQUEADO -- conferido no banco (456 mensagens enviadas em 24h).
 export const WHATSAPP_ATIVO = true
 
+// 02/09/2026 (Jack): deixou de ser "aviso de edicao adiada" e virou a OFERTA que esta aberta.
+// A landing dizia "edicao de 16/08 adiada" desde agosto, enquanto a campanha do Meta rodava
+// vendendo "a mae abre a data" — a peca prometia uma coisa e a pagina dizia outra.
+// Nao ha data fixa pra vender, e inventar uma seria pior. Entao a home lidera com o GRUPO,
+// que e o que de fato esta aberto (/grupo).
 export const AVISO_FECHADO = {
-  tarja: 'Edição de 16/08 adiada',
-  titulo: 'A Tardezinha de 16/08 foi adiada',
+  tarja: 'A data quem escolhe é tu',
+  titulo: 'A próxima Tardezinha, tu que marca',
   texto:
-    'Ficamos com pouquíssimas crianças inscritas e a chuva forte da madrugada trouxe as desistências que faltavam. Tardezinha boa é com corredor cheio e amiguinho pra correr junto — então preferimos remarcar a fazer pela metade.',
+    'Não tem data fixa no calendário agora — e isso é de propósito. A partir de 12 crianças a casa ' +
+    'abre um domingo pra tua turma: 500m², mais de 20 brinquedos, sem tela, das 14h às 18h. ' +
+    'A edição é aberta — vão ter outras crianças brincando junto, e é isso que mantém o preço em pé. ' +
+    'Com 6 ou mais, já garante o preço de grupo numa edição que já exista.',
   chamada:
-    'Deixa teu contato que tu é a primeira a saber da data nova. Quem já estava inscrito tem a vaga guardada.',
+    'R$ 38 por criança, e adulto acompanhante não paga.',
 }
 
 // Compatibilidade — dados do evento mais proximo (pra componentes simples)

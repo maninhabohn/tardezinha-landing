@@ -16,7 +16,7 @@ export function Ingressos() {
       <section id="ingressos" className="bg-sdb-yellow px-6 py-20">
         <div className="mx-auto max-w-2xl">
           <div className="rounded-3xl bg-white p-8 text-center shadow-xl">
-            <p className="text-5xl">🌧️</p>
+            <p className="text-5xl">🎈</p>
             <h2 className="mt-4 font-display text-3xl text-sdb-purple sm:text-4xl">
               {AVISO_FECHADO.titulo}
             </h2>
@@ -26,6 +26,17 @@ export function Ingressos() {
             <p className="mt-4 text-base font-semibold text-sdb-purple">
               {AVISO_FECHADO.chamada}
             </p>
+
+            {/* 02/09/2026: o caminho que EXISTE. Antes daqui so saia lista de espera —
+                a pessoa chegava pela campanha e nao tinha o que fazer. */}
+            <Link
+              to="/grupo"
+              className="mt-6 inline-block rounded-full bg-sdb-purple px-8 py-4 text-base font-bold
+                         text-white shadow-lg transition hover:brightness-110 focus:outline-none
+                         focus-visible:ring-4 focus-visible:ring-sdb-purple/40"
+            >
+              Escolher o domingo da minha turma
+            </Link>
           </div>
 
           <div className="mt-8">
