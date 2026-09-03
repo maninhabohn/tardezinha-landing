@@ -46,6 +46,10 @@ export function Grupo() {
   const [autorizouAudio, setAutorizouAudio] = useState(true)
   const [querOutraData, setQuerOutraData] = useState(SESSION_OPTIONS.length === 0)
   const [dataDesejada, setDataDesejada] = useState('')
+  // 03/09/2026 (Maninha): a festa de grupo NAO e so domingo e NAO tem turno fixo.
+  // "nao precisa ser domingo, e pode ser em mais de um horario, entao deixa aberta a opcao."
+  // Quem confirma e a equipe no WhatsApp, olhando a agenda — o formulario e o PEDIDO.
+  const [horarioDesejado, setHorarioDesejado] = useState('')
   const [erro, setErro] = useState('')
 
   function addConvidado() {
@@ -61,14 +65,14 @@ export function Grupo() {
   }
 
   function validate(): string | null {
-    if (querOutraData && !dataDesejada) return 'Escolhe o domingo que tu quer'
+    if (querOutraData && !dataDesejada) return 'Escolhe o dia que tu quer'
     if (!querOutraData && !sessao) return 'Escolhe a data e o turno'
     // 01/09/2026 (Maninha): sao DOIS patamares.
     //   6+  -> garante o DESCONTO (R$38 por crianca) numa edicao que ja existe
     //   12+ -> garante a CASA ABERTA (a casa abre um domingo novo pra ela)
     const totalDoGrupo = 1 + convidados.length
     if (querOutraData && totalDoGrupo < 12)
-      return 'Pra gente abrir um domingo so pra tua turma sao 12 criancas (contando o aniversariante). Com 6 ou mais tu ja garante o valor de grupo numa data que ja existe.'
+      return 'Pra gente abrir um dia so pra tua turma sao 12 criancas (contando o aniversariante). Com 6 ou mais tu ja garante o valor de grupo numa data que ja existe.'
     if (totalDoGrupo < 6)
       return 'O valor de grupo comeca em 6 criancas (contando o aniversariante). Chama a gente no WhatsApp que a gente ve o melhor jeito.'
     if (!orgNome.trim()) return 'Preenche teu nome'
@@ -175,7 +179,7 @@ export function Grupo() {
     const { error: errGrupo } = await supabase
       .from('tardezinha_grupos')
       .insert({
-        edicao: querOutraData ? `pedido:${dataDesejada}` : sessao,
+        edicao: querOutraData ? `pedido:${dataDesejada}${horarioDesejado ? ' ' + horarioDesejado : ''}` : sessao,
         evento_data: dataDoEvento,
         organizadora_nome: orgNome.trim(),
         organizadora_whatsapp: whatsappNorm,
@@ -260,7 +264,7 @@ export function Grupo() {
             Adulto não paga entrada
           </p>
           <p className="mt-1 text-sm text-white/70">
-            A partir de 12, a gente abre um domingo pra tua turma
+            A partir de 12, a gente abre um dia so pra tua turma
           </p>
         </div>
       </div>
@@ -302,14 +306,14 @@ export function Grupo() {
                 onChange={() => setQuerOutraData(true)}
                 className="accent-sdb-purple w-5 h-5" />
               <span className="text-base font-semibold text-gray-800">
-                Quero abrir outro domingo
+                Quero outro dia pra minha turma
               </span>
             </label>
 
             {querOutraData && (
               <div className="rounded-lg bg-sdb-purple/5 border border-sdb-purple/20 p-4">
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Qual domingo tu quer?
+                  Que dia tu quer?
                 </label>
                 <input
                   type="date"
@@ -317,8 +321,27 @@ export function Grupo() {
                   onChange={e => setDataDesejada(e.target.value)}
                   className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-base focus:border-sdb-purple focus:outline-none"
                 />
-                <p className="mt-2 text-sm text-gray-600">
-                  A gente confirma no WhatsApp. A data e tua assim que as 12 criancas estiverem na lista.
+                <p className="mt-1 text-xs text-gray-500">
+                  Nao precisa ser domingo — pode ser o dia que combinar pra ti.
+                </p>
+
+                <label className="block text-sm font-semibold text-gray-700 mt-4 mb-2">
+                  E que horario?
+                </label>
+                <input
+                  type="text"
+                  value={horarioDesejado}
+                  onChange={e => setHorarioDesejado(e.target.value)}
+                  placeholder="ex.: das 14h as 18h — ou escreve do teu jeito"
+                  className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-base focus:border-sdb-purple focus:outline-none"
+                />
+                <p className="mt-1 text-xs text-gray-500">
+                  Tem mais de um horario possivel. Escreve o que tu prefere que a gente ve aqui.
+                </p>
+
+                <p className="mt-3 rounded-lg bg-amber-50 border border-amber-200 p-3 text-sm text-amber-900">
+                  <strong>Isso aqui e um pedido, ainda nao e a reserva.</strong> Pra confirmar o dia
+                  e o horario, a equipe te chama no WhatsApp e confere a agenda contigo.
                 </p>
               </div>
             )}
