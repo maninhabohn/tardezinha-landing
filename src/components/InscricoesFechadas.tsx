@@ -1,9 +1,11 @@
+import { Link } from 'react-router-dom'
 import { Logo } from './Logo'
 import { DateBanner } from './DateBanner'
 import { LeadForm } from './LeadForm'
 import { AVISO_FECHADO, whatsappLink, trackWhatsappLead, WHATSAPP_ATIVO } from '../lib/contact'
 
-const avisoMessage = 'Oi! Vi que a Tardezinha de 16/08 foi adiada. Quero saber da data nova.'
+const avisoMessage =
+  'Oi! Quero saber da Tardezinha de Domingo — tenho um dia em mente pra minha turma.'
 
 // Tela que substitui os formularios (/reservar e /grupo) enquanto INSCRICOES_ABERTAS = false.
 export function InscricoesFechadas() {
@@ -15,7 +17,7 @@ export function InscricoesFechadas() {
         <Logo size={120} className="mb-6" />
 
         <div className="rounded-3xl border-2 border-sdb-purple/15 bg-white p-7 shadow-lg">
-          <p className="text-5xl">🌧️</p>
+          <p className="text-5xl">🎈</p>
           <h1 className="mt-4 font-display text-3xl text-sdb-purple">
             {AVISO_FECHADO.titulo}
           </h1>
@@ -26,13 +28,20 @@ export function InscricoesFechadas() {
             {AVISO_FECHADO.chamada}
           </p>
 
+          <Link
+            to="/grupo"
+            className="mt-6 inline-block w-full rounded-full bg-sdb-purple px-6 py-4 font-display text-lg text-white shadow-lg transition hover:scale-[1.02] sm:w-auto sm:px-10"
+          >
+            🎈 Escolher o domingo da minha turma
+          </Link>
+
           {WHATSAPP_ATIVO && (
             <a
               href={whatsappLink(avisoMessage)}
               target="_blank"
               rel="noopener noreferrer"
               onClick={trackWhatsappLead}
-              className="mt-6 inline-block w-full rounded-full bg-emerald-500 px-6 py-4 font-display text-lg text-white shadow-lg transition hover:scale-[1.02] hover:bg-emerald-600 sm:w-auto sm:px-10"
+              className="mt-3 inline-block w-full rounded-full bg-emerald-500 px-6 py-4 font-display text-lg text-white shadow-lg transition hover:scale-[1.02] hover:bg-emerald-600 sm:w-auto sm:px-10"
             >
               💬 Falar no WhatsApp
             </a>

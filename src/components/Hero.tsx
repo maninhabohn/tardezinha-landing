@@ -21,7 +21,7 @@ export function Hero() {
 
         {/* Kicker — pre-titulo */}
         <p className="font-display text-sm uppercase tracking-[0.25em] text-sdb-pink">
-          🎈 Tardezinha de Domingo · Agosto 2026
+          🎈 Tardezinha de Domingo · A data quem escolhe é tu
         </p>
 
         {/* Titulo principal */}
@@ -51,7 +51,21 @@ export function Hero() {
           <strong className="text-sdb-purple">cansado, alimentado e feliz</strong>.
         </p>
 
-        {/* Datas — 2 cards lado a lado */}
+        {/* Datas — so quando existe edicao marcada. 04/09/2026: com a campanha
+            "escolhe a data" nao ha domingo no calendario, entao entra o card da campanha
+            no lugar (antes ficava um card de 16/08 carimbado "Adiada"). */}
+        {EVENTS.length === 0 ? (
+          <div className="mx-auto mt-10 max-w-xl rotate-[-1deg] rounded-2xl bg-white px-7 py-6 shadow-xl ring-4 ring-sdb-orange/40">
+            <p className="font-display text-2xl text-sdb-orange sm:text-3xl">
+              🎈 A próxima data é a tua
+            </p>
+            <p className="mt-3 text-base leading-relaxed text-sdb-text/80">
+              Não tem domingo fixo no calendário — e isso é de propósito. A partir de{' '}
+              <strong className="text-sdb-purple">12 crianças</strong> a casa abre um domingo
+              pra tua turma, das 14h às 18h.
+            </p>
+          </div>
+        ) : (
         <div className="mx-auto mt-10 flex flex-col gap-4 sm:flex-row sm:justify-center">
           {EVENTS.map((ev) => (
             <div
@@ -69,12 +83,13 @@ export function Hero() {
               ))}
               {!INSCRICOES_ABERTAS && (
                 <p className="mt-2 inline-block rounded-full bg-sdb-purple/10 px-3 py-1 font-sans text-xs font-bold uppercase text-sdb-purple">
-                  Adiada
+                  Inscrições em breve
                 </p>
               )}
             </div>
           ))}
         </div>
+        )}
 
         {/* Selo de idade */}
         <div className="mt-6 inline-flex items-center gap-2 rounded-full bg-sdb-orange px-5 py-2 text-sm font-bold text-white uppercase shadow-md">
@@ -98,14 +113,19 @@ export function Hero() {
             </>
           ) : (
             <>
-              <a
-                href="#ingressos"
+              <Link
+                to="/grupo"
                 className="inline-flex items-center gap-3 rounded-full bg-sdb-purple px-8 py-4 font-display text-lg text-white shadow-xl ring-4 ring-sdb-purple/30 transition hover:scale-105 sm:text-xl"
               >
-                🔔 QUERO SABER DA PRÓXIMA
-              </a>
+                🎈 ESCOLHER MEU DOMINGO
+              </Link>
               <p className="mt-3 text-sm font-semibold text-sdb-text/70">
-                A edição de 16/08 foi adiada — a data nova sai em breve.
+                A edição nasce da data que a tua turma escolhe.
+              </p>
+              <p className="mt-3 text-sm">
+                <a href="#ingressos" className="font-semibold text-sdb-purple underline">
+                  Ainda não juntou a turma? Deixa teu contato →
+                </a>
               </p>
             </>
           )}

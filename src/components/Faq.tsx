@@ -7,6 +7,13 @@ type FaqItem = {
 }
 
 const faqs: FaqItem[] = [
+  // 04/09/2026: a primeira duvida de quem chega pela campanha "escolhe a data".
+  // Resposta na regra da Maninha: ainda nao temos data; quem tem um dia em mente fala com a equipe.
+  {
+    pergunta: 'Qual é a data da próxima Tardezinha?',
+    resposta:
+      'Ainda não tem data marcada — a Tardezinha nasce da data que as famílias escolhem. A partir de 12 crianças a casa abre um domingo pra tua turma. Se tu já tem um dia em mente, fala com a equipe no WhatsApp que a gente confere a agenda e confirma. 🎈',
+  },
   {
     pergunta: 'E se chover no dia?',
     resposta:
@@ -25,7 +32,7 @@ const faqs: FaqItem[] = [
   {
     pergunta: 'Tem valor especial pra grupo?',
     resposta:
-      'Sim. Pra grupos (irmãos, amigos, turma da escola), temos valor especial. Fala com a gente no WhatsApp que combinamos.',
+      'Sim, e são dois patamares: com 6 crianças ou mais tu já garante R$ 38 por criança numa edição que existe; com 12 ou mais a casa abre um domingo só pra tua turma, no dia que tu escolher.',
   },
   {
     pergunta: 'Tem onde estacionar?',

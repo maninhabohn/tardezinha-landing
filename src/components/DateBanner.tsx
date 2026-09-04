@@ -26,7 +26,7 @@ export function DateBanner() {
     return (
       <div className="sticky top-0 z-50 bg-sdb-purple-dark px-4 py-3 text-center shadow-lg">
         <p className="font-display text-sm font-bold tracking-wide text-sdb-yellow sm:text-base">
-          🌧️ {AVISO_FECHADO.tarja} — nova data em breve
+          🎈 {AVISO_FECHADO.tarja} — {AVISO_FECHADO.tarjaComplemento}
         </p>
       </div>
     )

@@ -75,7 +75,7 @@ export function LeadForm() {
     const plural = criancasNum > 1 ? 's' : ''
     const msgTexto = INSCRICOES_ABERTAS
       ? `Oi! Quero ingresso da Tardezinha de Domingo. Sou ${nomeClean} e levo ${criancasNum} criança${plural}.`
-      : `Oi! Quero saber da data nova da Tardezinha. Sou ${nomeClean} e levo ${criancasNum} criança${plural}.`
+      : `Oi! Quero entrar na lista da próxima Tardezinha. Sou ${nomeClean} e levo ${criancasNum} criança${plural}.`
     setTimeout(() => {
       window.location.href = whatsappLink(msgTexto)
     }, 1500)
@@ -94,13 +94,13 @@ export function LeadForm() {
         <p className="mt-2 text-sm text-sdb-text/70">
           {INSCRICOES_ABERTAS
             ? 'Chama no WhatsApp que a gente fecha rapidinho.'
-            : 'Chama no WhatsApp que a gente te avisa da data nova.'}
+            : 'A data nasce da turma que fecha primeiro. Deixa teu contato que a gente te chama quando um domingo abrir.'}
         </p>
         <a
           href={whatsappLink(
             INSCRICOES_ABERTAS
               ? 'Oi! Quero ingresso da Tardezinha de Domingo.'
-              : 'Oi! Quero saber da data nova da Tardezinha.',
+              : 'Oi! Quero entrar na lista da próxima Tardezinha.',
           )}
           target="_blank"
           rel="noopener noreferrer"
@@ -122,11 +122,11 @@ export function LeadForm() {
         </h3>
         <p className="mt-2 text-base text-emerald-700">
           {!WHATSAPP_ATIVO ? (
-            <>Assim que a data nova sair, tu é a primeira a saber.</>
+            <>Assim que um domingo abrir, tu é a primeira a saber.</>
           ) : INSCRICOES_ABERTAS ? (
             <>Manda <strong>"oi"</strong> que a gente fecha tua vaga em 5 minutos.</>
           ) : (
-            <>Tá anotado. Assim que a data nova sair, tu é a primeira a saber.</>
+            <>Tá anotado. Assim que um domingo abrir, tu é a primeira a saber.</>
           )}
         </p>
       </div>
@@ -148,7 +148,7 @@ export function LeadForm() {
         <p className="mt-2 text-sm text-sdb-text/70">
           {INSCRICOES_ABERTAS
             ? 'A gente te chama no WhatsApp pra fechar.'
-            : 'Deixa teu contato que a gente te avisa assim que a data nova sair.'}
+            : 'Deixa teu contato que a gente te avisa assim que um domingo abrir.'}
         </p>
       </div>
 

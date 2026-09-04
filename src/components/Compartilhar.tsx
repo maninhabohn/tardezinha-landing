@@ -1,8 +1,8 @@
 import { useState } from 'react'
 
 const SHARE_TEXT =
-  'Olha que legal essa Tardezinha de Domingo em Xangri-lá — 16/08. Vou levar a galera! 🎈'
-const SHARE_TITLE = 'Tardezinha de Domingo Show de Bola — Agosto 2026'
+  'Olha que legal essa Tardezinha de Domingo em Xangri-lá: a data quem escolhe é a gente. Bora juntar a turma! 🎈'
+const SHARE_TITLE = 'Tardezinha de Domingo Show de Bola'
 
 export function Compartilhar() {
   const [feedback, setFeedback] = useState<'idle' | 'copied' | 'error'>('idle')
