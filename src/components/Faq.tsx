@@ -12,7 +12,7 @@ const faqs: FaqItem[] = [
   {
     pergunta: 'Qual é a data da próxima Tardezinha?',
     resposta:
-      'Ainda não tem data marcada — a Tardezinha nasce da data que as famílias escolhem. A partir de 12 crianças a casa abre um domingo pra tua turma. Se tu já tem um dia em mente, fala com a equipe no WhatsApp que a gente confere a agenda e confirma. 🎈',
+      'Ainda não tem data marcada — a Tardezinha nasce do dia que as famílias escolhem. A partir de 12 crianças a casa abre um dia pra tua turma: não precisa ser domingo, e o horário a gente combina. Se tu já tem um dia em mente, escolhe no formulário de grupo ou fala com a equipe no WhatsApp. Um aviso importante: escolher o dia é o pedido — quem confirma é a equipe, depois de conferir a agenda. 🎈',
   },
   {
     pergunta: 'E se chover no dia?',
@@ -32,7 +32,7 @@ const faqs: FaqItem[] = [
   {
     pergunta: 'Tem valor especial pra grupo?',
     resposta:
-      'Sim, e são dois patamares: com 6 crianças ou mais tu já garante R$ 38 por criança numa edição que existe; com 12 ou mais a casa abre um domingo só pra tua turma, no dia que tu escolher.',
+      'Sim, e são dois patamares: com 6 crianças ou mais tu já garante R$ 38 por criança numa edição que já existe; com 12 ou mais a casa abre um dia só pra tua turma, no dia e no horário que combinarem com a equipe.',
   },
   {
     pergunta: 'Tem onde estacionar?',

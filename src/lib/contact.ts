@@ -25,7 +25,7 @@ export interface TardezinhaEvent {
 // 04/09/2026 (Maninha): "nao tem data do tardezinha, estamos com a campanha ESCOLHE A DATA.
 // quando alguem escolher, o evento passa a ter data."
 // Por isso a lista esta VAZIA de proposito — nao e esquecimento. Enquanto ela estiver vazia,
-// a home lidera com a campanha e o caminho e /grupo. Assim que uma turma fechar um domingo,
+// a home lidera com a campanha e o caminho e /grupo. Assim que uma turma fechar um dia,
 // a data entra aqui e a landing volta a vender ingresso avulso (com INSCRICOES_ABERTAS = true).
 export const EVENTS: TardezinhaEvent[] = []
 
@@ -36,7 +36,7 @@ export const INSCRICOES_ABERTAS = false
 
 // 01/09/2026 (Jack): SEPARADO do de cima de proposito.
 // A venda de ingresso avulso (/reservar) depende de ter uma edicao marcada em EVENTS -- e nao tem.
-// Ja a FESTA DE GRUPO (/grupo) funciona sem data marcada: a mae PEDE o domingo e a casa abre.
+// Ja a FESTA DE GRUPO (/grupo) funciona sem data marcada: a mae PEDE o dia e a casa abre.
 // Por isso /grupo abre agora e /reservar segue fechado. Um interruptor so obrigaria a escolher
 // entre deixar dinheiro na mesa ou vender ingresso pra data que nao existe.
 export const GRUPO_ABERTO = true
@@ -53,15 +53,22 @@ export const WHATSAPP_ATIVO = true
 // que e o que de fato esta aberto (/grupo).
 export const AVISO_FECHADO = {
   tarja: 'A data quem escolhe é tu',
-  tarjaComplemento: 'a partir de 12 crianças a casa abre o teu domingo',
+  tarjaComplemento: 'a partir de 12 crianças a casa abre o teu dia',
   titulo: 'A próxima Tardezinha, tu que marca',
   texto:
     'Não tem data fixa no calendário agora — e isso é de propósito. A partir de 12 crianças a casa ' +
-    'abre um domingo pra tua turma: 500m², mais de 20 brinquedos, sem tela, das 14h às 18h. ' +
+    'abre um dia pra tua turma: 500m², mais de 20 brinquedos, sem tela, 4 horas de festa. ' +
+    'Não precisa ser domingo, e o horário a gente combina. ' +
     'A edição é aberta — vão ter outras crianças brincando junto, e é isso que mantém o preço em pé. ' +
     'Com 6 ou mais, já garante o preço de grupo numa edição que já exista.',
   chamada:
     'R$ 38 por criança, e adulto acompanhante não paga.',
+  // 04/09/2026 (Maninha): "ja ta na ficha de grupos que preencher aquilo nao significa que o
+  // evento ta confirmado, e a equipe que confirma". A home tem que dizer o mesmo que a ficha --
+  // senao a landing promete uma coisa e o formulario avisa outra depois que a mae ja se animou.
+  confirmacao:
+    'Escolher o dia é o pedido. Quem confirma o dia e o horário é a equipe, no WhatsApp, ' +
+    'depois de conferir a agenda.',
 }
 
 // Compatibilidade — dados do evento mais proximo (pra componentes simples).
@@ -82,7 +89,7 @@ export const GOOGLE_MAPS_URL =
   encodeURIComponent('Av. G, 101 - Atlântida, Xangri-lá - RS')
 
 // Mensagens padrao do WhatsApp em "tu"
-export const defaultWhatsappMessage = `Oi! Quero saber da Tardezinha de Domingo — tenho um dia em mente pra minha turma.`
+export const defaultWhatsappMessage = `Oi! Quero saber da Tardezinha — tenho um dia em mente pra minha turma.`
 
 import { getUtmSuffix } from './utm'
 

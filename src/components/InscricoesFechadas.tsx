@@ -5,7 +5,7 @@ import { LeadForm } from './LeadForm'
 import { AVISO_FECHADO, whatsappLink, trackWhatsappLead, WHATSAPP_ATIVO } from '../lib/contact'
 
 const avisoMessage =
-  'Oi! Quero saber da Tardezinha de Domingo — tenho um dia em mente pra minha turma.'
+  'Oi! Quero saber da Tardezinha — tenho um dia em mente pra minha turma.'
 
 // Tela que substitui os formularios (/reservar e /grupo) enquanto INSCRICOES_ABERTAS = false.
 export function InscricoesFechadas() {
@@ -27,12 +27,15 @@ export function InscricoesFechadas() {
           <p className="mt-4 text-base font-semibold text-sdb-purple">
             {AVISO_FECHADO.chamada}
           </p>
+          <p className="mt-3 text-sm text-sdb-text/60">
+            {AVISO_FECHADO.confirmacao}
+          </p>
 
           <Link
             to="/grupo"
             className="mt-6 inline-block w-full rounded-full bg-sdb-purple px-6 py-4 font-display text-lg text-white shadow-lg transition hover:scale-[1.02] sm:w-auto sm:px-10"
           >
-            🎈 Escolher o domingo da minha turma
+            🎈 Escolher o dia da minha turma
           </Link>
 
           {WHATSAPP_ATIVO && (

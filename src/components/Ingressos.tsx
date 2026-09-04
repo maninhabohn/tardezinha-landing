@@ -4,7 +4,7 @@ import { Countdown, antecipadoExpirou } from './Countdown'
 import { LeadForm } from './LeadForm'
 
 const grupoMessage =
-  'Oi! Quero saber sobre os valores especiais pra grupo na Tardezinha de Domingo.'
+  'Oi! Quero saber sobre os valores especiais pra grupo na Tardezinha.'
 
 export function Ingressos() {
   const expirou = antecipadoExpirou()
@@ -26,6 +26,9 @@ export function Ingressos() {
             <p className="mt-4 text-base font-semibold text-sdb-purple">
               {AVISO_FECHADO.chamada}
             </p>
+            <p className="mt-3 text-sm text-sdb-text/60">
+              {AVISO_FECHADO.confirmacao}
+            </p>
 
             {/* 02/09/2026: o caminho que EXISTE. Antes daqui so saia lista de espera —
                 a pessoa chegava pela campanha e nao tinha o que fazer. */}
@@ -35,7 +38,7 @@ export function Ingressos() {
                          text-white shadow-lg transition hover:brightness-110 focus:outline-none
                          focus-visible:ring-4 focus-visible:ring-sdb-purple/40"
             >
-              Escolher o domingo da minha turma
+              Escolher o dia da minha turma
             </Link>
           </div>
 
@@ -55,7 +58,7 @@ export function Ingressos() {
             🎟️ Ingresso
           </p>
           <h2 className="font-display text-4xl text-sdb-purple sm:text-5xl">
-            Garante tua vaga no domingo 🎈
+            Garante tua vaga 🎈
           </h2>
 
           {!expirou && (

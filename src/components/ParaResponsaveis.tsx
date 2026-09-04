@@ -17,7 +17,7 @@ const opcoes: Opcao[] = [
   },
   {
     emoji: '😴',
-    titulo: 'Cochilo de Domingo',
+    titulo: 'Cochilo da Tarde',
     descricao: 'O luxo de dormir de tarde',
   },
   {

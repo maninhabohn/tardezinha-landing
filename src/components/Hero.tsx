@@ -31,9 +31,9 @@ export function Hero() {
           <span className="text-sdb-purple-dark">SHOW DE BOLA</span>
         </h1>
 
-        {/* Subtítulo — domingo à tarde */}
+        {/* Subtítulo — uma tarde inteira */}
         <p className="mt-4 font-display text-xl text-sdb-orange sm:text-2xl">
-          Domingo à tarde + mais de 20 brinquedos + 4 horas de diversão.
+          Uma tarde inteira + mais de 20 brinquedos + 4 horas de diversão.
         </p>
 
         {/* Jargão âncora da campanha — DESTAQUE */}
@@ -47,12 +47,12 @@ export function Hero() {
 
         {/* Descrição complementar */}
         <p className="mx-auto mt-6 max-w-xl text-base text-sdb-text/85 sm:text-lg">
-          Domingo à tarde — deixa a criançada com a gente e recarrega: um café sem pressa, um cochilo, o rolê dos amigos. A gente cuida. Tu busca um filho{' '}
+          Uma tarde inteira — deixa a criançada com a gente e recarrega: um café sem pressa, um cochilo, o rolê dos amigos. A gente cuida. Tu busca um filho{' '}
           <strong className="text-sdb-purple">cansado, alimentado e feliz</strong>.
         </p>
 
         {/* Datas — so quando existe edicao marcada. 04/09/2026: com a campanha
-            "escolhe a data" nao ha domingo no calendario, entao entra o card da campanha
+            "escolhe a data" nao ha dia no calendario, entao entra o card da campanha
             no lugar (antes ficava um card de 16/08 carimbado "Adiada"). */}
         {EVENTS.length === 0 ? (
           <div className="mx-auto mt-10 max-w-xl rotate-[-1deg] rounded-2xl bg-white px-7 py-6 shadow-xl ring-4 ring-sdb-orange/40">
@@ -60,9 +60,12 @@ export function Hero() {
               🎈 A próxima data é a tua
             </p>
             <p className="mt-3 text-base leading-relaxed text-sdb-text/80">
-              Não tem domingo fixo no calendário — e isso é de propósito. A partir de{' '}
-              <strong className="text-sdb-purple">12 crianças</strong> a casa abre um domingo
-              pra tua turma, das 14h às 18h.
+              Não tem data fixa no calendário — e isso é de propósito. A partir de{' '}
+              <strong className="text-sdb-purple">12 crianças</strong> a casa abre um dia pra
+              tua turma: não precisa ser domingo, e o horário a gente combina.
+            </p>
+            <p className="mt-3 text-sm font-semibold text-sdb-text/60">
+              A equipe confirma o dia contigo, conferindo a agenda.
             </p>
           </div>
         ) : (
@@ -117,10 +120,10 @@ export function Hero() {
                 to="/grupo"
                 className="inline-flex items-center gap-3 rounded-full bg-sdb-purple px-8 py-4 font-display text-lg text-white shadow-xl ring-4 ring-sdb-purple/30 transition hover:scale-105 sm:text-xl"
               >
-                🎈 ESCOLHER MEU DOMINGO
+                🎈 ESCOLHER MEU DIA
               </Link>
               <p className="mt-3 text-sm font-semibold text-sdb-text/70">
-                A edição nasce da data que a tua turma escolhe.
+                A edição nasce do dia que a tua turma escolhe — e a equipe confirma na agenda.
               </p>
               <p className="mt-3 text-sm">
                 <a href="#ingressos" className="font-semibold text-sdb-purple underline">

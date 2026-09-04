@@ -72,9 +72,9 @@ export function Grupo() {
     //   12+ -> garante a CASA ABERTA (a casa abre um domingo novo pra ela)
     const totalDoGrupo = 1 + convidados.length
     if (querOutraData && totalDoGrupo < 12)
-      return 'Pra gente abrir um dia so pra tua turma sao 12 criancas (contando o aniversariante). Com 6 ou mais tu ja garante o valor de grupo numa data que ja existe.'
+      return 'Pra gente abrir um dia só pra tua turma são 12 crianças (contando o aniversariante). Com 6 ou mais tu já garante o valor de grupo numa data que já existe.'
     if (totalDoGrupo < 6)
-      return 'O valor de grupo comeca em 6 criancas (contando o aniversariante). Chama a gente no WhatsApp que a gente ve o melhor jeito.'
+      return 'O valor de grupo começa em 6 crianças (contando o aniversariante). Chama a gente no WhatsApp que a gente vê o melhor jeito.'
     if (!orgNome.trim()) return 'Preenche teu nome'
     const digits = orgWhatsapp.replace(/\D/g, '')
     if (digits.length < 10) return 'WhatsApp precisa ter DDD + número'
@@ -264,7 +264,7 @@ export function Grupo() {
             Adulto não paga entrada
           </p>
           <p className="mt-1 text-sm text-white/70">
-            A partir de 12, a gente abre um dia so pra tua turma
+            A partir de 12, a gente abre um dia só pra tua turma
           </p>
         </div>
       </div>
@@ -279,7 +279,9 @@ export function Grupo() {
 
         {/* Data e turno */}
         <fieldset className="mb-6 rounded-xl bg-white border-2 border-sdb-purple/30 p-5 shadow-sm">
-          <legend className="text-base font-bold text-sdb-purple px-2">📅 Qual data e turno?</legend>
+          <legend className="text-base font-bold text-sdb-purple px-2">
+            {SESSION_OPTIONS.length === 0 ? '📅 Que dia tu quer?' : '📅 Qual data e turno?'}
+          </legend>
           <div className="mt-3 space-y-2">
             {SESSION_OPTIONS.map(opt => (
               <label
@@ -296,19 +298,23 @@ export function Grupo() {
               </label>
             ))}
 
-            {/* 01/09/2026: o coracao da oferta de grupo -- a mae PEDE o domingo e a casa abre. */}
-            <label
-              className={`flex items-center gap-3 cursor-pointer rounded-lg border-2 p-4 transition ${
-                querOutraData ? 'border-sdb-purple bg-sdb-purple/5' : 'border-gray-200 hover:border-sdb-purple/30'
-              }`}
-            >
-              <input type="radio" name="sessao" checked={querOutraData}
-                onChange={() => setQuerOutraData(true)}
-                className="accent-sdb-purple w-5 h-5" />
-              <span className="text-base font-semibold text-gray-800">
-                Quero outro dia pra minha turma
-              </span>
-            </label>
+            {/* 01/09/2026: o coracao da oferta de grupo -- a mae PEDE o dia e a casa abre.
+                04/09/2026: sem nenhuma edicao no calendario nao existe "outro" dia — o radio
+                sozinho so confundia. Ele so aparece quando ha data marcada pra comparar. */}
+            {SESSION_OPTIONS.length > 0 && (
+              <label
+                className={`flex items-center gap-3 cursor-pointer rounded-lg border-2 p-4 transition ${
+                  querOutraData ? 'border-sdb-purple bg-sdb-purple/5' : 'border-gray-200 hover:border-sdb-purple/30'
+                }`}
+              >
+                <input type="radio" name="sessao" checked={querOutraData}
+                  onChange={() => setQuerOutraData(true)}
+                  className="accent-sdb-purple w-5 h-5" />
+                <span className="text-base font-semibold text-gray-800">
+                  Quero um dia só pra minha turma
+                </span>
+              </label>
+            )}
 
             {querOutraData && (
               <div className="rounded-lg bg-sdb-purple/5 border border-sdb-purple/20 p-4">
@@ -322,21 +328,21 @@ export function Grupo() {
                   className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-base focus:border-sdb-purple focus:outline-none"
                 />
                 <p className="mt-1 text-xs text-gray-500">
-                  Nao precisa ser domingo — pode ser o dia que combinar pra ti.
+                  Não precisa ser domingo — pode ser o dia que combinar pra ti.
                 </p>
 
                 <label className="block text-sm font-semibold text-gray-700 mt-4 mb-2">
-                  E que horario?
+                  E que horário?
                 </label>
                 <input
                   type="text"
                   value={horarioDesejado}
                   onChange={e => setHorarioDesejado(e.target.value)}
-                  placeholder="ex.: das 14h as 18h — ou escreve do teu jeito"
+                  placeholder="ex.: das 14h às 18h — ou escreve do teu jeito"
                   className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 text-base focus:border-sdb-purple focus:outline-none"
                 />
                 <p className="mt-1 text-xs text-gray-500">
-                  Tem mais de um horario possivel. Escreve o que tu prefere que a gente ve aqui.
+                  Tem mais de um horário possível. Escreve o que tu prefere que a gente vê aqui.
                 </p>
 
                 <p className="mt-3 rounded-lg bg-amber-50 border border-amber-200 p-3 text-sm text-amber-900">
