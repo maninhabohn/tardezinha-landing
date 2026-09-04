@@ -69,7 +69,8 @@ export function Grupo() {
     if (!querOutraData && !sessao) return 'Escolhe a data e o turno'
     // 01/09/2026 (Maninha): sao DOIS patamares.
     //   6+  -> garante o DESCONTO (R$38 por crianca) numa edicao que ja existe
-    //   12+ -> garante a CASA ABERTA (a casa abre um domingo novo pra ela)
+    //   12+ -> garante a CASA ABERTA (a casa abre um DIA novo pra ela -- nao precisa ser
+    //          domingo, e o horario se combina; regra da Maninha em 04/09/2026)
     const totalDoGrupo = 1 + convidados.length
     if (querOutraData && totalDoGrupo < 12)
       return 'Pra gente abrir um dia só pra tua turma são 12 crianças (contando o aniversariante). Com 6 ou mais tu já garante o valor de grupo numa data que já existe.'
