@@ -17,6 +17,8 @@ const EDICAO_LABELS: Record<string, string> = {
   '23jul': '23/07',
   '30jul': '30/07',
   '16ago': '16/08',
+  '20set': '20/09',
+  '26set': '26/09',
 }
 
 const FIGURINHAS = [

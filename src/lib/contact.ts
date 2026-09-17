@@ -27,12 +27,31 @@ export interface TardezinhaEvent {
 // Por isso a lista esta VAZIA de proposito — nao e esquecimento. Enquanto ela estiver vazia,
 // a home lidera com a campanha e o caminho e /grupo. Assim que uma turma fechar um dia,
 // a data entra aqui e a landing volta a vender ingresso avulso (com INSCRICOES_ABERTAS = true).
-export const EVENTS: TardezinhaEvent[] = []
+// 17/09/2026 (Maninha): duas edicoes marcadas — 20/09 (domingo) e 26/09 (SABADO), 14h-18h.
+// Como uma delas e sabado, o nome publico deixa de ser "Tardezinha de Domingo".
+export const EVENTS: TardezinhaEvent[] = [
+  {
+    id: '20set',
+    date: '20/09/2026',
+    dateLong: '20 DE SETEMBRO',
+    dayOfWeek: 'domingo',
+    sessions: [{ time: 'das 14h às 18h', label: '14h–18h', soldOut: false }],
+    antecipadoDeadline: '2026-09-19T23:59:59-03:00',
+  },
+  {
+    id: '26set',
+    date: '26/09/2026',
+    dateLong: '26 DE SETEMBRO',
+    dayOfWeek: 'sábado',
+    sessions: [{ time: 'das 14h às 18h', label: '14h–18h', soldOut: false }],
+    antecipadoDeadline: '2026-09-25T23:59:59-03:00',
+  },
+]
 
 // ⛔ KILL SWITCH DA VENDA DE INGRESSO AVULSO
 // So pode ser `true` com pelo menos uma data em EVENTS acima — sem data marcada nao ha
 // o que vender por ingresso. Hoje a oferta aberta e a de GRUPO (a turma escolhe o dia).
-export const INSCRICOES_ABERTAS = false
+export const INSCRICOES_ABERTAS = true
 
 // 01/09/2026 (Jack): SEPARADO do de cima de proposito.
 // A venda de ingresso avulso (/reservar) depende de ter uma edicao marcada em EVENTS -- e nao tem.
@@ -79,7 +98,7 @@ export const EVENT_DATE_LONG = EVENTS[0]?.dateLong ?? ''
 export const EVENT_DAY_OF_WEEK = EVENTS[0]?.dayOfWeek ?? 'domingo'
 export const EVENT_TIME_LABEL = EVENTS[0]?.sessions[0]?.time ?? 'das 14h às 18h'
 export const EVENT_ADDRESS = 'Av. G, 101 — Atlântida, Xangri-Lá — RS, 95588-000'
-export const EVENT_THEME = 'Tardezinha de Domingo'
+export const EVENT_THEME = 'Tardezinha Show de Bola'
 
 // Prazo do antecipado — mais proximo (so vale quando existe edicao marcada)
 export const ANTECIPADO_DEADLINE = EVENTS[0]?.antecipadoDeadline ?? ''

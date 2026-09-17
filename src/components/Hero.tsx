@@ -21,7 +21,7 @@ export function Hero() {
 
         {/* Kicker — pre-titulo */}
         <p className="font-display text-sm uppercase tracking-[0.25em] text-sdb-pink">
-          🎈 Tardezinha de Domingo · A data quem escolhe é tu
+          🎈 Tardezinha · 20/09 (dom) e 26/09 (sáb)
         </p>
 
         {/* Titulo principal */}

@@ -12,7 +12,7 @@ const faqs: FaqItem[] = [
   {
     pergunta: 'Qual é a data da próxima Tardezinha?',
     resposta:
-      'Ainda não tem data marcada — a Tardezinha nasce do dia que as famílias escolhem. A partir de 12 crianças a casa abre um dia pra tua turma: não precisa ser domingo, e o horário a gente combina. Se tu já tem um dia em mente, escolhe no formulário de grupo ou fala com a equipe no WhatsApp. Um aviso importante: escolher o dia é o pedido — quem confirma é a equipe, depois de conferir a agenda. 🎈',
+      'As próximas são domingo 20/09 e sábado 26/09, das 14h às 18h. Tem outro dia em mente? A partir de 12 crianças a casa abre um dia pra tua turma — escolhe no formulário de grupo ou fala com a equipe no WhatsApp. Escolher o dia é o pedido: quem confirma é a equipe, depois de conferir a agenda. 🎈',
   },
   {
     pergunta: 'E se chover no dia?',
