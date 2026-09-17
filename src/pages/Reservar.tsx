@@ -67,7 +67,7 @@ function calcAge(isoDate: string): number {
 const SESSION_OPTIONS = EVENTS.flatMap(ev =>
   ev.sessions.map(s => ({
     value: `${ev.id}|${s.label}`,
-    label: `${ev.date} (${ev.dayOfWeek.slice(0, 4)}) — ${s.label}`,
+    label: `${ev.date} (${ev.dayOfWeek.slice(0, 3)}) — ${s.label}`,
     eventDate: ev.date,
     sessionLabel: s.label,
     soldOut: !!s.soldOut,

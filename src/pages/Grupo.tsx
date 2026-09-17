@@ -28,7 +28,7 @@ const SESSION_OPTIONS = EVENTS.flatMap(ev => {
   if (iso < hojeISO) return []
   return ev.sessions.map(s => ({
     value: `${ev.id}|${s.label}`,
-    label: `${ev.date} (${ev.dayOfWeek.slice(0, 4)}) — ${s.label}`,
+    label: `${ev.date} (${ev.dayOfWeek.slice(0, 3)}) — ${s.label}`,
   }))
 })
 

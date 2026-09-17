@@ -45,7 +45,7 @@ export function DateBanner() {
           {EVENTS.map((ev, i) => (
             <span key={ev.id}>
               {i > 0 && ' · '}
-              {ev.dateLong} ({ev.dayOfWeek.slice(0, 4)})
+              {ev.dateLong} ({ev.dayOfWeek.slice(0, 3)})
             </span>
           ))}
         </span>
