@@ -46,8 +46,8 @@ const EDICOES_AGENDADAS: EdicaoInfo[] = [
   { marker: '30jul|14h–18h',  label: '30/07 · Turno 1 (tarde)',   data: '2026-07-30', passada: '2026-07-30' < HOJE_ISO },
   { marker: '30jul|18h–22h',  label: '30/07 · Turno 2 (noite)',   data: '2026-07-30', passada: '2026-07-30' < HOJE_ISO },
   { marker: '16ago|14h–18h',  label: '16/08 · 14h-18h (domingo)', data: '2026-08-16', passada: '2026-08-16' < HOJE_ISO },
-  { marker: '20set|14h–18h',  label: '20/09 · 14h-18h (domingo)', data: '2026-09-20', passada: '2026-09-20' < HOJE_ISO },
-  { marker: '26set|14h–18h',  label: '26/09 · 14h-18h (sábado)',  data: '2026-09-26', passada: '2026-09-26' < HOJE_ISO },
+  { marker: '20set|15h–19h',  label: '20/09 · 15h-19h (domingo)', data: '2026-09-20', passada: '2026-09-20' < HOJE_ISO },
+  { marker: '26set|15h–19h',  label: '26/09 · 15h-19h (sábado)',  data: '2026-09-26', passada: '2026-09-26' < HOJE_ISO },
 ]
 function edicaoInfo(marker: string): EdicaoInfo {
   const fixa = EDICOES_AGENDADAS.find(e => e.marker === marker)

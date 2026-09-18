@@ -27,7 +27,8 @@ export interface TardezinhaEvent {
 // Por isso a lista esta VAZIA de proposito — nao e esquecimento. Enquanto ela estiver vazia,
 // a home lidera com a campanha e o caminho e /grupo. Assim que uma turma fechar um dia,
 // a data entra aqui e a landing volta a vender ingresso avulso (com INSCRICOES_ABERTAS = true).
-// 17/09/2026 (Maninha): duas edicoes marcadas — 20/09 (domingo) e 26/09 (SABADO), 14h-18h.
+// 17/09/2026 (Maninha): duas edicoes marcadas — 20/09 (domingo) e 26/09 (SABADO).
+// 17/09/2026 21h38 (Ana, grupo CRM): horario passou pra 15h-19h nas duas.
 // Como uma delas e sabado, o nome publico deixa de ser "Tardezinha de Domingo".
 export const EVENTS: TardezinhaEvent[] = [
   {
@@ -35,7 +36,7 @@ export const EVENTS: TardezinhaEvent[] = [
     date: '20/09/2026',
     dateLong: '20 DE SETEMBRO',
     dayOfWeek: 'domingo',
-    sessions: [{ time: 'das 14h às 18h', label: '14h–18h', soldOut: false }],
+    sessions: [{ time: 'das 15h às 19h', label: '15h–19h', soldOut: false }],
     antecipadoDeadline: '2026-09-19T23:59:59-03:00',
   },
   {
@@ -43,7 +44,7 @@ export const EVENTS: TardezinhaEvent[] = [
     date: '26/09/2026',
     dateLong: '26 DE SETEMBRO',
     dayOfWeek: 'sábado',
-    sessions: [{ time: 'das 14h às 18h', label: '14h–18h', soldOut: false }],
+    sessions: [{ time: 'das 15h às 19h', label: '15h–19h', soldOut: false }],
     antecipadoDeadline: '2026-09-25T23:59:59-03:00',
   },
 ]

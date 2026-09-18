@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 const SHARE_TEXT =
-  'Olha que legal essa Tardezinha em Xangri-lá: 20/09 (domingo) e 26/09 (sábado), das 14h às 18h. Bora juntar a turma! 🎈'
+  'Olha que legal essa Tardezinha em Xangri-lá: 20/09 (domingo) e 26/09 (sábado), das 15h às 19h. Bora juntar a turma! 🎈'
 const SHARE_TITLE = 'Tardezinha Show de Bola'
 
 export function Compartilhar() {
