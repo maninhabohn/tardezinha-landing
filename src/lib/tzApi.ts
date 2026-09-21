@@ -87,6 +87,7 @@ export interface PainelReserva {
   status: string
   chegou: boolean
   consumo_pago: boolean
+  consumo_forma_pagamento?: FormaPagamento | null
   qtd_criancas: number
   entrada_ref_centavos: number
   criancas: PainelCrianca[]
@@ -132,9 +133,18 @@ export async function walkin(
   return data as { ok: boolean; id?: string; motivo?: string }
 }
 
-export async function setConsumoPago(key: string, reservaId: string, pago: boolean) {
+// 20/09/2026 (Leti): o fechamento do bar diz COMO recebeu. Antes, 100% sem forma.
+export type FormaPagamento = 'pix' | 'dinheiro' | 'credito' | 'debito'
+export const FORMAS_PAGAMENTO: { id: FormaPagamento; rotulo: string }[] = [
+  { id: 'pix', rotulo: 'Pix' },
+  { id: 'dinheiro', rotulo: 'Dinheiro' },
+  { id: 'credito', rotulo: 'Crédito' },
+  { id: 'debito', rotulo: 'Débito' },
+]
+
+export async function setConsumoPago(key: string, reservaId: string, pago: boolean, forma?: FormaPagamento) {
   const { data, error } = await supabase.rpc('tardezinha_consumo_pago', {
-    p_key: key, p_reserva_id: reservaId, p_pago: pago,
+    p_key: key, p_reserva_id: reservaId, p_pago: pago, p_forma: pago ? (forma ?? null) : null,
   })
   if (error) { console.error('[tzApi] consumo_pago:', error); return { ok: false } }
   return data as { ok: boolean }
@@ -142,11 +152,12 @@ export async function setConsumoPago(key: string, reservaId: string, pago: boole
 
 export async function addPedido(
   key: string, reservaId: string, itemNome: string,
-  precoCentavos: number, qtd: number, obs?: string,
+  precoCentavos: number, qtd: number, obs?: string, avulso = false,
 ) {
+  // avulso = valor gerado no local, fora do cardapio: entra ja finalizado e do lado do bar
   const { data, error } = await supabase.rpc('tardezinha_pedido_add', {
     p_key: key, p_reserva_id: reservaId, p_item_nome: itemNome,
-    p_preco_centavos: precoCentavos, p_qtd: qtd, p_obs: obs ?? null,
+    p_preco_centavos: precoCentavos, p_qtd: qtd, p_obs: obs ?? null, p_avulso: avulso,
   })
   if (error) { console.error('[tzApi] pedido_add:', error); return { ok: false } }
   return data as { ok: boolean; id?: string }

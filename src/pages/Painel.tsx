@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from 'react'
 import {
   fetchPainel, setPedidoStatus, addPedido, fetchCardapio, setCheckin, setConsumoPago, walkin,
+  FORMAS_PAGAMENTO, type FormaPagamento,
   formatBRL, type PainelReserva, type CardapioItem, type PainelPedido,
 } from '../lib/tzApi'
 
@@ -236,6 +237,8 @@ function FamiliaCard({
   const [aberto, setAberto] = useState(false)
   const [addItem, setAddItem] = useState<string>(cardapio[0]?.id ?? '')
   const [addQtd, setAddQtd] = useState(1)
+  const [avulsoDesc, setAvulsoDesc] = useState('')
+  const [avulsoValor, setAvulsoValor] = useState('')
   const [salvando, setSalvando] = useState(false)
   const [chegLoad, setChegLoad] = useState(false)
   const [pagLoad, setPagLoad] = useState(false)
@@ -262,9 +265,16 @@ function FamiliaCard({
     onChange()
   }
 
-  async function togglePago() {
+  async function receber(forma: FormaPagamento) {
     setPagLoad(true)
-    await setConsumoPago(chave, r.id, !r.consumo_pago)
+    await setConsumoPago(chave, r.id, true, forma)
+    setPagLoad(false)
+    onChange()
+  }
+
+  async function desfazerPago() {
+    setPagLoad(true)
+    await setConsumoPago(chave, r.id, false)
     setPagLoad(false)
     onChange()
   }
@@ -282,7 +292,19 @@ function FamiliaCard({
     onChange()
   }
 
+  const ehAvulso = addItem === AVULSO
+  const avulsoCentavos = Math.round(Number(avulsoValor.replace(/\./g, '').replace(',', '.')) * 100) || 0
+
   async function adicionar() {
+    if (ehAvulso) {
+      if (avulsoCentavos <= 0) return
+      setSalvando(true)
+      await addPedido(chave, r.id, avulsoDesc.trim() || 'valor no local', avulsoCentavos, addQtd, undefined, true)
+      setSalvando(false)
+      setAddQtd(1); setAvulsoDesc(''); setAvulsoValor('')
+      onChange()
+      return
+    }
     const item = cardapio.find(c => c.id === addItem)
     if (!item) return
     setSalvando(true)
@@ -418,36 +440,70 @@ function FamiliaCard({
                 <select
                   value={addItem}
                   onChange={e => setAddItem(e.target.value)}
-                  className="flex-1 rounded-lg border border-gray-300 px-2 py-2 text-sm"
+                  className="flex-1 min-w-0 rounded-lg border border-gray-300 px-2 py-2 text-sm"
                 >
                   {cardapio.map(c => (
                     <option key={c.id} value={c.id}>{c.nome}{c.preco_centavos != null ? ` · ${formatBRL(c.preco_centavos)}` : ''}</option>
                   ))}
+                  <option value={AVULSO}>✏️ Outro valor (escrever)</option>
                 </select>
                 <input
                   type="number" min={1} value={addQtd}
                   onChange={e => setAddQtd(Math.max(1, Number(e.target.value)))}
-                  className="w-16 rounded-lg border border-gray-300 px-2 py-2 text-sm text-center"
+                  className="w-14 shrink-0 rounded-lg border border-gray-300 px-2 py-2 text-sm text-center"
                 />
                 <button
-                  onClick={adicionar} disabled={salvando}
-                  className="rounded-lg bg-sdb-purple px-3 py-2 text-sm font-bold text-white disabled:opacity-50"
+                  onClick={adicionar} disabled={salvando || (ehAvulso && avulsoCentavos <= 0)}
+                  className="shrink-0 rounded-lg bg-sdb-purple px-3 py-2 text-sm font-bold text-white disabled:opacity-50"
                 >{salvando ? '…' : 'Add'}</button>
               </div>
+              {ehAvulso && (
+                <div className="mt-2 flex gap-2">
+                  <input
+                    value={avulsoDesc} onChange={e => setAvulsoDesc(e.target.value)}
+                    placeholder="O que foi? (ex.: meia)"
+                    className="flex-1 min-w-0 rounded-lg border border-gray-300 px-2 py-2 text-sm"
+                  />
+                  <div className="flex shrink-0 items-center rounded-lg border border-gray-300 px-2">
+                    <span className="text-sm text-gray-400">R$</span>
+                    <input
+                      value={avulsoValor} onChange={e => setAvulsoValor(e.target.value)}
+                      inputMode="decimal" placeholder="0,00"
+                      className="w-16 py-2 pl-1 text-sm outline-none"
+                    />
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
           {r.consumo_centavos > 0 ? (
             <div className={`rounded-lg p-3 text-center ${r.consumo_pago ? 'bg-gray-100 border border-gray-200' : 'bg-emerald-50 border-2 border-emerald-300'}`}>
-              <p className="text-xs text-gray-500">Total dos lanches {r.consumo_pago ? '— pago ✓' : '— cobrar (Pix ou dinheiro)'}</p>
+              <p className="text-xs text-gray-500">
+                Total dos lanches {r.consumo_pago ? `— pago ✓${r.consumo_forma_pagamento ? ` · ${rotuloForma(r.consumo_forma_pagamento)}` : ''}` : '— cobrar'}
+              </p>
               <p className={`text-3xl font-extrabold ${r.consumo_pago ? 'text-gray-400 line-through' : 'text-emerald-700'}`}>{formatBRL(r.consumo_centavos)}</p>
-              <button
-                onClick={togglePago}
-                disabled={pagLoad}
-                className={`mt-2 w-full rounded-lg py-3 text-sm font-bold transition disabled:opacity-50 ${r.consumo_pago ? 'bg-gray-200 text-gray-600' : 'bg-emerald-500 text-white active:scale-[0.99]'}`}
-              >
-                {r.consumo_pago ? '↩ Desfazer (marcar não pago)' : '✓ Recebi o pagamento'}
-              </button>
+              {r.consumo_pago ? (
+                <button
+                  onClick={desfazerPago}
+                  disabled={pagLoad}
+                  className="mt-2 w-full rounded-lg py-3 text-sm font-bold transition disabled:opacity-50 bg-gray-200 text-gray-600"
+                >↩ Desfazer (marcar não pago)</button>
+              ) : (
+                <>
+                  <p className="mt-2 text-[11px] font-bold text-emerald-800">✓ Recebi em:</p>
+                  <div className="mt-1 grid grid-cols-4 gap-1.5">
+                    {FORMAS_PAGAMENTO.map(f => (
+                      <button
+                        key={f.id}
+                        onClick={() => receber(f.id)}
+                        disabled={pagLoad}
+                        className="rounded-lg bg-emerald-500 py-3 text-xs font-bold text-white transition disabled:opacity-50 active:scale-95"
+                      >{f.rotulo}</button>
+                    ))}
+                  </div>
+                </>
+              )}
             </div>
           ) : (
             <p className="text-[11px] text-gray-400 text-center">Sem lanche reservado. A portaria não recebe dinheiro — pagamento é no bar.</p>
@@ -456,4 +512,11 @@ function FamiliaCard({
       )}
     </div>
   )
+}
+
+// 20/09/2026 (Leti): "outros valores gerados no local" — nao e item do cardapio (ele aparece no
+// formulario publico de reserva, e um item de valor livre ali viraria pedido de R$0).
+const AVULSO = '__avulso__'
+function rotuloForma(f: FormaPagamento): string {
+  return FORMAS_PAGAMENTO.find(x => x.id === f)?.rotulo ?? f
 }
