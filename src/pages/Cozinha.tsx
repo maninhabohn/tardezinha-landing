@@ -64,10 +64,11 @@ export function Cozinha() {
         fila.push({
           pedidoId: p.id, senha: p.senha, item: p.item, qtd: p.qtd, obs: p.obs,
           familia: r.criancas.map(c => c.nome).join(', ') || r.nome, turno: r.turno, status: p.status,
-          // 22/09/2026 (Ana): lanche comprado NA RESERVA so vai pro fogo quando a criança
-          // CHEGA. Antes entrava em "Fazer agora" no minuto da reserva e a cozinha fazia
-          // lanche pra criança que nem tinha chegado. Quem libera é o "✔ Chegou" do painel.
-          aguardando: p.origem === 'reserva' && p.status === 'recebido' && !r.chegou,
+          // 22/09/2026 (Ana + Maninha): lanche comprado NA RESERVA so vai pro fogo quando a
+          // familia PEDE. Antes entrava em "Fazer agora" no minuto da reserva e a cozinha fazia
+          // lanche pra criança que nem tinha chegado. E chegar nao e pedir: a criança chega e
+          // vai brincar. Quem libera e o "🍽️ Pedir agora" do painel, pedido a pedido.
+          aguardando: p.origem === 'reserva' && p.status === 'recebido' && p.liberado === false,
         })
       }
     })
@@ -82,7 +83,7 @@ export function Cozinha() {
     <div className="min-h-screen bg-gray-900 text-white pb-10">
       <header className="sticky top-0 bg-gray-950 px-5 py-3 flex items-center justify-between border-b border-gray-800">
         <h1 className="text-2xl font-extrabold">🍽️ Cozinha · Tardezinha</h1>
-        <span className="text-sm text-gray-400">{novos.length} novo(s) · {preparando.length} em preparo · {esperando.length} esperando chegar · atualiza sozinha</span>
+        <span className="text-sm text-gray-400">{novos.length} novo(s) · {preparando.length} em preparo · {esperando.length} reservado(s) esperando pedido · atualiza sozinha</span>
       </header>
 
       {novos.length === 0 && preparando.length === 0 && esperando.length === 0 && (
@@ -110,11 +111,11 @@ export function Cozinha() {
         )}
       </div>
 
-      {/* RESERVADO — a criança ainda não chegou: a cozinha VÊ pra se organizar, mas NÃO faz */}
+      {/* RESERVADO — a família ainda não pediu: a cozinha VÊ pra se organizar, mas NÃO faz */}
       {esperando.length > 0 && (
         <section className="px-4 pt-8">
-          <h2 className="text-gray-400 text-lg font-extrabold uppercase tracking-wide mb-1">⏳ Reservado — criança ainda não chegou ({esperando.length})</h2>
-          <p className="text-gray-500 text-sm mb-3">NÃO fazer ainda. Sobe pro “Fazer agora” sozinho quando a recepção marcar ✔ Chegou.</p>
+          <h2 className="text-gray-400 text-lg font-extrabold uppercase tracking-wide mb-1">⏳ Reservado — esperando a família pedir ({esperando.length})</h2>
+          <p className="text-gray-500 text-sm mb-3">NÃO fazer ainda. Sobe pro “Fazer agora” sozinho quando o bar apertar 🍽️ Pedir agora.</p>
           <div className="grid gap-3 md:grid-cols-2 opacity-60">
             {esperando.map(f => <FilaCard key={f.pedidoId} f={f} />)}
           </div>

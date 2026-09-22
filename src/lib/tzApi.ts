@@ -76,6 +76,8 @@ export interface PainelPedido {
   origem: 'reserva' | 'evento' | 'avulso'
   status: 'recebido' | 'preparando' | 'entregue' | 'finalizado' | 'cancelado'
   categoria?: string
+  // false = lanche da reserva esperando a familia pedir (nao vai pra cozinha ainda)
+  liberado?: boolean
 }
 export interface PainelCrianca { nome: string; status: string }
 export interface PainelAutorizado { nome: string; cpf: string | null }
@@ -147,6 +149,15 @@ export async function setConsumoPago(key: string, reservaId: string, pago: boole
     p_key: key, p_reserva_id: reservaId, p_pago: pago, p_forma: pago ? (forma ?? null) : null,
   })
   if (error) { console.error('[tzApi] consumo_pago:', error); return { ok: false } }
+  return data as { ok: boolean }
+}
+
+// 22/09/2026: "chegar nao e pedir". O bar aperta "Pedir agora" quando a familia pede o lanche reservado.
+export async function liberarPedido(key: string, pedidoId: string, liberar = true) {
+  const { data, error } = await supabase.rpc('tardezinha_pedido_liberar', {
+    p_key: key, p_pedido_id: pedidoId, p_liberar: liberar,
+  })
+  if (error) { console.error('[tzApi] pedido_liberar:', error); return { ok: false } }
   return data as { ok: boolean }
 }
 

@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from 'react'
 import {
   fetchPainel, setPedidoStatus, addPedido, fetchCardapio, setCheckin, setConsumoPago, walkin,
-  FORMAS_PAGAMENTO, type FormaPagamento,
+  FORMAS_PAGAMENTO, type FormaPagamento, liberarPedido,
   formatBRL, type PainelReserva, type CardapioItem, type PainelPedido,
 } from '../lib/tzApi'
 
@@ -248,8 +248,9 @@ function FamiliaCard({
   const nomesCriancas = r.criancas.map(c => c.nome).filter(Boolean)
   const tituloCard = nomesCriancas.length ? nomesCriancas.join(' · ') : r.nome
   const abertos = r.pedidos.filter(p => p.status === 'recebido' || p.status === 'preparando')
-  // 22/09/2026: lanche da reserva só vai pra cozinha quando a criança chega (ver Cozinha.tsx)
-  const lancheEsperando = r.pedidos.some(p => p.origem === 'reserva' && p.status === 'recebido')
+  // 22/09/2026: lanche da reserva só vai pra cozinha quando a família PEDE (ver Cozinha.tsx)
+  const esperandoPedido = (p: PainelPedido) => p.origem === 'reserva' && p.status === 'recebido' && p.liberado === false
+  const lancheEsperando = r.pedidos.some(esperandoPedido)
   const telDig = (r.whatsapp || '').replace(/\D/g, '')
   const telZap = telDig.length >= 12 ? telDig : '55' + telDig
 
@@ -285,6 +286,11 @@ function FamiliaCard({
     const next = STATUS_NEXT[p.status]
     if (!next) return
     await setPedidoStatus(chave, p.id, next)
+    onChange()
+  }
+
+  async function pedirAgora(p: PainelPedido) {
+    await liberarPedido(chave, p.id)
     onChange()
   }
 
@@ -325,7 +331,7 @@ function FamiliaCard({
             <div className="flex items-center gap-2 flex-wrap">
               <p className="font-bold text-gray-800 truncate">{tituloCard}</p>
               {!pago && <span className="rounded-full bg-amber-100 text-amber-700 text-[10px] font-bold px-2 py-0.5">⏳ ENTRADA</span>}
-              {!r.chegou && lancheEsperando && <span className="rounded-full bg-sky-100 text-sky-700 text-[10px] font-bold px-2 py-0.5">🍽️ lanche espera o Chegou</span>}
+              {lancheEsperando && <span className="rounded-full bg-sky-100 text-sky-700 text-[10px] font-bold px-2 py-0.5">🍽️ lanche reservado · não pedido</span>}
             </div>
             <p className="text-xs text-gray-500 mt-0.5">resp. {r.nome} · {r.turno.replace(/^[^|]+\|/, '')}</p>
             {r.whatsapp && <p className="text-xs font-semibold text-gray-600 mt-0.5">📱 {r.whatsapp}</p>}
@@ -413,17 +419,26 @@ function FamiliaCard({
                       <strong>{p.qtd}×</strong> {p.item}
                       {p.preco_unit_centavos > 0 && <span className="text-gray-400"> · {formatBRL(p.preco_unit_centavos * p.qtd)}</span>}
                       {p.origem === 'evento' && <span className="ml-1 text-[10px] text-amber-600">(no dia)</span>}
+                      {esperandoPedido(p) && <span className="ml-1 text-[10px] text-sky-600">(reservado)</span>}
                     </p>
                     {p.obs && <p className="text-[11px] text-gray-400">{p.obs}</p>}
                   </div>
                   <div className="flex items-center gap-1.5 shrink-0">
-                    <button
-                      onClick={() => mudarStatus(p)}
-                      disabled={!STATUS_NEXT[p.status]}
-                      className={`rounded-md border px-2 py-1 text-xs font-semibold disabled:opacity-70 ${STATUS_BTN[p.status] ?? 'bg-white border-gray-300'}`}
-                    >
-                      {STATUS_LABEL[p.status]}
-                    </button>
+                    {esperandoPedido(p) ? (
+                      <button
+                        onClick={() => pedirAgora(p)}
+                        title="A família pediu o lanche: manda pra cozinha fazer"
+                        className="rounded-md border border-emerald-500 bg-emerald-500 text-white px-2 py-1 text-xs font-bold active:scale-95"
+                      >🍽️ Pedir agora</button>
+                    ) : (
+                      <button
+                        onClick={() => mudarStatus(p)}
+                        disabled={!STATUS_NEXT[p.status]}
+                        className={`rounded-md border px-2 py-1 text-xs font-semibold disabled:opacity-70 ${STATUS_BTN[p.status] ?? 'bg-white border-gray-300'}`}
+                      >
+                        {STATUS_LABEL[p.status]}
+                      </button>
+                    )}
                     <button
                       onClick={() => cancelarPedido(p)}
                       title="Cancelar / trocar pedido"
