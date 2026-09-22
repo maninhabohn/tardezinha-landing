@@ -14,6 +14,7 @@ interface Fila {
   familia: string
   turno: string
   status: 'recebido' | 'preparando'
+  aguardando: boolean
 }
 
 function getKey(): string {
@@ -63,23 +64,28 @@ export function Cozinha() {
         fila.push({
           pedidoId: p.id, senha: p.senha, item: p.item, qtd: p.qtd, obs: p.obs,
           familia: r.criancas.map(c => c.nome).join(', ') || r.nome, turno: r.turno, status: p.status,
+          // 22/09/2026 (Ana): lanche comprado NA RESERVA so vai pro fogo quando a criança
+          // CHEGA. Antes entrava em "Fazer agora" no minuto da reserva e a cozinha fazia
+          // lanche pra criança que nem tinha chegado. Quem libera é o "✔ Chegou" do painel.
+          aguardando: p.origem === 'reserva' && p.status === 'recebido' && !r.chegou,
         })
       }
     })
   })
   // ordena pela SENHA (ordem de chegada) dentro de cada grupo
   const porSenha = (a: Fila, b: Fila) => (a.senha ?? 0) - (b.senha ?? 0)
-  const novos = fila.filter(f => f.status === 'recebido').sort(porSenha)
+  const novos = fila.filter(f => f.status === 'recebido' && !f.aguardando).sort(porSenha)
   const preparando = fila.filter(f => f.status === 'preparando').sort(porSenha)
+  const esperando = fila.filter(f => f.aguardando).sort(porSenha)
 
   return (
     <div className="min-h-screen bg-gray-900 text-white pb-10">
       <header className="sticky top-0 bg-gray-950 px-5 py-3 flex items-center justify-between border-b border-gray-800">
         <h1 className="text-2xl font-extrabold">🍽️ Cozinha · Tardezinha</h1>
-        <span className="text-sm text-gray-400">{novos.length} novo(s) · {preparando.length} em preparo · atualiza sozinha</span>
+        <span className="text-sm text-gray-400">{novos.length} novo(s) · {preparando.length} em preparo · {esperando.length} esperando chegar · atualiza sozinha</span>
       </header>
 
-      {fila.length === 0 && (
+      {novos.length === 0 && preparando.length === 0 && esperando.length === 0 && (
         <div className="flex items-center justify-center py-32 text-gray-500 text-3xl font-bold">Sem pedidos na fila 🎉</div>
       )}
 
@@ -103,6 +109,17 @@ export function Cozinha() {
           </section>
         )}
       </div>
+
+      {/* RESERVADO — a criança ainda não chegou: a cozinha VÊ pra se organizar, mas NÃO faz */}
+      {esperando.length > 0 && (
+        <section className="px-4 pt-8">
+          <h2 className="text-gray-400 text-lg font-extrabold uppercase tracking-wide mb-1">⏳ Reservado — criança ainda não chegou ({esperando.length})</h2>
+          <p className="text-gray-500 text-sm mb-3">NÃO fazer ainda. Sobe pro “Fazer agora” sozinho quando a recepção marcar ✔ Chegou.</p>
+          <div className="grid gap-3 md:grid-cols-2 opacity-60">
+            {esperando.map(f => <FilaCard key={f.pedidoId} f={f} />)}
+          </div>
+        </section>
+      )}
 
       <p className="text-center text-gray-600 text-sm mt-10">Esta tela é só pra olhar. Quem marca “pronto” é o atendente no painel.</p>
     </div>

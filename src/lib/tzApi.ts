@@ -73,7 +73,7 @@ export interface PainelPedido {
   qtd: number
   preco_unit_centavos: number
   obs: string | null
-  origem: 'reserva' | 'evento'
+  origem: 'reserva' | 'evento' | 'avulso'
   status: 'recebido' | 'preparando' | 'entregue' | 'finalizado' | 'cancelado'
   categoria?: string
 }
