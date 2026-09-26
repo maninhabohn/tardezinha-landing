@@ -236,7 +236,9 @@ function FamiliaCard({
 }) {
   const [aberto, setAberto] = useState(false)
   const [addItem, setAddItem] = useState<string>(cardapio[0]?.id ?? '')
-  const [addQtd, setAddQtd] = useState(1)
+  // 26/09/2026 (Leti): texto, não número — com Math.max(1, …) no onChange o campo nunca ficava
+  // vazio, o "1" não saía e digitar 5 virava 15. Qtd de 2 a 9 era impossível.
+  const [addQtd, setAddQtd] = useState('1')
   const [avulsoDesc, setAvulsoDesc] = useState('')
   const [avulsoValor, setAvulsoValor] = useState('')
   const [salvando, setSalvando] = useState(false)
@@ -302,23 +304,24 @@ function FamiliaCard({
 
   const ehAvulso = addItem === AVULSO
   const avulsoCentavos = Math.round(Number(avulsoValor.replace(/\./g, '').replace(',', '.')) * 100) || 0
+  const qtdNum = Math.max(1, parseInt(addQtd, 10) || 1)
 
   async function adicionar() {
     if (ehAvulso) {
       if (avulsoCentavos <= 0) return
       setSalvando(true)
-      await addPedido(chave, r.id, avulsoDesc.trim() || 'valor no local', avulsoCentavos, addQtd, undefined, true)
+      await addPedido(chave, r.id, avulsoDesc.trim() || 'valor no local', avulsoCentavos, qtdNum, undefined, true)
       setSalvando(false)
-      setAddQtd(1); setAvulsoDesc(''); setAvulsoValor('')
+      setAddQtd('1'); setAvulsoDesc(''); setAvulsoValor('')
       onChange()
       return
     }
     const item = cardapio.find(c => c.id === addItem)
     if (!item) return
     setSalvando(true)
-    await addPedido(chave, r.id, item.nome, item.preco_centavos ?? 0, addQtd)
+    await addPedido(chave, r.id, item.nome, item.preco_centavos ?? 0, qtdNum)
     setSalvando(false)
-    setAddQtd(1)
+    setAddQtd('1')
     onChange()
   }
 
@@ -466,8 +469,11 @@ function FamiliaCard({
                   <option value={AVULSO}>✏️ Outro valor (escrever)</option>
                 </select>
                 <input
-                  type="number" min={1} value={addQtd}
-                  onChange={e => setAddQtd(Math.max(1, Number(e.target.value)))}
+                  type="text" inputMode="numeric" pattern="[0-9]*" value={addQtd}
+                  aria-label="Quantidade"
+                  onChange={e => setAddQtd(e.target.value.replace(/\D/g, '').slice(0, 3))}
+                  onFocus={e => e.target.select()}
+                  onBlur={() => { if (!parseInt(addQtd, 10)) setAddQtd('1') }}
                   className="w-14 shrink-0 rounded-lg border border-gray-300 px-2 py-2 text-sm text-center"
                 />
                 <button
