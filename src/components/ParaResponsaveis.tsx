@@ -68,9 +68,9 @@ export function ParaResponsaveis() {
         {/* Promessa final */}
         <div className="mx-auto mt-12 max-w-3xl rounded-3xl bg-sdb-purple p-8 text-center text-white shadow-2xl">
           <p className="font-display text-2xl sm:text-3xl">
-            Tu busca no final do turno e pega um filho
+            Tu busca no final do turno e pega a criançada
             <br />
-            <strong className="text-sdb-yellow">cansado, alimentado e feliz</strong>.
+            <strong className="text-sdb-yellow">cansada, alimentada e feliz</strong>.
           </p>
           <p className="mt-4 text-lg italic text-white/85">
             A família agradece.

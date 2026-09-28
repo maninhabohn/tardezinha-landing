@@ -281,6 +281,10 @@ export function Reservar() {
       .map(a => a.cpf.trim() ? `${a.nome.trim()} — CPF ${a.cpf.trim()}` : a.nome.trim())
       .join('; ')
 
+    // 27/09/2026: sem isto o banco gravava toda reserva avulsa com 03/07 (padrao da coluna, da
+    // 1a edicao). 20/09 e 26/09 ficaram com data de julho e quem le por data nao achava ninguem.
+    const dataDaEdicao = selectedOption?.eventDate.split('/').reverse().join('-')
+
     const { error: errReserva } = await supabase
       .from('tardezinha_reservas')
       .insert({
@@ -299,6 +303,7 @@ export function Reservar() {
         qtd_adultos_extra: qtdAdultos,
         aceitou_termo_responsabilidade: aceitouTermo,
         edicao: sessaoEscolhida,
+        ...(dataDaEdicao ? { evento_data: dataDaEdicao } : {}),
         utm_source: utm.utm_source,
         utm_medium: utm.utm_medium,
         utm_campaign: utm.utm_campaign,

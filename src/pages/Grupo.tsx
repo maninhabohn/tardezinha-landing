@@ -73,7 +73,7 @@ export function Grupo() {
     //          domingo, e o horario se combina; regra da Maninha em 04/09/2026)
     const totalDoGrupo = 1 + convidados.length
     if (querOutraData && totalDoGrupo < 12)
-      return 'Pra gente abrir um dia só pra tua turma são 12 crianças (contando o aniversariante). Com 6 ou mais tu já garante o valor de grupo numa data que já existe.'
+      return 'Pra gente abrir um dia pra tua turma são 12 crianças (contando o aniversariante). Com 6 ou mais tu já garante o valor de grupo numa data que já existe.'
     if (totalDoGrupo < 6)
       return 'O valor de grupo começa em 6 crianças (contando o aniversariante). Chama a gente no WhatsApp que a gente vê o melhor jeito.'
     if (!orgNome.trim()) return 'Preenche teu nome'
@@ -265,7 +265,7 @@ export function Grupo() {
             Adulto não paga entrada
           </p>
           <p className="mt-1 text-sm text-white/70">
-            A partir de 12, a gente abre um dia só pra tua turma
+            A partir de 12, a gente abre um dia pra tua turma
           </p>
         </div>
       </div>
@@ -312,7 +312,7 @@ export function Grupo() {
                   onChange={() => setQuerOutraData(true)}
                   className="accent-sdb-purple w-5 h-5" />
                 <span className="text-base font-semibold text-gray-800">
-                  Quero um dia só pra minha turma
+                  Quero outro dia pra minha turma
                 </span>
               </label>
             )}
@@ -347,8 +347,8 @@ export function Grupo() {
                 </p>
 
                 <p className="mt-3 rounded-lg bg-amber-50 border border-amber-200 p-3 text-sm text-amber-900">
-                  <strong>Isso aqui e um pedido, ainda nao e a reserva.</strong> Pra confirmar o dia
-                  e o horario, a equipe te chama no WhatsApp e confere a agenda contigo.
+                  <strong>Isso aqui é um pedido, ainda não é a reserva.</strong> Pra confirmar o dia
+                  e o horário, a equipe te chama no WhatsApp e confere a agenda contigo.
                 </p>
               </div>
             )}

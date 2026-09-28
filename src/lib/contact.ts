@@ -30,7 +30,7 @@ export interface TardezinhaEvent {
 // 17/09/2026 (Maninha): duas edicoes marcadas — 20/09 (domingo) e 26/09 (SABADO).
 // 17/09/2026 21h38 (Ana, grupo CRM): horario passou pra 15h-19h nas duas.
 // Como uma delas e sabado, o nome publico deixa de ser "Tardezinha de Domingo".
-export const EVENTS: TardezinhaEvent[] = [
+const EDICOES: TardezinhaEvent[] = [
   {
     id: '20set',
     date: '20/09/2026',
@@ -49,10 +49,35 @@ export const EVENTS: TardezinhaEvent[] = [
   },
 ]
 
+// 27/09/2026 (Jack): edicao que ja passou SAI SOZINHA. 20/09 e 26/09 seguiram no ar depois de
+// acontecer: a home e a tarja de todas as paginas mostravam as duas, e o /reservar vendia ingresso
+// pra elas (em agosto foi o mesmo com 16/08). Tirar na mao depende de alguem lembrar.
+// Agora EDICOES e o historico e a landing so enxerga o que ainda nao passou (o proprio dia conta).
+// Sem nenhuma edicao pela frente, ela volta sozinha pra campanha "a data quem escolhe e tu".
+function hojeLocalISO() {
+  const d = new Date()
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+}
+const isoDaData = (data: string) => data.split('/').reverse().join('-') // "20/09/2026" -> "2026-09-20"
+export const EVENTS: TardezinhaEvent[] = EDICOES.filter(ev => isoDaData(ev.date) >= hojeLocalISO())
+
 // ⛔ KILL SWITCH DA VENDA DE INGRESSO AVULSO
-// So pode ser `true` com pelo menos uma data em EVENTS acima — sem data marcada nao ha
+// So vende com pelo menos uma edicao PELA FRENTE em EVENTS — sem data marcada nao ha
 // o que vender por ingresso. Hoje a oferta aberta e a de GRUPO (a turma escolhe o dia).
-export const INSCRICOES_ABERTAS = true
+// 27/09/2026: a checagem da data virou automatica; o interruptor manual segue aqui.
+const VENDA_AVULSA_LIGADA = true
+export const INSCRICOES_ABERTAS = VENDA_AVULSA_LIGADA && EVENTS.length > 0
+
+// 27/09/2026: o texto das datas SAI DAQUI -- data nao se escreve a mao em outro arquivo.
+// 20/09 e 26/09 estavam escritas no titulo, no FAQ, no compartilhar e no topo da home,
+// e so esta lista sabia que elas ja tinham passado. Vazias quando nao ha edicao pela frente.
+const juntar = (xs: string[]) => (xs.length < 2 ? xs.join('') : `${xs.slice(0, -1).join(', ')} e ${xs[xs.length - 1]}`)
+const HORARIOS = Array.from(new Set(EVENTS.flatMap(ev => ev.sessions.map(s => s.time))))
+// "20/09 (dom) e 26/09 (sáb)"
+export const DATAS_CURTAS = juntar(EVENTS.map(ev => `${ev.date.slice(0, 5)} (${ev.dayOfWeek.slice(0, 3)})`))
+// "domingo 20/09 e sábado 26/09, das 15h às 19h"
+export const DATAS_LONGAS = EVENTS.length === 0 ? '' :
+  juntar(EVENTS.map(ev => `${ev.dayOfWeek} ${ev.date.slice(0, 5)}`)) + (HORARIOS.length === 1 ? `, ${HORARIOS[0]}` : '')
 
 // 01/09/2026 (Jack): SEPARADO do de cima de proposito.
 // A venda de ingresso avulso (/reservar) depende de ter uma edicao marcada em EVENTS -- e nao tem.

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { EVENTS, INSCRICOES_ABERTAS } from '../lib/contact'
+import { EVENTS, INSCRICOES_ABERTAS, DATAS_CURTAS } from '../lib/contact'
 import { Logo } from './Logo'
 
 export function Hero() {
@@ -21,7 +21,7 @@ export function Hero() {
 
         {/* Kicker — pre-titulo */}
         <p className="font-display text-sm uppercase tracking-[0.25em] text-sdb-pink">
-          🎈 Tardezinha · 20/09 (dom) e 26/09 (sáb)
+          🎈 Tardezinha · {DATAS_CURTAS || 'A data quem escolhe é tu'}
         </p>
 
         {/* Titulo principal */}
@@ -47,8 +47,8 @@ export function Hero() {
 
         {/* Descrição complementar */}
         <p className="mx-auto mt-6 max-w-xl text-base text-sdb-text/85 sm:text-lg">
-          Uma tarde inteira — deixa a criançada com a gente e recarrega: um café sem pressa, um cochilo, o rolê dos amigos. A gente cuida. Tu busca um filho{' '}
-          <strong className="text-sdb-purple">cansado, alimentado e feliz</strong>.
+          Uma tarde inteira — deixa a criançada com a gente e recarrega: um café sem pressa, um cochilo, o rolê dos amigos. A gente cuida. Tu busca a criançada{' '}
+          <strong className="text-sdb-purple">cansada, alimentada e feliz</strong>.
         </p>
 
         {/* Datas — so quando existe edicao marcada. 04/09/2026: com a campanha

@@ -1,7 +1,10 @@
 import { useState } from 'react'
+import { DATAS_LONGAS } from '../lib/contact'
 
-const SHARE_TEXT =
-  'Olha que legal essa Tardezinha em Xangri-lá: 20/09 (domingo) e 26/09 (sábado), das 15h às 19h. Bora juntar a turma! 🎈'
+// 27/09/2026: a data vem de DATAS_LONGAS; sem edicao pela frente, volta o texto da campanha.
+const SHARE_TEXT = DATAS_LONGAS
+  ? `Olha que legal essa Tardezinha em Xangri-lá: ${DATAS_LONGAS}. Bora juntar a turma! 🎈`
+  : 'Olha que legal essa Tardezinha em Xangri-lá: a data quem escolhe é a gente. Bora juntar a turma! 🎈'
 const SHARE_TITLE = 'Tardezinha Show de Bola'
 
 export function Compartilhar() {
