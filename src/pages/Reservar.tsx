@@ -545,9 +545,14 @@ export function Reservar() {
         {/* Data e turno */}
         <fieldset className="mb-6 rounded-xl bg-white border-2 border-sdb-purple/30 p-5 shadow-sm">
           <legend className="text-base font-bold text-sdb-purple px-2">📅 Qual data e turno?</legend>
+          {/* 27/09/2026: o aviso era o de 30/07 escrito a mao ("tarde esgotou, corre pra noite 18h-22h")
+              e apareceria em qualquer edicao futura com turno esgotado. Agora sai dos turnos de verdade. */}
           {ALGUM_ESGOTADO && (
             <div className="mt-2 rounded-lg bg-amber-50 border border-amber-300 p-3 text-sm font-semibold text-amber-800">
-              ⚠️ O turno da <strong>tarde (14h–18h) esgotou!</strong> Corre que ainda tem vaga no turno da <strong>noite (18h–22h)</strong> 🌙
+              ⚠️ Esgotou: <strong>{SESSION_OPTIONS.filter(o => o.soldOut).map(o => o.label).join(' · ')}</strong>.
+              {SESSION_OPTIONS.some(o => !o.soldOut) && (
+                <> Ainda tem vaga em <strong>{SESSION_OPTIONS.filter(o => !o.soldOut).map(o => o.label).join(' · ')}</strong>.</>
+              )}
             </div>
           )}
           <div className="mt-3 space-y-2">

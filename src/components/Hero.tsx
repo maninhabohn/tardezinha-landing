@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { EVENTS, INSCRICOES_ABERTAS, DATAS_CURTAS } from '../lib/contact'
+import { EVENTS, INSCRICOES_ABERTAS, DATAS_CURTAS, ULTIMA_EDICAO_ESGOTOU } from '../lib/contact'
 import { Logo } from './Logo'
 
 export function Hero() {
@@ -110,9 +110,11 @@ export function Hero() {
               >
                 🎟️ GARANTIR MINHA VAGA
               </Link>
-              <p className="mt-3 text-sm font-semibold text-sdb-text/70">
-                🔥 A última edição esgotou. Não fica de fora.
-              </p>
+              {ULTIMA_EDICAO_ESGOTOU && (
+                <p className="mt-3 text-sm font-semibold text-sdb-text/70">
+                  🔥 A última edição esgotou. Não fica de fora.
+                </p>
+              )}
             </>
           ) : (
             <>

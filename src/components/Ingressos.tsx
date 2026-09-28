@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { whatsappLink, trackWhatsappLead, INSCRICOES_ABERTAS, AVISO_FECHADO } from '../lib/contact'
+import { whatsappLink, trackWhatsappLead, INSCRICOES_ABERTAS, AVISO_FECHADO, ULTIMA_EDICAO_ESGOTOU } from '../lib/contact'
 import { Countdown, antecipadoExpirou } from './Countdown'
 import { LeadForm } from './LeadForm'
 
@@ -148,15 +148,18 @@ export function Ingressos() {
           </a>
         </div>
 
-        {/* Aviso de vagas com social proof */}
-        <div className="mt-8 text-center">
-          <p className="font-display text-2xl text-sdb-pink uppercase animate-pulse">
-            🔥 A última edição esgotou
-          </p>
-          <p className="mt-2 text-sm font-semibold text-sdb-text/70">
-            As vagas vão rápido — não fica pra próxima.
-          </p>
-        </div>
+        {/* Aviso de vagas com social proof. 27/09/2026: era fixo desde junho; so aparece se a
+            ultima edicao que passou estiver marcada esgotada em EDICOES (src/lib/contact.ts). */}
+        {ULTIMA_EDICAO_ESGOTOU && (
+          <div className="mt-8 text-center">
+            <p className="font-display text-2xl text-sdb-pink uppercase animate-pulse">
+              🔥 A última edição esgotou
+            </p>
+            <p className="mt-2 text-sm font-semibold text-sdb-text/70">
+              As vagas vão rápido — não fica pra próxima.
+            </p>
+          </div>
+        )}
       </div>
     </section>
   )

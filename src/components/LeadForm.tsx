@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { supabase, isSupabaseConfigured } from '../lib/supabase'
-import { whatsappLink, trackWhatsappLead, INSCRICOES_ABERTAS, WHATSAPP_ATIVO } from '../lib/contact'
+import { whatsappLink, trackWhatsappLead, INSCRICOES_ABERTAS, WHATSAPP_ATIVO, EVENTS, isoDaData } from '../lib/contact'
 import { getUtmParams } from '../lib/utm'
 
 type Status =
@@ -9,8 +9,9 @@ type Status =
   | { kind: 'success' }
   | { kind: 'error'; message: string }
 
-// Edicao atual — atualizar quando virar a proxima
-const EDICAO = '2026-08-16'
+// Edicao atual. 27/09/2026: era '2026-08-16' escrito a mao ("atualizar quando virar a proxima")
+// e ficou 6 semanas velho. Agora sai da lista da landing; sem edicao pela frente, 'proxima'.
+const EDICAO = EVENTS[0] ? isoDaData(EVENTS[0].date) : 'proxima'
 
 function sanitize(value: string) {
   return value.trim().slice(0, 200)

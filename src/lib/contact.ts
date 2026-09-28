@@ -30,7 +30,12 @@ export interface TardezinhaEvent {
 // 17/09/2026 (Maninha): duas edicoes marcadas — 20/09 (domingo) e 26/09 (SABADO).
 // 17/09/2026 21h38 (Ana, grupo CRM): horario passou pra 15h-19h nas duas.
 // Como uma delas e sabado, o nome publico deixa de ser "Tardezinha de Domingo".
-const EDICOES: TardezinhaEvent[] = [
+//
+// 27/09/2026: ESTA e a lista da landing inteira (home, tarja, FAQ, compartilhar, /reservar, /grupo,
+// estatistica e passaporte leem daqui). Data nova entra SO aqui -- e numa linha da tabela
+// tardezinha_edicoes do banco, com o MESMO id no marker (e de la que a Thelma e o painel leem).
+// Passo a passo e conferencia: skill `tardezinha-datas` do CRM.
+export const EDICOES: TardezinhaEvent[] = [
   {
     id: '20set',
     date: '20/09/2026',
@@ -47,6 +52,25 @@ const EDICOES: TardezinhaEvent[] = [
     sessions: [{ time: 'das 15h às 19h', label: '15h–19h', soldOut: false }],
     antecipadoDeadline: '2026-09-25T23:59:59-03:00',
   },
+  // 27/09/2026 (Maninha): "sim abre a data". As duas estavam na agenda desde 12 e 15/09 (turmas
+  // que escolheram o dia) e nao tinham chegado nem aqui nem na Thelma. Edicao aberta: outras
+  // familias compram ingresso junto.
+  {
+    id: '18out',
+    date: '18/10/2026',
+    dateLong: '18 DE OUTUBRO',
+    dayOfWeek: 'domingo',
+    sessions: [{ time: 'das 14h às 18h', label: '14h–18h', soldOut: false }],
+    antecipadoDeadline: '2026-10-17T23:59:59-03:00',
+  },
+  {
+    id: '14nov',
+    date: '14/11/2026',
+    dateLong: '14 DE NOVEMBRO',
+    dayOfWeek: 'sábado',
+    sessions: [{ time: 'das 14h às 18h', label: '14h–18h', soldOut: false }],
+    antecipadoDeadline: '2026-11-13T23:59:59-03:00',
+  },
 ]
 
 // 27/09/2026 (Jack): edicao que ja passou SAI SOZINHA. 20/09 e 26/09 seguiram no ar depois de
@@ -58,8 +82,14 @@ function hojeLocalISO() {
   const d = new Date()
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
 }
-const isoDaData = (data: string) => data.split('/').reverse().join('-') // "20/09/2026" -> "2026-09-20"
+export const isoDaData = (data: string) => data.split('/').reverse().join('-') // "20/09/2026" -> "2026-09-20"
 export const EVENTS: TardezinhaEvent[] = EDICOES.filter(ev => isoDaData(ev.date) >= hojeLocalISO())
+
+// 27/09/2026: "A ultima edicao esgotou" estava escrito fixo desde junho. So aparece se for verdade:
+// a ultima edicao que ja passou tem todos os turnos marcados soldOut.
+const PASSADAS = EDICOES.filter(ev => isoDaData(ev.date) < hojeLocalISO())
+const ULTIMA_PASSADA = PASSADAS[PASSADAS.length - 1]
+export const ULTIMA_EDICAO_ESGOTOU = !!ULTIMA_PASSADA && ULTIMA_PASSADA.sessions.every(s => s.soldOut)
 
 // ⛔ KILL SWITCH DA VENDA DE INGRESSO AVULSO
 // So vende com pelo menos uma edicao PELA FRENTE em EVENTS — sem data marcada nao ha

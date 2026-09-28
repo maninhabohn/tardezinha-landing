@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Logo } from '../components/Logo'
 import { supabase, isSupabaseConfigured } from '../lib/supabase'
-import { whatsappLink, trackWhatsappLead } from '../lib/contact'
+import { whatsappLink, trackWhatsappLead, EDICOES } from '../lib/contact'
 
 interface PassaporteData {
   encontrado: boolean
@@ -12,13 +12,14 @@ interface PassaporteData {
 
 const SELOS_META = 4
 
+// 27/09/2026: o historico de antes de 20/09 fica fixo; o resto sai do EDICOES (src/lib/contact.ts),
+// senao o selo de 18/10 apareceria como "18out".
 const EDICAO_LABELS: Record<string, string> = {
   '09jul': '09/07',
   '23jul': '23/07',
   '30jul': '30/07',
   '16ago': '16/08',
-  '20set': '20/09',
-  '26set': '26/09',
+  ...Object.fromEntries(EDICOES.map(ev => [ev.id, ev.date.slice(0, 5)])),
 }
 
 const FIGURINHAS = [
