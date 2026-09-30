@@ -60,7 +60,9 @@ export const EDICOES: TardezinhaEvent[] = [
     date: '18/10/2026',
     dateLong: '18 DE OUTUBRO',
     dayOfWeek: 'domingo',
-    sessions: [{ time: 'das 14h às 18h', label: '14h–18h', soldOut: false }],
+    // 30/09/2026: grupo CRM (29/09 15h58) "Parar essa postagem e arrumar Horário. Horário das 15h as 19h".
+    // A agenda do Google ainda diz 14h–18h; a casa corrigiu pra 15h–19h.
+    sessions: [{ time: 'das 15h às 19h', label: '15h–19h', soldOut: false }],
     antecipadoDeadline: '2026-10-17T23:59:59-03:00',
   },
   {
