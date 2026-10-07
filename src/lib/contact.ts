@@ -52,6 +52,16 @@ export const EDICOES: TardezinhaEvent[] = [
     sessions: [{ time: 'das 15h às 19h', label: '15h–19h', soldOut: false }],
     antecipadoDeadline: '2026-09-25T23:59:59-03:00',
   },
+  // 07/10/2026 (Maninha): "lanca um tardezinha para o dia 13/10/26 das 14h as 18h - lancamento completo".
+  // Terca-feira (conferido no calendario). Edicao aberta.
+  {
+    id: '13out',
+    date: '13/10/2026',
+    dateLong: '13 DE OUTUBRO',
+    dayOfWeek: 'terça',
+    sessions: [{ time: 'das 14h às 18h', label: '14h–18h', soldOut: false }],
+    antecipadoDeadline: '2026-10-12T23:59:59-03:00',
+  },
   // 27/09/2026 (Maninha): "sim abre a data". As duas estavam na agenda desde 12 e 15/09 (turmas
   // que escolheram o dia) e nao tinham chegado nem aqui nem na Thelma. Edicao aberta: outras
   // familias compram ingresso junto.
