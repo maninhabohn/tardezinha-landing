@@ -366,7 +366,7 @@ export function Reservar() {
 
     // mensagem WhatsApp
     const ehGrupo = ativasList.length >= 6
-    const valorPorCrianca = ehGrupo ? 38 : 45
+    const valorPorCrianca = ehGrupo ? 40 : 45
     const totalEstimado = ativasList.length * valorPorCrianca
     const idadesStr = ativasList.map(c => {
       const dt = parseDateBR(c.dataNascimento)!
@@ -533,7 +533,7 @@ export function Reservar() {
         </p>
         <div className="mt-3 inline-block rounded-lg bg-sdb-purple/10 px-5 py-2">
           <p className="text-lg text-sdb-purple-dark font-bold">R$45 antecipado · R$50 na hora · Adulto não paga</p>
-          <p className="mt-1 text-sm text-sdb-purple-dark/80">👥 Grupo com 6+ crianças: R$38 antecipado</p>
+          <p className="mt-1 text-sm text-sdb-purple-dark/80">👥 Grupo com 6+ crianças: R$40 antecipado</p>
         </div>
       </div>
 

@@ -150,7 +150,7 @@ export const AVISO_FECHADO = {
     'A edição é aberta — vão ter outras crianças brincando junto, e é isso que mantém o preço em pé. ' +
     'Com 6 ou mais, já garante o preço de grupo numa edição que já exista.',
   chamada:
-    'R$ 38 por criança, e adulto acompanhante não paga.',
+    'R$ 40 por criança, e adulto acompanhante não paga.',
   // 04/09/2026 (Maninha): "ja ta na ficha de grupos que preencher aquilo nao significa que o
   // evento ta confirmado, e a equipe que confirma". A home tem que dizer o mesmo que a ficha --
   // senao a landing promete uma coisa e o formulario avisa outra depois que a mae ja se animou.

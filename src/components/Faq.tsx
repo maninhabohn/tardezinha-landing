@@ -34,7 +34,7 @@ const faqs: FaqItem[] = [
   {
     pergunta: 'Tem valor especial pra grupo?',
     resposta:
-      'Sim, e são dois patamares: com 6 crianças ou mais tu já garante R$ 38 por criança numa edição que já existe; com 12 ou mais a casa abre um dia pra tua turma, no dia e no horário que combinarem com a equipe. A edição segue aberta pra outras famílias — é isso que segura o preço.',
+      'Sim, e são dois patamares: com 6 crianças ou mais tu já garante R$ 40 por criança numa edição que já existe; com 12 ou mais a casa abre um dia pra tua turma, no dia e no horário que combinarem com a equipe. A edição segue aberta pra outras famílias — é isso que segura o preço.',
   },
   {
     pergunta: 'Tem onde estacionar?',
