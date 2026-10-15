@@ -2,8 +2,14 @@ import { useEffect, useState, useCallback } from 'react'
 import {
   fetchPainel, setPedidoStatus, addPedido, fetchCardapio, setCheckin, setConsumoPago, walkin,
   FORMAS_PAGAMENTO, type FormaPagamento, liberarPedido,
-  formatBRL, type PainelReserva, type CardapioItem, type PainelPedido,
+  formatBRL, type PainelReserva, type CardapioItem, type PainelPedido, type PainelEdicao,
 } from '../lib/tzApi'
+
+const SEMANA = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb']
+function rotuloEdicao(e: PainelEdicao): string {
+  const [a, m, d] = e.dia.split('-').map(Number)
+  return `${String(d).padStart(2, '0')}/${String(m).padStart(2, '0')} (${SEMANA[new Date(a, m - 1, d).getDay()]})`
+}
 
 // Painel da cozinha + fica de saída. Sem login — protegido por ?k=CHAVE.
 // A chave é validada no banco (RPC). Link é SÓ da equipe (mostra dado pessoal).
@@ -49,14 +55,20 @@ export function Painel() {
   const [wWhats, setWWhats] = useState('')
   const [wTurno, setWTurno] = useState('')
   const [wSaving, setWSaving] = useState(false)
+  // 15/10/2026: o painel virava sozinho pra proxima edicao no dia seguinte e a equipe
+  // nao conseguia mais lancar o que vendeu. Agora da pra escolher a edicao.
+  const [edicao, setEdicao] = useState('')
+  const [edicoes, setEdicoes] = useState<PainelEdicao[]>([])
 
   const carregar = useCallback(async () => {
     if (!key) { setStatus('negado'); return }
-    const res = await fetchPainel(key)
+    const res = await fetchPainel(key, edicao)
     if (!res.ok) { setStatus('negado'); return }
     setReservas(res.reservas ?? [])
+    setEdicoes(res.edicoes ?? [])
+    if (!edicao && res.edicao) setEdicao(res.edicao)
     setStatus('ok')
-  }, [key])
+  }, [key, edicao])
 
   useEffect(() => {
     carregar()
@@ -122,6 +134,19 @@ export function Painel() {
             ↻ Atualizar
           </button>
         </div>
+        {/* Edicao: da pra voltar numa que ja passou e lancar o que faltou */}
+        {edicoes.length > 0 && (
+          <label className="mt-3 flex items-center gap-2 text-sm">
+            <span className="font-semibold">Edição:</span>
+            <select
+              value={edicao}
+              onChange={e => { setEdicao(e.target.value); setTurnoFiltro('todos') }}
+              className="flex-1 rounded-lg bg-white px-3 py-2 text-sm font-semibold text-gray-800 focus:outline-none"
+            >
+              {edicoes.map(e => <option key={e.marker} value={e.marker}>{rotuloEdicao(e)}</option>)}
+            </select>
+          </label>
+        )}
         {/* KPIs */}
         <div className="mt-3 grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
           <div className="rounded-lg bg-white/10 py-2">

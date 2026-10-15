@@ -97,10 +97,12 @@ export interface PainelReserva {
   pedidos: PainelPedido[]
   consumo_centavos: number
 }
-export interface PainelResult { ok: boolean; reservas?: PainelReserva[] }
+export interface PainelEdicao { marker: string; dia: string }
+export interface PainelResult { ok: boolean; reservas?: PainelReserva[]; edicao?: string; edicoes?: PainelEdicao[] }
 
-export async function fetchPainel(key: string): Promise<PainelResult> {
-  const { data, error } = await supabase.rpc('tardezinha_painel_dados', { p_key: key })
+// edicao vazia = o banco escolhe a proxima. Edicao passada continua editavel (lancar consumo depois do evento).
+export async function fetchPainel(key: string, edicao?: string): Promise<PainelResult> {
+  const { data, error } = await supabase.rpc('tardezinha_painel_dados', { p_key: key, p_edicao: edicao || null })
   if (error) {
     console.error('[tzApi] painel:', error)
     return { ok: false }
