@@ -7,8 +7,9 @@ import { useEffect, useState } from 'react'
 
 const BASE = 'https://tardezinha.showdebolars.com.br'
 // O Admin usa uma chave PRÓPRIA (?key=), diferente da chave do painel (?k=).
-// Sem ela a página abre em "Chave inválida" — era o link quebrado da central.
-const ADMIN_KEY = (import.meta.env.VITE_ADMIN_KEY ?? '').replace(/^﻿/, '').trim()
+// Ela NÃO fica mais no código (ia pro navegador de qualquer um): vem na URL como
+// /central?k=CHAVE&a=CHAVE_ADMIN. Sem o ?a= o card do Admin não aparece.
+// O jeito certo de achar os links é a Central de Links do CRM (logada).
 
 interface LinkCard {
   nome: string
@@ -19,7 +20,7 @@ interface LinkCard {
   team?: boolean
 }
 
-function buildCards(k: string): LinkCard[] {
+function buildCards(k: string, a: string): LinkCard[] {
   const publicos: LinkCard[] = [
     { nome: 'Inscrição', desc: 'Cliente se inscreve e confirma presença.', ico: '🎟️', url: `${BASE}/reservar`, grad: 'linear-gradient(150deg,#F6B71E,#D98A00)' },
     { nome: 'Grupos', desc: 'Inscrição de grupo / turma / aniversário.', ico: '👨‍👩‍👧‍👦', url: `${BASE}/grupo`, grad: 'linear-gradient(150deg,#7d33a6,#54206f)' },
@@ -31,15 +32,16 @@ function buildCards(k: string): LinkCard[] {
     { nome: 'Inscritos', desc: 'Quantos já se inscreveram + a lista de nomes. Só o básico.', ico: '🧾', url: `${BASE}/inscritos?k=${k}`, grad: 'linear-gradient(150deg,#6d5bd0,#43349b)', team: true },
     { nome: 'Painel · Bar/Recepção', desc: 'Recepção confere · Bar recebe pedido. Uso no dia.', ico: '🛎️', url: `${BASE}/painel?k=${k}`, grad: 'linear-gradient(150deg,#12b57e,#0a7d58)', team: true },
     { nome: 'Tela da Cozinha', desc: 'Só leitura — o que preparar. Põe num tablet/TV.', ico: '🍳', url: `${BASE}/cozinha?k=${k}`, grad: 'linear-gradient(150deg,#b5642c,#7d3f17)', team: true },
-    { nome: 'Admin · Inscritos', desc: 'Lista de inscritos + números das inscrições.', ico: '📊', url: `${BASE}/admin/tardezinha-stats?key=${ADMIN_KEY}`, grad: 'linear-gradient(150deg,#3b7bf0,#2350c4)', team: true },
   ]
+  if (a) equipe.push({ nome: 'Admin · Inscritos', desc: 'Lista de inscritos + números das inscrições.', ico: '📊', url: `${BASE}/admin/tardezinha-stats?key=${a}`, grad: 'linear-gradient(150deg,#3b7bf0,#2350c4)', team: true })
   return [...publicos, ...equipe]
 }
 
 export function Central() {
   useEffect(() => { document.title = 'Central de Links — Tardezinha' }, [])
-  const k = new URLSearchParams(window.location.search).get('k') ?? ''
-  const cards = buildCards(k)
+  const params = new URLSearchParams(window.location.search)
+  const k = params.get('k') ?? ''
+  const cards = buildCards(k, params.get('a') ?? '')
   const [copiado, setCopiado] = useState<string | null>(null)
 
   async function copiar(url: string, nome: string) {

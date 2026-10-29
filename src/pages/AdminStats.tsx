@@ -2,8 +2,6 @@ import { useEffect, useState, useCallback, useMemo } from 'react'
 import { supabase } from '../lib/supabase'
 import { EDICOES, isoDaData } from '../lib/contact'
 
-const ADMIN_KEY = (import.meta.env.VITE_ADMIN_KEY ?? '').replace(/^﻿/, '').trim()
-
 interface Crianca {
   id: string
   nome_completo: string
@@ -162,19 +160,21 @@ export function AdminStats() {
   const [edicaoAtiva, setEdicaoAtiva] = useState<string>(primeiraFutura)
 
   const load = useCallback(async () => {
-    if (key !== ADMIN_KEY) {
+    // A chave é conferida SÓ no banco — não fica mais no código do site (ia pro navegador de qualquer um).
+    if (!key) {
       setError('Chave inválida.')
       setLoading(false)
       return
     }
-    setAuthed(true)
     setLoading(true)
 
     const reservasRes = await supabase.rpc('admin_get_reservas', { admin_key: key })
 
     if (reservasRes.error) {
-      setError(`Erro reservas: ${reservasRes.error.message}`)
+      setAuthed(false)
+      setError(/unauthorized/i.test(reservasRes.error.message) ? 'Chave inválida.' : `Erro reservas: ${reservasRes.error.message}`)
     } else {
+      setAuthed(true)
       setReservas(reservasRes.data || [])
     }
 
