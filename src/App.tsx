@@ -19,6 +19,8 @@ import { Painel } from './pages/Painel'
 import { Cozinha } from './pages/Cozinha'
 import { Central } from './pages/Central'
 import { Inscritos } from './pages/Inscritos'
+import { Turma } from './pages/Turma'
+import { Turmas } from './pages/Turmas'
 import { InscricoesFechadas } from './components/InscricoesFechadas'
 import { INSCRICOES_ABERTAS, GRUPO_ABERTO } from './lib/contact'
 
@@ -53,6 +55,8 @@ function App() {
       <Route path="/cozinha" element={<Cozinha />} />
       <Route path="/central" element={<Central />} />
       <Route path="/inscritos" element={<Inscritos />} />
+      <Route path="/turma/:token" element={<Turma />} />
+      <Route path="/turmas" element={<Turmas />} />
       <Route path="/admin/tardezinha-stats" element={<AdminStats />} />
     </Routes>
   )

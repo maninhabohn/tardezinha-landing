@@ -30,6 +30,7 @@ function buildCards(k: string, a: string): LinkCard[] {
   if (!k) return publicos
   const equipe: LinkCard[] = [
     { nome: 'Inscritos', desc: 'Quantos já se inscreveram + a lista de nomes. Só o básico.', ico: '🧾', url: `${BASE}/inscritos?k=${k}`, grad: 'linear-gradient(150deg,#6d5bd0,#43349b)', team: true },
+    { nome: 'Turmas', desc: 'Turmas de aniversário: link de cada turma, quem pagou, criar turma nova.', ico: '🎂', url: `${BASE}/turmas?k=${k}`, grad: 'linear-gradient(150deg,#9b4dca,#6a1b9a)', team: true },
     { nome: 'Painel · Bar/Recepção', desc: 'Recepção confere · Bar recebe pedido. Uso no dia.', ico: '🛎️', url: `${BASE}/painel?k=${k}`, grad: 'linear-gradient(150deg,#12b57e,#0a7d58)', team: true },
     { nome: 'Tela da Cozinha', desc: 'Só leitura — o que preparar. Põe num tablet/TV.', ico: '🍳', url: `${BASE}/cozinha?k=${k}`, grad: 'linear-gradient(150deg,#b5642c,#7d3f17)', team: true },
   ]
