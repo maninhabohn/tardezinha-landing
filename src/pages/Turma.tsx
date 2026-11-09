@@ -98,7 +98,7 @@ export function Turma() {
     <div className="bg-sdb-purple px-4 pt-6 pb-6 text-center text-white">
       <Logo size={90} className="mb-2" />
       <p className="text-xs font-bold uppercase tracking-widest text-sdb-yellow-soft">Tardezinha · Show de Bola</p>
-      <h1 className="mt-1 text-2xl font-extrabold leading-tight sm:text-3xl">Turma de aniversário de {info.aniversariante}</h1>
+      <h1 className="mt-1 text-2xl font-extrabold leading-tight sm:text-3xl">{info.mae_paga ? `🎉 Festa de aniversário de ${info.aniversariante}` : `Turma de aniversário de ${info.aniversariante}`}</h1>
       <p className="mt-2 text-base text-white/85">{dataBR(info.evento_data)}{info.horario ? ` · ${info.horario}` : ''}</p>
       <p className="mt-1 text-sm text-white/70">Av. G, 101 · Atlântida, Xangri-lá</p>
     </div>
@@ -110,14 +110,15 @@ export function Turma() {
       <div className="mx-auto max-w-md px-4 py-6">
         <div className="rounded-2xl bg-white p-6 shadow-sm border border-gray-200 text-center">
           <p className="text-5xl">🎉</p>
-          <p className="mt-2 text-xl font-extrabold text-gray-800">Pronto! {crianca.trim()} está na lista.</p>
-          <p className="mt-2 text-gray-700">A entrada já está por conta de quem convidou. Não precisa pagar nada.</p>
+          <p className="mt-2 text-2xl font-extrabold text-sdb-purple">Oba, presença confirmada!</p>
+          <p className="mt-2 text-lg text-gray-800"><b>{crianca.trim()}</b> já está na lista da festa de <b>{info.aniversariante}</b> 🎈</p>
+          <p className="mt-3 text-gray-700">Agora é só chegar {dataBR(info.evento_data).toLowerCase()}{info.horario ? `, ${info.horario}` : ''}, com roupa confortável e muita vontade de brincar.</p>
+          <p className="mt-2 text-gray-700">A entrada é presente de quem convidou. Adulto também entra sem pagar.</p>
         </div>
         <div className="mt-4 rounded-2xl bg-amber-50 p-4 text-sm text-amber-900 border border-amber-200">
-          <b>Importante:</b> não pode levar comida nem bebida de fora. O bar e a cozinha ficam abertos a tarde toda.
-          Adulto não paga entrada.
+          🍔 Lanche, crepe e bebida tem no bar e na cozinha a tarde toda. Por isso, comida e bebida de fora não pode entrar.
         </div>
-        <p className="mt-6 text-center text-xs text-gray-500">Vai mais uma criança? Recarrega a página e faz outra confirmação.</p>
+        <p className="mt-6 text-center text-sm text-gray-500">Vai mais uma criança junto? Recarrega a página e confirma ela também 💜</p>
       </div>
     </div>
   )
@@ -179,9 +180,9 @@ export function Turma() {
       <form onSubmit={enviar} className="mx-auto max-w-md px-4 py-6 space-y-4">
         {info.mae_paga ? (
         <div className="rounded-2xl bg-white p-5 shadow-sm border border-gray-200 text-gray-700">
-          <p><b>Confirma a presença da criança.</b> A entrada já está por conta de quem convidou: não precisa pagar nada aqui.</p>
-          <p className="mt-1">4 horas de brinquedos com a nossa equipe. Adulto não paga entrada.</p>
-          <p className="mt-1">Confirmação <b>até {fecha}</b>.</p>
+          <p className="text-lg font-extrabold text-sdb-purple">🎈 Tem festa e a tua criança foi convidada!</p>
+          <p className="mt-2">São 4 horas de brinquedos, correria e a nossa equipe brincando junto. A entrada é presente de quem convidou, e adulto também entra sem pagar.</p>
+          <p className="mt-2">Confirma aqui <b>até {fecha}</b> pra gente deixar tudo pronto pra ela 💜</p>
         </div>
         ) : (
         <div className="rounded-2xl bg-white p-5 shadow-sm border border-gray-200 text-gray-700">
@@ -207,7 +208,7 @@ export function Turma() {
 
         {info.mae_paga ? (
         <div className="rounded-2xl bg-amber-50 p-4 text-sm text-amber-900 border border-amber-200">
-          Não pode levar comida nem bebida de fora. O bar e a cozinha ficam abertos a tarde toda.
+          🍔 Lanche, crepe e bebida tem no bar e na cozinha a tarde toda. Por isso, comida e bebida de fora não pode entrar.
         </div>
         ) : (
         <div className="rounded-2xl bg-white p-5 shadow-sm border border-gray-200">
@@ -242,7 +243,7 @@ export function Turma() {
 
         <div className="sticky bottom-0 -mx-4 bg-gray-50/95 px-4 pb-4 pt-2">
           <button disabled={enviando} className="w-full rounded-xl bg-sdb-purple py-4 text-lg font-extrabold text-white disabled:opacity-60">
-            {enviando ? 'Salvando…' : info.mae_paga ? 'Confirmar presença' : `Continuar pro Pix · ${reais(total)}`}
+            {enviando ? 'Salvando…' : info.mae_paga ? 'Confirmar presença 🎉' : `Continuar pro Pix · ${reais(total)}`}
           </button>
         </div>
       </form>

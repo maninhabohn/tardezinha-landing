@@ -58,14 +58,14 @@ export function ListaTurma() {
       <div className="bg-sdb-purple px-4 pt-6 pb-6 text-center text-white">
         <Logo size={80} className="mb-2" />
         <p className="text-xs font-bold uppercase tracking-widest text-sdb-yellow-soft">Tardezinha · Show de Bola</p>
-        <h1 className="mt-1 text-2xl font-extrabold leading-tight sm:text-3xl">Festa de {d.aniversariante}</h1>
+        <h1 className="mt-1 text-2xl font-extrabold leading-tight sm:text-3xl">🎉 A festa de {d.aniversariante} está chegando!</h1>
         <p className="mt-2 text-base text-white/85">{br(d.evento_data)}{d.horario ? ` · ${d.horario}` : ''}{dias >= 0 ? ` · faltam ${dias} dia(s)` : ''}</p>
       </div>
 
       <div className="mx-auto max-w-md px-4 py-6 space-y-4">
         <div className="rounded-2xl bg-white p-5 shadow-sm border border-gray-200 text-center">
           <p className="text-5xl font-extrabold text-sdb-purple">{n}</p>
-          <p className="font-semibold text-gray-700">criança(s) confirmada(s)</p>
+          <p className="font-semibold text-gray-700">{n === 1 ? 'criança confirmada 🎈' : 'crianças confirmadas 🎈'}</p>
           <p className="mt-2 text-sm text-gray-500">
             {aberta ? <>A lista fecha <b>{br(d.lista_fecha_em)}</b>.</> : <>A lista fechou em {br(d.lista_fecha_em)}.</>}
             {' '}Mínimo de {d.piso} crianças.
@@ -78,7 +78,7 @@ export function ListaTurma() {
 
         <div className="rounded-2xl bg-white p-5 shadow-sm border border-gray-200">
           <p className="text-sm font-bold uppercase tracking-wide text-sdb-purple">Quem confirmou</p>
-          {n === 0 && <p className="mt-2 text-gray-500">Ninguém ainda. Manda o link no grupo dos convidados.</p>}
+          {n === 0 && <p className="mt-2 text-gray-500">A lista ainda está esperando a primeira confirmação. Manda o link no grupo dos convidados e vai acompanhando por aqui 💜</p>}
           <ol className="mt-2 space-y-1.5">
             {d.confirmados.map((c, i) => (
               <li key={i} className="flex gap-2 text-gray-800">
