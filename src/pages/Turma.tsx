@@ -12,11 +12,11 @@ import { pixCopiaECola, reais } from '../lib/pix'
 
 interface Item { id: string; nome: string; descricao: string | null; preco_centavos: number }
 interface Info {
-  ok: boolean; aniversariante: string; organizadora: string; evento_data: string; horario: string | null
+  ok: boolean; mae_paga: boolean; aniversariante: string; organizadora: string; evento_data: string; horario: string | null
   lista_fecha_em: string; aberta: boolean; preco_entrada_centavos: number; piso: number
   pagas: number; inscritas: number; itens: Item[]
 }
-interface Feito { codigo: string; total_centavos: number; lanches: string }
+interface Feito { codigo: string; total_centavos: number; lanches: string; mae_paga?: boolean }
 
 const dataBR = (iso: string) => {
   const d = new Date(iso + 'T12:00:00')
@@ -42,7 +42,7 @@ export function Turma() {
   const [qr, setQr] = useState('')
   const [copiado, setCopiado] = useState(false)
 
-  useEffect(() => { document.title = 'Inscrição da turma — Tardezinha Show de Bola' }, [])
+  useEffect(() => { document.title = 'Lista da turma — Tardezinha Show de Bola' }, [])
   useEffect(() => {
     supabase.rpc('tz_turma_info', { p_token: token }).then(({ data }) => {
       setInfo(data as Info); setCarregando(false)
@@ -104,6 +104,24 @@ export function Turma() {
     </div>
   )
 
+  if (feito && info.mae_paga) return (
+    <div className="min-h-screen bg-gray-50">
+      {cabecalho}
+      <div className="mx-auto max-w-md px-4 py-6">
+        <div className="rounded-2xl bg-white p-6 shadow-sm border border-gray-200 text-center">
+          <p className="text-5xl">🎉</p>
+          <p className="mt-2 text-xl font-extrabold text-gray-800">Pronto! {crianca.trim()} está na lista.</p>
+          <p className="mt-2 text-gray-700">A entrada já está por conta de quem convidou. Não precisa pagar nada.</p>
+        </div>
+        <div className="mt-4 rounded-2xl bg-amber-50 p-4 text-sm text-amber-900 border border-amber-200">
+          <b>Importante:</b> não pode levar comida nem bebida de fora. O bar e a cozinha ficam abertos a tarde toda.
+          Adulto não paga entrada.
+        </div>
+        <p className="mt-6 text-center text-xs text-gray-500">Vai mais uma criança? Recarrega a página e faz outra confirmação.</p>
+      </div>
+    </div>
+  )
+
   if (feito) {
     const msg = `Comprovante · Tardezinha da turma de ${info.aniversariante} · criança: ${crianca.trim()} · ${reais(feito.total_centavos)} · código ${feito.codigo}`
     return (
@@ -159,11 +177,19 @@ export function Turma() {
     <div className="min-h-screen bg-gray-50">
       {cabecalho}
       <form onSubmit={enviar} className="mx-auto max-w-md px-4 py-6 space-y-4">
+        {info.mae_paga ? (
+        <div className="rounded-2xl bg-white p-5 shadow-sm border border-gray-200 text-gray-700">
+          <p><b>Confirma a presença da criança.</b> A entrada já está por conta de quem convidou: não precisa pagar nada aqui.</p>
+          <p className="mt-1">4 horas de brinquedos com a nossa equipe. Adulto não paga entrada.</p>
+          <p className="mt-1">Confirmação <b>até {fecha}</b>.</p>
+        </div>
+        ) : (
         <div className="rounded-2xl bg-white p-5 shadow-sm border border-gray-200 text-gray-700">
           <p><b>{reais(info.preco_entrada_centavos)}</b> a entrada da criança. 4 horas de brinquedos com a nossa equipe.</p>
           <p className="mt-1">Adulto não paga entrada.</p>
           <p className="mt-1">Inscrição e pagamento <b>até {fecha}</b>. Depois disso, entrada na porta.</p>
         </div>
+        )}
 
         {erro && <div className="rounded-xl bg-red-50 border border-red-300 p-3 text-sm font-semibold text-red-700">⚠️ {erro}</div>}
 
@@ -176,9 +202,14 @@ export function Turma() {
             <input value={resp} onChange={e => setResp(e.target.value)} className="mt-1 w-full rounded-lg border-2 border-gray-200 p-3" /></label>
           <label className="block"><span className="text-sm font-bold text-gray-700">Teu WhatsApp com DDD</span>
             <input value={whats} onChange={e => setWhats(e.target.value)} inputMode="tel" className="mt-1 w-full rounded-lg border-2 border-gray-200 p-3" placeholder="(51) 99999-9999" />
-            <span className="text-xs text-gray-500">O comprovante precisa sair deste número.</span></label>
+            {!info.mae_paga && <span className="text-xs text-gray-500">O comprovante precisa sair deste número.</span>}</label>
         </div>
 
+        {info.mae_paga ? (
+        <div className="rounded-2xl bg-amber-50 p-4 text-sm text-amber-900 border border-amber-200">
+          Não pode levar comida nem bebida de fora. O bar e a cozinha ficam abertos a tarde toda.
+        </div>
+        ) : (
         <div className="rounded-2xl bg-white p-5 shadow-sm border border-gray-200">
           <p className="text-sm font-bold text-gray-700">Quer deixar o lanche pago? (opcional)</p>
           <p className="text-xs text-gray-500">Não entra comida nem bebida de fora. Quem não quiser agora compra no bar durante a tarde.</p>
@@ -199,6 +230,7 @@ export function Turma() {
           </div>
           <p className="mt-3 text-xs text-gray-500">O lanche fica no nome da criança: ela pede no bar quando quiser. Se algum item faltar no dia, a gente troca por outro do mesmo valor.</p>
         </div>
+        )}
 
         <div className="rounded-2xl bg-white p-5 shadow-sm border border-gray-200 space-y-3">
           <label className="flex items-start gap-3"><input type="checkbox" checked={temRestricao} onChange={e => setTemRestricao(e.target.checked)} className="mt-1 h-5 w-5 accent-sdb-purple" />
@@ -210,7 +242,7 @@ export function Turma() {
 
         <div className="sticky bottom-0 -mx-4 bg-gray-50/95 px-4 pb-4 pt-2">
           <button disabled={enviando} className="w-full rounded-xl bg-sdb-purple py-4 text-lg font-extrabold text-white disabled:opacity-60">
-            {enviando ? 'Salvando…' : `Continuar pro Pix · ${reais(total)}`}
+            {enviando ? 'Salvando…' : info.mae_paga ? 'Confirmar presença' : `Continuar pro Pix · ${reais(total)}`}
           </button>
         </div>
       </form>

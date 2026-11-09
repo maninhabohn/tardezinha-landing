@@ -21,6 +21,7 @@ import { Central } from './pages/Central'
 import { Inscritos } from './pages/Inscritos'
 import { Turma } from './pages/Turma'
 import { Turmas } from './pages/Turmas'
+import { ListaTurma } from './pages/ListaTurma'
 import { InscricoesFechadas } from './components/InscricoesFechadas'
 import { INSCRICOES_ABERTAS, GRUPO_ABERTO } from './lib/contact'
 
@@ -57,6 +58,7 @@ function App() {
       <Route path="/inscritos" element={<Inscritos />} />
       <Route path="/turma/:token" element={<Turma />} />
       <Route path="/turmas" element={<Turmas />} />
+      <Route path="/lista/:token" element={<ListaTurma />} />
       <Route path="/admin/tardezinha-stats" element={<AdminStats />} />
     </Routes>
   )

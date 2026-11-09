@@ -84,6 +84,15 @@ export const EDICOES: TardezinhaEvent[] = [
     sessions: [{ time: 'das 15h às 19h', label: '15h–19h', soldOut: false }],
     antecipadoDeadline: '2026-11-13T23:59:59-03:00',
   },
+  {
+    id: '28nov',
+    date: '28/11/2026',
+    dateLong: '28 DE NOVEMBRO',
+    dayOfWeek: 'sábado',
+    // 09/11/2026 (Maninha): "ja coloca o dia 28 no sistema". Agenda Google: "Tardezinha" 15h–19h.
+    sessions: [{ time: 'das 15h às 19h', label: '15h–19h', soldOut: false }],
+    antecipadoDeadline: '2026-11-27T23:59:59-03:00',
+  },
 ]
 
 // 27/09/2026 (Jack): edicao que ja passou SAI SOZINHA. 20/09 e 26/09 seguiram no ar depois de
