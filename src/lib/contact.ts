@@ -89,8 +89,9 @@ export const EDICOES: TardezinhaEvent[] = [
     date: '28/11/2026',
     dateLong: '28 DE NOVEMBRO',
     dayOfWeek: 'sábado',
-    // 09/11/2026 (Maninha): "ja coloca o dia 28 no sistema". Agenda Google: "Tardezinha" 15h–19h.
-    sessions: [{ time: 'das 15h às 19h', label: '15h–19h', soldOut: false }],
+    // 09/11/2026 (Maninha): "ja coloca o dia 28 no sistema".
+    // 10/11/2026 (Maninha): "arruma para o evento do dia 28 começar as 16h" (turma da Aline fechou 16h).
+    sessions: [{ time: 'das 16h às 20h', label: '16h–20h', soldOut: false }],
     antecipadoDeadline: '2026-11-27T23:59:59-03:00',
   },
 ]
