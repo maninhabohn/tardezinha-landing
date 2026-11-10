@@ -78,6 +78,7 @@ export interface PainelPedido {
   categoria?: string
   // false = lanche da reserva esperando a familia pedir (nao vai pra cozinha ainda)
   liberado?: boolean
+  ja_pago?: boolean
 }
 export interface PainelCrianca { nome: string; status: string }
 export interface PainelAutorizado { nome: string; cpf: string | null }
@@ -96,6 +97,7 @@ export interface PainelReserva {
   autorizados: PainelAutorizado[]
   pedidos: PainelPedido[]
   consumo_centavos: number
+  ja_pago_centavos?: number
 }
 export interface PainelEdicao { marker: string; dia: string }
 export interface PainelResult { ok: boolean; reservas?: PainelReserva[]; edicao?: string; edicoes?: PainelEdicao[] }

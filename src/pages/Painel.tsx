@@ -448,6 +448,7 @@ function FamiliaCard({
                       {p.preco_unit_centavos > 0 && <span className="text-gray-400"> · {formatBRL(p.preco_unit_centavos * p.qtd)}</span>}
                       {p.origem === 'evento' && <span className="ml-1 text-[10px] text-amber-600">(no dia)</span>}
                       {esperandoPedido(p) && <span className="ml-1 text-[10px] text-sky-600">(reservado)</span>}
+                      {p.ja_pago && <span className="ml-1 rounded bg-emerald-100 text-emerald-700 text-[10px] font-bold px-1.5 py-0.5">já pago</span>}
                     </p>
                     {p.obs && <p className="text-[11px] text-gray-400">{p.obs}</p>}
                   </div>
@@ -526,6 +527,9 @@ function FamiliaCard({
             </div>
           )}
 
+          {(r.ja_pago_centavos ?? 0) > 0 && (
+            <p className="text-center text-xs font-bold text-emerald-700 mb-2">✓ {formatBRL(r.ja_pago_centavos ?? 0)} em lanche já pago antes (turma) · não cobrar</p>
+          )}
           {r.consumo_centavos > 0 ? (
             <div className={`rounded-lg p-3 text-center ${r.consumo_pago ? 'bg-gray-100 border border-gray-200' : 'bg-emerald-50 border-2 border-emerald-300'}`}>
               <p className="text-xs text-gray-500">
