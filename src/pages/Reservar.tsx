@@ -5,6 +5,8 @@ import { supabase, isSupabaseConfigured } from '../lib/supabase'
 import { whatsappLink, EVENTS } from '../lib/contact'
 import { getUtmParams } from '../lib/utm'
 import { fetchPrefill, fetchCardapio, formatBRL, type CardapioItem } from '../lib/tzApi'
+import QRCode from 'qrcode'
+import { pixCopiaECola, reais } from '../lib/pix'
 
 interface CriancaForm {
   nome: string
@@ -125,6 +127,10 @@ export function Reservar() {
   const [mostraTermo, setMostraTermo] = useState(false)
   const [erro, setErro] = useState('')
   const [whatsappUrl, setWhatsappUrl] = useState('')
+  // Pix na própria tela de confirmação (13/11/2026): antes a página dizia "a equipe te chama pro Pix"
+  // e a vaga ficava pendente até alguém lembrar de mandar. Agora a família paga na hora.
+  const [pix, setPix] = useState<{ codigo: string; centavos: number; qr: string } | null>(null)
+  const [pixCopiado, setPixCopiado] = useState(false)
 
   // cardápio (lanche)
   const [cardapio, setCardapio] = useState<CardapioItem[]>([])
@@ -366,8 +372,15 @@ export function Reservar() {
 
     // mensagem WhatsApp
     const ehGrupo = ativasList.length >= 6
-    const valorPorCrianca = ehGrupo ? 40 : 45
+    const hojeBR = new Date(Date.now() - 3 * 3600 * 1000).toISOString().slice(0, 10)
+    const ehNoDia = !!dataDaEdicao && dataDaEdicao <= hojeBR
+    const valorPorCrianca = ehGrupo ? 40 : ehNoDia ? 50 : 45
     const totalEstimado = ativasList.length * valorPorCrianca
+    const pixCodigo = pixCopiaECola(totalEstimado * 100, 'TZ' + reservaId.replace(/-/g, '').slice(0, 10))
+    try {
+      const qr = await QRCode.toDataURL(pixCodigo, { width: 520, margin: 1 })
+      setPix({ codigo: pixCodigo, centavos: totalEstimado * 100, qr })
+    } catch { setPix({ codigo: pixCodigo, centavos: totalEstimado * 100, qr: '' }) }
     const idadesStr = ativasList.map(c => {
       const dt = parseDateBR(c.dataNascimento)!
       return `${c.nome.split(' ')[0]} (${calcAge(dt)} anos)`
@@ -408,18 +421,40 @@ export function Reservar() {
           <h1 className="text-3xl font-bold text-gray-800 mb-4">
             {retornante ? 'Presença confirmada!' : 'Tu tá na lista da Tardezinha!'}
           </h1>
-          <p className="text-lg text-gray-600 mb-8">A equipe vai te chamar no WhatsApp pra fechar o Pix.</p>
-          <a
-            href={whatsappUrl} target="_blank" rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 rounded-2xl bg-emerald-500 px-8 py-5 text-xl font-bold text-white shadow-xl transition hover:scale-105 hover:bg-emerald-600"
-          >
-            💬 Falar com a Show de Bola
-          </a>
+          {pix ? (
+            <div className="rounded-2xl bg-white p-5 text-left shadow-md border border-gray-200">
+              <p className="text-sm font-bold uppercase tracking-wide text-sdb-purple">Passo 1 de 2 · Pagar</p>
+              <p className="mt-1 text-gray-700">Abre o app do banco, escolhe <b>Pix com QR Code</b> ou <b>Pix copia e cola</b>. O valor já vem preenchido:</p>
+              <p className="mt-3 text-center text-4xl font-extrabold text-sdb-purple">{reais(pix.centavos)}</p>
+              <p className="text-center text-sm text-gray-500">Entrada · {ativas().length} {ativas().length === 1 ? 'criança' : 'crianças'}</p>
+              {pix.qr && <img src={pix.qr} alt="QR Code do Pix" className="mx-auto mt-4 w-60 h-60" />}
+              <button type="button"
+                onClick={async () => { try { await navigator.clipboard.writeText(pix.codigo) } catch { /* segue */ } setPixCopiado(true); setTimeout(() => setPixCopiado(false), 2000) }}
+                className="mt-4 w-full rounded-xl bg-sdb-purple py-3 text-base font-bold text-white">
+                {pixCopiado ? 'Copiado ✓' : 'Copiar o Pix copia e cola'}
+              </button>
+              <p className="mt-5 text-sm font-bold uppercase tracking-wide text-sdb-purple">Passo 2 de 2 · Mandar o comprovante</p>
+              <p className="mt-1 text-gray-700">Pagou? Manda o comprovante no nosso WhatsApp que a vaga fica garantida.</p>
+              <a href={whatsappUrl} target="_blank" rel="noopener noreferrer"
+                className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-500 py-3 text-base font-bold text-white hover:bg-emerald-600">
+                💬 Mandar o comprovante
+              </a>
+              <p className="mt-3 text-xs text-gray-500">Lanche reservado se paga lá, na saída.</p>
+            </div>
+          ) : (
+            <>
+              <p className="text-lg text-gray-600 mb-8">A equipe vai te chamar no WhatsApp pra fechar o Pix.</p>
+              <a href={whatsappUrl} target="_blank" rel="noopener noreferrer"
+                className="inline-flex items-center gap-3 rounded-2xl bg-emerald-500 px-8 py-5 text-xl font-bold text-white shadow-xl transition hover:scale-105 hover:bg-emerald-600">
+                💬 Falar com a Show de Bola
+              </a>
+            </>
+          )}
           <div className="mt-10 rounded-2xl bg-white p-6 text-left shadow-md border border-gray-200">
             <p className="text-lg font-bold text-gray-800 mb-3">Enquanto isso, anota:</p>
             <p className="mb-1 text-gray-700">🎈 <strong>{selectedOption?.label}</strong> · Tardezinha Show de Bola</p>
             <p className="mb-1 text-gray-700">📍 Av. G, 101 — Atlântida, Xangri-Lá — RS</p>
-            <p className="mt-4 text-sm text-gray-500 font-semibold">Pix em até 24h pra garantir a vaga.</p>
+            <p className="mt-4 text-sm text-gray-500 font-semibold">A vaga fica garantida com o Pix.</p>
           </div>
           <a href="/" className="mt-8 inline-block text-sm text-sdb-purple underline">← Voltar pro site</a>
         </div>
