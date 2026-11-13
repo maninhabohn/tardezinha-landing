@@ -290,6 +290,12 @@ export function Reservar() {
     // 27/09/2026: sem isto o banco gravava toda reserva avulsa com 03/07 (padrao da coluna, da
     // 1a edicao). 20/09 e 26/09 ficaram com data de julho e quem le por data nao achava ninguem.
     const dataDaEdicao = selectedOption?.eventDate.split('/').reverse().join('-')
+    // valor gravado na reserva (13/11/2026): o robô do comprovante cruza telefone + valor e marca "pago" sozinho
+    const ehGrupo = ativasList.length >= 6
+    const hojeBR = new Date(Date.now() - 3 * 3600 * 1000).toISOString().slice(0, 10)
+    const ehNoDia = !!dataDaEdicao && dataDaEdicao <= hojeBR
+    const valorPorCrianca = ehGrupo ? 40 : ehNoDia ? 50 : 45
+    const totalEstimado = ativasList.length * valorPorCrianca
 
     const { error: errReserva } = await supabase
       .from('tardezinha_reservas')
@@ -309,6 +315,7 @@ export function Reservar() {
         qtd_adultos_extra: qtdAdultos,
         aceitou_termo_responsabilidade: aceitouTermo,
         edicao: sessaoEscolhida,
+        valor_total_centavos: totalEstimado * 100,
         ...(dataDaEdicao ? { evento_data: dataDaEdicao } : {}),
         utm_source: utm.utm_source,
         utm_medium: utm.utm_medium,
@@ -371,11 +378,6 @@ export function Reservar() {
     }
 
     // mensagem WhatsApp
-    const ehGrupo = ativasList.length >= 6
-    const hojeBR = new Date(Date.now() - 3 * 3600 * 1000).toISOString().slice(0, 10)
-    const ehNoDia = !!dataDaEdicao && dataDaEdicao <= hojeBR
-    const valorPorCrianca = ehGrupo ? 40 : ehNoDia ? 50 : 45
-    const totalEstimado = ativasList.length * valorPorCrianca
     const pixCodigo = pixCopiaECola(totalEstimado * 100, 'TZ' + reservaId.replace(/-/g, '').slice(0, 10))
     try {
       const qr = await QRCode.toDataURL(pixCodigo, { width: 520, margin: 1 })
