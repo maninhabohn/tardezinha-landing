@@ -19,7 +19,9 @@ interface TurmaT {
 const br = (iso: string) => `${iso.slice(8, 10)}/${iso.slice(5, 7)}`
 
 export function Turmas() {
-  const k = new URLSearchParams(window.location.search).get('k') ?? ''
+  // 13/11/2026: Turmas e links = ADM (chave ?key=). Com a chave da equipe do dia o banco recusa.
+  const qs = new URLSearchParams(window.location.search)
+  const k = qs.get('key') || qs.get('k') || ''
   const [turmas, setTurmas] = useState<TurmaT[] | null>(null)
   const [negado, setNegado] = useState(false)
   const [copiado, setCopiado] = useState('')
@@ -64,7 +66,7 @@ export function Turmas() {
     carregar()
   }
 
-  if (negado) return <div className="min-h-screen grid place-items-center bg-gray-50 p-6 text-center text-gray-600">Link sem a chave da equipe. Abre pela Central de Links do CRM.</div>
+  if (negado) return <div className="min-h-screen grid place-items-center bg-gray-50 p-6 text-center text-gray-600">🔒 Turmas e links é só da administração. Abre pela Página da Tardezinha com o link de ADM (Central de Links do CRM).</div>
   if (!turmas) return <div className="min-h-screen grid place-items-center bg-gray-50 text-gray-500">Carregando…</div>
 
   return (

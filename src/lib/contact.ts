@@ -96,6 +96,38 @@ export const EDICOES: TardezinhaEvent[] = [
   },
 ]
 
+// 13/11/2026 (Página da Tardezinha, desenho aprovado pela Maninha): data nova NÃO precisa mais de código.
+// A Ana pede na aba "Nova edição", a Maninha aprova, e a linha do banco fica ativa. O main.tsx lê
+// tardezinha_edicoes_publicas() ANTES de montar a página e deixa em window.__TZ_EDICOES_BANCO; aqui ela
+// entra na lista. Edição que já está escrita aqui em cima continua valendo do jeito que está
+// (soldOut, por exemplo, só existe aqui). Sem internet/banco, a landing segue só com a lista acima.
+const MESES_LONGOS = ['JANEIRO', 'FEVEREIRO', 'MARÇO', 'ABRIL', 'MAIO', 'JUNHO', 'JULHO', 'AGOSTO', 'SETEMBRO', 'OUTUBRO', 'NOVEMBRO', 'DEZEMBRO']
+const DIAS_SEMANA = ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado']
+function edicaoDoBanco(b: { marker: string; dia: string; inicio: string; fim: string }): TardezinhaEvent | null {
+  const m = b.dia.match(/^(\d{2})\/(\d{2})\/(\d{4})$/)
+  if (!m) return null
+  const [, dd, mm, aaaa] = m
+  const d = new Date(Number(aaaa), Number(mm) - 1, Number(dd))
+  const vespera = new Date(d.getTime() - 86400000)
+  const pad = (n: number) => String(n).padStart(2, '0')
+  return {
+    id: b.marker,
+    date: b.dia,
+    dateLong: `${Number(dd)} DE ${MESES_LONGOS[Number(mm) - 1]}`,
+    dayOfWeek: DIAS_SEMANA[d.getDay()],
+    sessions: [{ time: `das ${b.inicio} às ${b.fim}`, label: `${b.inicio}–${b.fim}`, soldOut: false }],
+    antecipadoDeadline: `${vespera.getFullYear()}-${pad(vespera.getMonth() + 1)}-${pad(vespera.getDate())}T23:59:59-03:00`,
+  }
+}
+if (typeof window !== 'undefined' && Array.isArray(window.__TZ_EDICOES_BANCO)) {
+  for (const b of window.__TZ_EDICOES_BANCO) {
+    if (EDICOES.some(ev => ev.id === b.marker)) continue
+    const ev = edicaoDoBanco(b)
+    if (ev) EDICOES.push(ev)
+  }
+  EDICOES.sort((a, b) => a.date.split('/').reverse().join('').localeCompare(b.date.split('/').reverse().join('')))
+}
+
 // 27/09/2026 (Jack): edicao que ja passou SAI SOZINHA. 20/09 e 26/09 seguiram no ar depois de
 // acontecer: a home e a tarja de todas as paginas mostravam as duas, e o /reservar vendia ingresso
 // pra elas (em agosto foi o mesmo com 16/08). Tirar na mao depende de alguem lembrar.

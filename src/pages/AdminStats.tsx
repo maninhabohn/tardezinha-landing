@@ -289,7 +289,7 @@ export function AdminStats() {
         <div className="mx-auto max-w-5xl flex items-center justify-between">
           <div>
             <h1 className="text-xl font-bold">Tardezinha Domingo — Admin</h1>
-            <p className="text-sm text-purple-200">Painel de reservas</p>
+            <p className="text-sm text-purple-200">Ficha completa · <a className="underline" href={`/central?key=${key}`}>← Página da Tardezinha</a></p>
           </div>
           <div className="flex gap-2">
             <button

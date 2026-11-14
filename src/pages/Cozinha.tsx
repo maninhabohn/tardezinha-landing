@@ -17,8 +17,10 @@ interface Fila {
   aguardando: boolean
 }
 
+// 13/11/2026: chave da equipe (?k=) ou de ADM (?key=)
 function getKey(): string {
-  return new URLSearchParams(window.location.search).get('k') ?? ''
+  const p = new URLSearchParams(window.location.search)
+  return p.get('key') || p.get('k') || ''
 }
 
 export function Cozinha() {

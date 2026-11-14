@@ -89,6 +89,10 @@ export interface PainelReserva {
   turno: string
   status: string
   chegou: boolean
+  chegou_hora?: string | null
+  // 13/11/2026: "Saiu" (antes so existia "Chegou")
+  saiu?: boolean
+  saiu_hora?: string | null
   consumo_pago: boolean
   consumo_forma_pagamento?: FormaPagamento | null
   qtd_criancas: number
@@ -100,7 +104,11 @@ export interface PainelReserva {
   ja_pago_centavos?: number
 }
 export interface PainelEdicao { marker: string; dia: string }
-export interface PainelResult { ok: boolean; reservas?: PainelReserva[]; edicao?: string; edicoes?: PainelEdicao[] }
+// adm=false: chave da EQUIPE do dia — o banco manda só a edição do dia e nenhuma outra (edicoes vazio)
+export interface PainelResult {
+  ok: boolean; reservas?: PainelReserva[]; edicao?: string; edicoes?: PainelEdicao[]
+  adm?: boolean; nivel?: 'equipe' | 'adm' | 'dona'; dia?: string | null
+}
 
 // edicao vazia = o banco escolhe a proxima. Edicao passada continua editavel (lancar consumo depois do evento).
 export async function fetchPainel(key: string, edicao?: string): Promise<PainelResult> {
@@ -126,6 +134,15 @@ export async function setCheckin(key: string, reservaId: string, chegou: boolean
   })
   if (error) { console.error('[tzApi] checkin:', error); return { ok: false } }
   return data as { ok: boolean }
+}
+
+// 13/11/2026: marcar que a família SAIU. Devolve quanto ainda falta acertar de lanche.
+export async function setSaida(key: string, reservaId: string, saiu: boolean) {
+  const { data, error } = await supabase.rpc('tardezinha_saida', {
+    p_key: key, p_reserva_id: reservaId, p_saiu: saiu,
+  })
+  if (error) { console.error('[tzApi] saida:', error); return { ok: false, aberto_centavos: 0 } }
+  return data as { ok: boolean; aberto_centavos: number }
 }
 
 export async function walkin(

@@ -23,6 +23,8 @@ import { Turma } from './pages/Turma'
 import { Turmas } from './pages/Turmas'
 import { Fechamento } from './pages/Fechamento'
 import { ListaTurma } from './pages/ListaTurma'
+import { NovaEdicao } from './pages/NovaEdicao'
+import { Convidar } from './pages/Convidar'
 import { InscricoesFechadas } from './components/InscricoesFechadas'
 import { INSCRICOES_ABERTAS, GRUPO_ABERTO } from './lib/contact'
 
@@ -61,6 +63,8 @@ function App() {
       <Route path="/turmas" element={<Turmas />} />
       <Route path="/fechamento" element={<Fechamento />} />
       <Route path="/lista/:token" element={<ListaTurma />} />
+      <Route path="/nova-edicao" element={<NovaEdicao />} />
+      <Route path="/convidar" element={<Convidar />} />
       <Route path="/admin/tardezinha-stats" element={<AdminStats />} />
     </Routes>
   )

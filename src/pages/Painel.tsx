@@ -1,9 +1,10 @@
 import { useEffect, useState, useCallback } from 'react'
 import {
-  fetchPainel, setPedidoStatus, addPedido, fetchCardapio, setCheckin, setConsumoPago, walkin,
+  fetchPainel, setPedidoStatus, addPedido, fetchCardapio, setCheckin, setSaida, setConsumoPago, walkin,
   FORMAS_PAGAMENTO, type FormaPagamento, liberarPedido,
   formatBRL, type PainelReserva, type CardapioItem, type PainelPedido, type PainelEdicao,
 } from '../lib/tzApi'
+import { lerChave, comChave } from '../lib/chave'
 
 const SEMANA = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb']
 function rotuloEdicao(e: PainelEdicao): string {
@@ -36,8 +37,9 @@ const STATUS_BTN: Record<string, string> = {
   cancelado: 'bg-gray-100 text-gray-400 border-gray-200',
 }
 
+// 13/11/2026: aceita a chave da EQUIPE (?k=) ou a de ADM (?key=). O banco decide o que cada uma vê.
 function getKey(): string {
-  return new URLSearchParams(window.location.search).get('k') ?? ''
+  return lerChave().chave
 }
 
 export function Painel() {
@@ -59,6 +61,10 @@ export function Painel() {
   // nao conseguia mais lancar o que vendeu. Agora da pra escolher a edicao.
   const [edicao, setEdicao] = useState('')
   const [edicoes, setEdicoes] = useState<PainelEdicao[]>([])
+  // 13/11/2026 (Maninha): quem só trabalha no evento NÃO vê edição anterior nem número de faturamento.
+  // adm vem do banco: com a chave da equipe ele manda só a edição do dia.
+  const [adm, setAdm] = useState(false)
+  const [diaEdicao, setDiaEdicao] = useState<string | null>(null)
 
   const carregar = useCallback(async () => {
     if (!key) { setStatus('negado'); return }
@@ -66,6 +72,8 @@ export function Painel() {
     if (!res.ok) { setStatus('negado'); return }
     setReservas(res.reservas ?? [])
     setEdicoes(res.edicoes ?? [])
+    setAdm(!!res.adm)
+    setDiaEdicao(res.dia ?? null)
     if (!edicao && res.edicao) setEdicao(res.edicao)
     setStatus('ok')
   }, [key, edicao])
@@ -106,6 +114,7 @@ export function Painel() {
 
   const totalCriancas = visiveis.reduce((s, r) => s + (r.qtd_criancas ?? 0), 0)
   const totalChegaram = visiveis.filter(r => r.chegou).length
+  const naCasa = visiveis.filter(r => r.chegou && !r.saiu).length
   const pedidosPendentes = visiveis.reduce(
     (s, r) => s + r.pedidos.filter(p => p.status === 'recebido' || p.status === 'preparando').length, 0)
   const totalReceber = visiveis.filter(r => !r.consumo_pago).reduce((s, r) => s + r.consumo_centavos, 0)
@@ -128,14 +137,16 @@ export function Painel() {
         <div className="flex items-center justify-between gap-3">
           <div>
             <h1 className="text-lg font-bold leading-tight">Painel da Tardezinha</h1>
-            <p className="text-xs text-white/80">Cozinha + fica de saída · equipe</p>
+            <p className="text-xs text-white/80">
+              {diaEdicao ? `Tardezinha ${diaEdicao.slice(8, 10)}/${diaEdicao.slice(5, 7)}` : 'Sem Tardezinha marcada'} · {adm ? 'administração' : 'equipe do dia'}
+            </p>
           </div>
           <button onClick={carregar} className="rounded-lg bg-white/20 px-3 py-2 text-sm font-semibold active:scale-95">
             ↻ Atualizar
           </button>
         </div>
         {/* Edicao: da pra voltar numa que ja passou e lancar o que faltou */}
-        {edicoes.length > 0 && (
+        {adm && edicoes.length > 0 && (
           <label className="mt-3 flex items-center gap-2 text-sm">
             <span className="font-semibold">Edição:</span>
             <select
@@ -148,10 +159,14 @@ export function Painel() {
           </label>
         )}
         {/* KPIs */}
-        <div className="mt-3 grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
+        <div className={`mt-3 grid grid-cols-2 gap-2 text-center ${adm ? 'sm:grid-cols-5' : 'sm:grid-cols-4'}`}>
           <div className="rounded-lg bg-white/10 py-2">
             <p className="text-xl font-bold">{totalChegaram}<span className="text-sm text-white/70">/{visiveis.length}</span></p>
             <p className="text-[11px] text-white/80">chegaram</p>
+          </div>
+          <div className="rounded-lg bg-white/10 py-2">
+            <p className="text-xl font-bold">{naCasa}</p>
+            <p className="text-[11px] text-white/80">na casa agora</p>
           </div>
           <div className="rounded-lg bg-white/10 py-2">
             <p className="text-xl font-bold">{totalCriancas}</p>
@@ -161,10 +176,12 @@ export function Painel() {
             <p className="text-xl font-bold">{pedidosPendentes}</p>
             <p className="text-[11px] text-white/80">pedidos abertos</p>
           </div>
-          <div className="rounded-lg bg-white/10 py-2">
-            <p className="text-xl font-bold">{formatBRL(totalReceber)}</p>
-            <p className="text-[11px] text-white/80">a receber</p>
-          </div>
+          {adm && (
+            <div className="rounded-lg bg-white/10 py-2">
+              <p className="text-xl font-bold">{formatBRL(totalReceber)}</p>
+              <p className="text-[11px] text-white/80">a receber</p>
+            </div>
+          )}
         </div>
         {/* Busca */}
         <div className="mt-3 relative">
@@ -242,7 +259,7 @@ export function Painel() {
       {/* Link rápido pra tela da cozinha */}
       {visiveis.length > 0 && (
         <div className="mt-6 px-4 text-center">
-          <a href={`/cozinha?k=${key}`} className="text-sm font-semibold text-sdb-purple underline">
+          <a href={comChave('/cozinha')} className="text-sm font-semibold text-sdb-purple underline">
             🍽️ Abrir a Tela da Cozinha →
           </a>
         </div>
@@ -288,9 +305,38 @@ function FamiliaCard({
       .catch(() => {})
   }
 
-  async function toggleChegou() {
+  // 13/11/2026: Chegou → Na casa → Saiu (com hora). "Desfazer chegada" fica dentro do cartão.
+  async function botaoPorta() {
+    if (!r.chegou) {
+      setChegLoad(true)
+      await setCheckin(chave, r.id, true)
+      setChegLoad(false)
+      onChange()
+      return
+    }
+    if (r.saiu) {
+      if (!window.confirm(`Desfazer a saída de ${tituloCard}? (volta pra "na casa")`)) return
+      setChegLoad(true)
+      await setSaida(chave, r.id, false)
+      setChegLoad(false)
+      onChange()
+      return
+    }
+    const aberto = r.consumo_pago ? 0 : r.consumo_centavos
+    const pergunta = aberto > 0
+      ? `⚠️ Falta acertar ${formatBRL(aberto)} no bar.\n\nMarcar que ${tituloCard} saiu mesmo assim?`
+      : `Marcar que ${tituloCard} saiu?`
+    if (!window.confirm(pergunta)) return
     setChegLoad(true)
-    await setCheckin(chave, r.id, !r.chegou)
+    await setSaida(chave, r.id, true)
+    setChegLoad(false)
+    onChange()
+  }
+
+  async function desfazerChegada() {
+    if (!window.confirm(`Desfazer a chegada de ${tituloCard}? (volta pra "não chegou")`)) return
+    setChegLoad(true)
+    await setCheckin(chave, r.id, false)
     setChegLoad(false)
     onChange()
   }
@@ -353,7 +399,7 @@ function FamiliaCard({
   return (
     <div className="rounded-xl bg-white shadow-sm border border-gray-200 overflow-hidden">
       {/* Cabeçalho da família */}
-      <div className={`flex items-stretch ${r.chegou ? 'bg-emerald-50' : ''}`}>
+      <div className={`flex items-stretch ${r.saiu ? 'bg-gray-50 opacity-70' : r.chegou ? 'bg-emerald-50' : ''}`}>
         <button onClick={() => setAberto(a => !a)} className="flex-1 min-w-0 flex items-center justify-between gap-3 p-4 text-left">
           <div className="min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
@@ -362,6 +408,14 @@ function FamiliaCard({
               {lancheEsperando && <span className="rounded-full bg-sky-100 text-sky-700 text-[10px] font-bold px-2 py-0.5">🍽️ lanche reservado · não pedido</span>}
             </div>
             <p className="text-xs text-gray-500 mt-0.5">resp. {r.nome} · {r.turno.replace(/^[^|]+\|/, '')}</p>
+            {r.chegou && (
+              <p className="text-[11px] text-gray-500 mt-0.5">
+                {r.chegou_hora && <>chegou {r.chegou_hora}</>}{r.saiu && r.saiu_hora && <> · <strong>saiu {r.saiu_hora}</strong></>}
+              </p>
+            )}
+            {r.saiu && !r.consumo_pago && r.consumo_centavos > 0 && (
+              <p className="text-[11px] font-bold text-red-600 mt-0.5">⚠️ saiu devendo {formatBRL(r.consumo_centavos)} no bar</p>
+            )}
             {r.whatsapp && <p className="text-xs font-semibold text-gray-600 mt-0.5">📱 {r.whatsapp}</p>}
             {abertos.length > 0 && (
               <div className="flex flex-wrap gap-1 mt-1">
@@ -382,12 +436,17 @@ function FamiliaCard({
           )}
         </button>
         <button
-          onClick={toggleChegou}
+          onClick={botaoPorta}
           disabled={chegLoad}
-          className={`shrink-0 w-[74px] flex flex-col items-center justify-center gap-0.5 border-l text-xs font-bold transition disabled:opacity-50 ${r.chegou ? 'bg-emerald-500 text-white border-emerald-500' : 'bg-white text-gray-500 border-gray-200 active:bg-gray-50'}`}
+          title={r.saiu ? 'Já saiu (toque pra desfazer)' : r.chegou ? 'Está na casa — toque quando sair' : 'Toque quando chegar'}
+          className={`shrink-0 w-[78px] flex flex-col items-center justify-center gap-0.5 border-l text-xs font-bold transition disabled:opacity-50 ${
+            r.saiu ? 'bg-gray-200 text-gray-600 border-gray-300'
+            : r.chegou ? 'bg-emerald-500 text-white border-emerald-500'
+            : 'bg-white text-gray-500 border-gray-200 active:bg-gray-50'}`}
         >
-          <span className="text-lg leading-none">{r.chegou ? '🟢' : '✔'}</span>
-          {r.chegou ? 'Na casa' : 'Chegou'}
+          <span className="text-lg leading-none">{r.saiu ? '👋' : r.chegou ? '🟢' : '✔'}</span>
+          {r.saiu ? `Saiu ${r.saiu_hora ?? ''}` : r.chegou ? 'Na casa' : 'Chegou'}
+          {r.chegou && !r.saiu && <span className="text-[9px] font-semibold opacity-90">toque se saiu</span>}
         </button>
       </div>
 
@@ -560,6 +619,13 @@ function FamiliaCard({
             </div>
           ) : (
             <p className="text-[11px] text-gray-400 text-center">Sem lanche reservado. A portaria não recebe dinheiro — pagamento é no bar.</p>
+          )}
+
+          {r.chegou && (
+            <button onClick={desfazerChegada} disabled={chegLoad}
+              className="w-full text-center text-[11px] text-gray-400 underline disabled:opacity-50">
+              ↩ Desfazer chegada (marquei sem querer)
+            </button>
           )}
         </div>
       )}
