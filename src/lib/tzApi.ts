@@ -156,6 +156,15 @@ export async function walkin(
   return data as { ok: boolean; id?: string; motivo?: string }
 }
 
+// 20/11/2026: criança que já veio → sugere responsável e WhatsApp (só com a chave da equipe)
+export type SugestaoCrianca = { crianca: string; responsavel: string; whatsapp: string | null; quando: string; irmaos: string | null }
+export async function sugerirCrianca(key: string, busca: string): Promise<SugestaoCrianca[]> {
+  if (busca.trim().length < 3) return []
+  const { data, error } = await supabase.rpc('tardezinha_sugerir_crianca', { p_key: key, p_busca: busca })
+  if (error) { console.error('[tzApi] sugerirCrianca:', error); return [] }
+  return (data ?? []) as SugestaoCrianca[]
+}
+
 // 20/09/2026 (Leti): o fechamento do bar diz COMO recebeu. Antes, 100% sem forma.
 export type FormaPagamento = 'pix' | 'dinheiro' | 'credito' | 'debito'
 export const FORMAS_PAGAMENTO: { id: FormaPagamento; rotulo: string }[] = [

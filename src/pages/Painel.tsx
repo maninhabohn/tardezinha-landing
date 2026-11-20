@@ -1,12 +1,18 @@
 import { useEffect, useState, useCallback } from 'react'
 import {
-  fetchPainel, setPedidoStatus, addPedido, fetchCardapio, setCheckin, setSaida, setConsumoPago, walkin,
+  fetchPainel, setPedidoStatus, addPedido, fetchCardapio, setCheckin, setSaida, setConsumoPago, walkin, sugerirCrianca,
   FORMAS_PAGAMENTO, type FormaPagamento, liberarPedido,
   formatBRL, type PainelReserva, type CardapioItem, type PainelPedido, type PainelEdicao,
 } from '../lib/tzApi'
 import { lerChave, comChave } from '../lib/chave'
 
 const SEMANA = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb']
+// 20/11: nome curto da criança no cartão fechado = 1º nome + último sobrenome (xarás se distinguem)
+function nomeCurto(n: string): string {
+  const p = n.trim().split(/\s+/)
+  return p.length > 1 ? `${p[0]} ${p[p.length - 1]}` : p[0]
+}
+
 function rotuloEdicao(e: PainelEdicao): string {
   const [a, m, d] = e.dia.split('-').map(Number)
   return `${String(d).padStart(2, '0')}/${String(m).padStart(2, '0')} (${SEMANA[new Date(a, m - 1, d).getDay()]})`
@@ -52,6 +58,7 @@ export function Painel() {
   const [turnoFiltro, setTurnoFiltro] = useState<string>('todos')
   const [busca, setBusca] = useState('')
   const [walkinOpen, setWalkinOpen] = useState(false)
+  const [sugestoes, setSugestoes] = useState<{ crianca: string; responsavel: string; whatsapp: string | null; quando: string; irmaos: string | null }[]>([])
   const [wCrianca, setWCrianca] = useState('')
   const [wResp, setWResp] = useState('')
   const [wWhats, setWWhats] = useState('')
@@ -85,6 +92,13 @@ export function Painel() {
     return () => clearInterval(t)
   }, [carregar])
 
+  // 20/11: digitou 3 letras do nome da criança → mostra quem já veio pra preencher sozinho
+  useEffect(() => {
+    if (!walkinOpen || wCrianca.trim().length < 3) { setSugestoes([]); return }
+    const t = setTimeout(() => { sugerirCrianca(key, wCrianca).then(setSugestoes) }, 300)
+    return () => clearTimeout(t)
+  }, [wCrianca, walkinOpen, key])
+
   if (status === 'loading') {
     return <div className="min-h-screen flex items-center justify-center text-gray-500">Carregando painel…</div>
   }
@@ -111,6 +125,9 @@ export function Painel() {
       if (qDigitos && (r.whatsapp || '').replace(/\D/g, '').includes(qDigitos)) return true
       return false
     })
+    // 20/11: ordem alfabética pela CRIANÇA (antes era pelo nome da mãe, e o cartão mostra a criança)
+    .sort((a, b) => a.turno.localeCompare(b.turno) ||
+      (a.criancas[0]?.nome || a.nome).localeCompare(b.criancas[0]?.nome || b.nome, 'pt-BR'))
 
   const totalCriancas = visiveis.reduce((s, r) => s + (r.qtd_criancas ?? 0), 0)
   const totalChegaram = visiveis.filter(r => r.chegou).length
@@ -227,6 +244,21 @@ export function Painel() {
             <p className="text-sm font-bold text-sdb-purple">➕ Nova inscrição na hora</p>
             <input value={wCrianca} onChange={e => setWCrianca(e.target.value)} placeholder="Nome da CRIANÇA *" autoFocus
               className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-sdb-purple focus:outline-none" />
+            {sugestoes.length > 0 && (
+              <div className="rounded-lg border border-amber-300 bg-amber-50 p-2 space-y-1">
+                <p className="text-[11px] font-bold text-amber-800">Já veio antes? Toque pra preencher:</p>
+                {sugestoes.map((s, i) => (
+                  <button key={i} type="button"
+                    onClick={() => { setWCrianca(s.crianca); setWResp(s.responsavel); setWWhats(s.whatsapp ?? ''); setSugestoes([]) }}
+                    className="w-full text-left rounded-md bg-white border border-amber-200 px-2.5 py-1.5 active:bg-amber-100">
+                    <span className="block text-sm font-bold text-gray-800">{s.crianca}</span>
+                    <span className="block text-[11px] text-gray-600">👤 {s.responsavel}{s.whatsapp ? ` · ${s.whatsapp}` : ''}</span>
+                    {s.irmaos && <span className="block text-[11px] text-gray-500">com {s.irmaos}</span>}
+                    <span className="block text-[10px] text-gray-400">última vez {s.quando}</span>
+                  </button>
+                ))}
+              </div>
+            )}
             <input value={wResp} onChange={e => setWResp(e.target.value)} placeholder="Responsável (opcional)"
               className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-sdb-purple focus:outline-none" />
             <input value={wWhats} onChange={e => setWWhats(e.target.value)} placeholder="WhatsApp (opcional)" inputMode="tel"
@@ -290,7 +322,7 @@ function FamiliaCard({
 
   const pago = r.status === 'pago'
   const nomesCriancas = r.criancas.map(c => c.nome).filter(Boolean)
-  const tituloCard = nomesCriancas.length ? nomesCriancas.join(' · ') : r.nome
+  const tituloCard = nomesCriancas.length ? nomesCriancas.map(nomeCurto).join(' · ') : r.nome  // 20/11: 1º nome + último sobrenome — o nome completo cortava o irmão e só o 1º nome confundia xarás
   const abertos = r.pedidos.filter(p => p.status === 'recebido' || p.status === 'preparando')
   // 22/09/2026: lanche da reserva só vai pra cozinha quando a família PEDE (ver Cozinha.tsx)
   const esperandoPedido = (p: PainelPedido) => p.origem === 'reserva' && p.status === 'recebido' && p.liberado === false
@@ -469,7 +501,7 @@ function FamiliaCard({
             <div className="flex flex-wrap gap-1.5">
               {r.criancas.map((c, i) => (
                 <span key={i} className={`rounded-full px-2.5 py-1 text-xs ${c.status === 'ativo' ? 'bg-sdb-purple/10 text-sdb-purple-dark' : 'bg-gray-100 text-gray-400 line-through'}`}>
-                  {c.nome.split(' ')[0]}
+                  {c.nome}
                 </span>
               ))}
               {r.criancas.length === 0 && <span className="text-xs text-gray-400">—</span>}
