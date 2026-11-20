@@ -137,6 +137,8 @@ function LinhaFamilia({ r, chave, cardapio, aberta, onToggle, onChange }: {
 }) {
   const [carrinho, setCarrinho] = useState<Record<string, number>>({})
   const [outroDesc, setOutroDesc] = useState('')
+  // 20/11 (Maninha): sabor do crepe vai junto do pedido (aparece na fila e na cozinha)
+  const [obsItem, setObsItem] = useState<Record<string, string>>({})
   const [outroValor, setOutroValor] = useState('')
   const [salvando, setSalvando] = useState(false)
   const receber = aReceber(r)
@@ -152,9 +154,9 @@ function LinhaFamilia({ r, chave, cardapio, aberta, onToggle, onChange }: {
   async function lancar() {
     if (!itensCarrinho.length && outroCent <= 0) return
     setSalvando(true)
-    for (const c of itensCarrinho) await addPedido(chave, r.id, c.nome, c.preco_centavos ?? 0, carrinho[c.id])
+    for (const c of itensCarrinho) await addPedido(chave, r.id, c.nome, c.preco_centavos ?? 0, carrinho[c.id], obsItem[c.id]?.trim() || undefined)
     if (outroCent > 0) await addPedido(chave, r.id, outroDesc.trim() || 'valor no local', outroCent, 1, undefined, true)
-    setCarrinho({}); setOutroDesc(''); setOutroValor(''); setSalvando(false)
+    setCarrinho({}); setObsItem({}); setOutroDesc(''); setOutroValor(''); setSalvando(false)
     onChange()
   }
   async function pago(forma: FormaPagamento) {
@@ -215,6 +217,14 @@ function LinhaFamilia({ r, chave, cardapio, aberta, onToggle, onChange }: {
                 </div>
               ))}
             </div>
+            {itensCarrinho.filter(c => /crepe/i.test(c.nome)).map(c => (
+              <div key={c.id} className="mt-2 rounded-lg border-2 border-amber-300 bg-amber-50 p-2">
+                <p className="text-xs font-bold text-amber-800 mb-1">🥞 Sabor do {c.nome}{carrinho[c.id] > 1 ? ` (${carrinho[c.id]} crepes)` : ''}</p>
+                <input value={obsItem[c.id] ?? ''} onChange={e => setObsItem(o => ({ ...o, [c.id]: e.target.value }))}
+                  placeholder={carrinho[c.id] > 1 ? 'ex.: 1 Nutella, 1 frango com catupiry' : 'ex.: Nutella com morango'}
+                  className="w-full rounded-lg border border-amber-300 bg-white px-3 py-2 text-base focus:outline-none focus:border-amber-500" />
+              </div>
+            ))}
             <div className="mt-2 flex gap-2">
               <input value={outroDesc} onChange={e => setOutroDesc(e.target.value)} placeholder="Outro (o quê?)"
                 className="flex-1 min-w-0 rounded-lg border border-gray-300 px-2 py-2 text-sm" />
@@ -238,7 +248,7 @@ function LinhaFamilia({ r, chave, cardapio, aberta, onToggle, onChange }: {
               {consumidos.map(p => (
                 <div key={p.id} className="flex items-center justify-between text-sm py-1 border-b border-gray-50">
                   <span className="text-gray-700">{p.qtd}× {p.item} <span className="text-gray-400">· {formatBRL(p.preco_unit_centavos * p.qtd)}</span>
-                    {p.ja_pago && <span className="ml-1 text-[10px] font-bold text-emerald-700">já pago</span>}</span>
+                    {p.ja_pago && <span className="ml-1 text-[10px] font-bold text-emerald-700">já pago</span>}{p.obs && <span className="block text-[11px] text-amber-700">{p.obs}</span>}</span>
                   {!r.consumo_pago && <button onClick={() => cancelar(p)} className="text-red-400 text-xs px-2">✕</button>}
                 </div>
               ))}
