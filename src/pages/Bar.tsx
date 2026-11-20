@@ -3,7 +3,7 @@
 // Usa as MESMAS funções do banco que o /painel (mesma chave ?k=) — nada novo no banco, só outra tela.
 import { useEffect, useState, useCallback } from 'react'
 import {
-  fetchPainel, fetchCardapio, setPedidoStatus, addPedido, setConsumoPago, liberarPedido, formatBRL,
+  fetchPainel, fetchCardapio, setPedidoStatus, addPedido, setConsumoPago, liberarPedido, liberarPedidoParcial, formatBRL,
   FORMAS_PAGAMENTO,
   type PainelReserva, type PainelPedido, type CardapioItem, type FormaPagamento,
 } from '../lib/tzApi'
@@ -192,8 +192,14 @@ function LinhaFamilia({ r, chave, cardapio, aberta, onToggle, onChange }: {
               {reservados.map(p => (
                 <div key={p.id} className="flex items-center justify-between rounded-lg bg-sky-50 px-3 py-2">
                   <span className="text-sm">{p.qtd}× {p.item}</span>
-                  <button onClick={async () => { await liberarPedido(chave, p.id); onChange() }}
-                    className="rounded-lg bg-emerald-500 text-white px-3 py-1.5 text-xs font-bold active:scale-95">🍽️ Pedir agora</button>
+                  <div className="flex gap-1.5 shrink-0">
+                    {p.qtd > 1 && (
+                      <button onClick={async () => { await liberarPedidoParcial(chave, p.id, 1); onChange() }}
+                        className="rounded-lg border-2 border-emerald-500 bg-white text-emerald-700 px-3 py-1.5 text-xs font-bold active:scale-95">🍽️ Pedir 1</button>
+                    )}
+                    <button onClick={async () => { await liberarPedido(chave, p.id); onChange() }}
+                      className="rounded-lg bg-emerald-500 text-white px-3 py-1.5 text-xs font-bold active:scale-95">🍽️ {p.qtd > 1 ? `Pedir os ${p.qtd}` : 'Pedir agora'}</button>
+                  </div>
                 </div>
               ))}
             </div>

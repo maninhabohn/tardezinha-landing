@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react'
 import {
-  fetchPainel, setPedidoStatus, addPedido, fetchCardapio, setCheckin, setSaida, setConsumoPago, walkin, sugerirCrianca,
+  fetchPainel, setPedidoStatus, addPedido, fetchCardapio, setCheckin, setSaida, setConsumoPago, walkin, sugerirCrianca, liberarPedidoParcial,
   FORMAS_PAGAMENTO, type FormaPagamento, liberarPedido,
   formatBRL, type PainelReserva, type CardapioItem, type PainelPedido, type PainelEdicao,
 } from '../lib/tzApi'
@@ -545,11 +545,20 @@ function FamiliaCard({
                   </div>
                   <div className="flex items-center gap-1.5 shrink-0">
                     {esperandoPedido(p) ? (
-                      <button
-                        onClick={() => pedirAgora(p)}
-                        title="A família pediu o lanche: manda pra cozinha fazer"
-                        className="rounded-md border border-emerald-500 bg-emerald-500 text-white px-2 py-1 text-xs font-bold active:scale-95"
-                      >🍽️ Pedir agora</button>
+                      <>
+                        {p.qtd > 1 && (
+                          <button
+                            onClick={async () => { await liberarPedidoParcial(chave, p.id, 1); onChange() }}
+                            title="Só uma criança vai comer agora: manda 1 pra cozinha, o resto segue reservado"
+                            className="rounded-md border border-emerald-500 bg-white text-emerald-700 px-2 py-1 text-xs font-bold active:scale-95"
+                          >🍽️ Pedir 1</button>
+                        )}
+                        <button
+                          onClick={() => pedirAgora(p)}
+                          title="A família pediu o lanche: manda pra cozinha fazer"
+                          className="rounded-md border border-emerald-500 bg-emerald-500 text-white px-2 py-1 text-xs font-bold active:scale-95"
+                        >🍽️ {p.qtd > 1 ? `Pedir os ${p.qtd}` : 'Pedir agora'}</button>
+                      </>
                     ) : (
                       <button
                         onClick={() => mudarStatus(p)}

@@ -191,6 +191,15 @@ export async function liberarPedido(key: string, pedidoId: string, liberar = tru
   return data as { ok: boolean }
 }
 
+// 20/11/2026: lanche reservado de 2+ crianças — manda só uma parte pra cozinha (ex.: só o menino comeu)
+export async function liberarPedidoParcial(key: string, pedidoId: string, qtd: number) {
+  const { data, error } = await supabase.rpc('tardezinha_pedido_liberar_parcial', {
+    p_key: key, p_pedido_id: pedidoId, p_qtd: qtd,
+  })
+  if (error) { console.error('[tzApi] pedido_liberar_parcial:', error); return { ok: false } }
+  return data as { ok: boolean; id?: string; motivo?: string }
+}
+
 export async function addPedido(
   key: string, reservaId: string, itemNome: string,
   precoCentavos: number, qtd: number, obs?: string, avulso = false,
