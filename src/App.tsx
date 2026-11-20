@@ -17,6 +17,7 @@ import { Grupo } from './pages/Grupo'
 import { Passaporte } from './pages/Passaporte'
 import { Painel } from './pages/Painel'
 import { Cozinha } from './pages/Cozinha'
+import { Bar } from './pages/Bar'
 import { Central } from './pages/Central'
 import { Inscritos } from './pages/Inscritos'
 import { Turma } from './pages/Turma'
@@ -57,6 +58,7 @@ function App() {
       <Route path="/passaporte" element={<Passaporte />} />
       <Route path="/painel" element={<Painel />} />
       <Route path="/cozinha" element={<Cozinha />} />
+      <Route path="/bar" element={<Bar />} />
       <Route path="/central" element={<Central />} />
       <Route path="/inscritos" element={<Inscritos />} />
       <Route path="/turma/:token" element={<Turma />} />
