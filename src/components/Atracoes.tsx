@@ -14,12 +14,13 @@ const atracoes: Atracao[] = [
     descricao: 'Arena gigante de tiro ao alvo · atração nova da edição',
     badge: 'novo',
   },
-  {
-    foto: '/fotos/giro.jpg',
-    titulo: 'Giro Radical',
-    descricao: 'Adrenalina pura · o brinquedo que a galera sempre pede de volta',
-    badge: 'queridinho',
-  },
+  // 25/11/2026: Giro Radical fora desta edição (pedido da Ana). Volta nas próximas: é só descomentar.
+  // {
+  //   foto: '/fotos/giro.jpg',
+  //   titulo: 'Giro Radical',
+  //   descricao: 'Adrenalina pura · o brinquedo que a galera sempre pede de volta',
+  //   badge: 'queridinho',
+  // },
   {
     foto: '/fotos/P1555148.jpg',
     titulo: 'Tobogã Inflável',

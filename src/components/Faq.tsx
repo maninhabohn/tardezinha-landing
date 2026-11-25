@@ -54,7 +54,7 @@ const faqs: FaqItem[] = [
   {
     pergunta: 'O que tá incluso no ingresso?',
     resposta:
-      'Mais de 20 brinquedos liberados (Giro Radical, Escalada, Nerf Inflável e muito mais) + pipoca e água liberada. Quer mais coisa? Tem o bar funcionando durante todo o evento.',
+      'Mais de 20 brinquedos liberados (Tobogã, Escalada, Nerf Inflável e muito mais) + pipoca e água liberada. Quer mais coisa? Tem o bar funcionando durante todo o evento.',
   },
   {
     pergunta: 'Minha criança tem alergia alimentar, como funciona?',
