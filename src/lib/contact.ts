@@ -183,16 +183,16 @@ export const WHATSAPP_ATIVO = true
 // que e o que de fato esta aberto (/grupo).
 export const AVISO_FECHADO = {
   tarja: 'A data quem escolhe é tu',
-  tarjaComplemento: 'a partir de 12 crianças a casa abre o teu dia',
+  // 25/11/2026 (Maninha, valor de dezembro): 15 criancas, R$45 cada; acabou o R$40 pra 6+.
+  tarjaComplemento: 'a partir de 15 crianças a casa abre o teu dia',
   titulo: 'A próxima Tardezinha, tu que marca',
   texto:
-    'Não tem data fixa no calendário agora — e isso é de propósito. A partir de 12 crianças a casa ' +
+    'Não tem data fixa no calendário agora — e isso é de propósito. A partir de 15 crianças a casa ' +
     'abre um dia pra tua turma: 500m², mais de 20 brinquedos, sem tela, 4 horas de festa. ' +
     'Não precisa ser domingo, e o horário a gente combina. ' +
-    'A edição é aberta — vão ter outras crianças brincando junto, e é isso que mantém o preço em pé. ' +
-    'Com 6 ou mais, já garante o preço de grupo numa edição que já exista.',
+    'A edição é aberta — vão ter outras crianças brincando junto, e é isso que mantém o preço em pé.',
   chamada:
-    'R$ 40 por criança, e adulto acompanhante não paga.',
+    'R$ 45 por criança, e adulto acompanhante não paga.',
   // 04/09/2026 (Maninha): "ja ta na ficha de grupos que preencher aquilo nao significa que o
   // evento ta confirmado, e a equipe que confirma". A home tem que dizer o mesmo que a ficha --
   // senao a landing promete uma coisa e o formulario avisa outra depois que a mae ja se animou.

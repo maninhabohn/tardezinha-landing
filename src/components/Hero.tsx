@@ -61,7 +61,7 @@ export function Hero() {
             </p>
             <p className="mt-3 text-base leading-relaxed text-sdb-text/80">
               Não tem data fixa no calendário — e isso é de propósito. A partir de{' '}
-              <strong className="text-sdb-purple">12 crianças</strong> a casa abre um dia pra
+              <strong className="text-sdb-purple">15 crianças</strong> a casa abre um dia pra
               tua turma: não precisa ser domingo, e o horário a gente combina.
             </p>
             <p className="mt-3 text-sm font-semibold text-sdb-text/60">

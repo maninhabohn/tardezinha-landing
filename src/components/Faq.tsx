@@ -13,8 +13,8 @@ const faqs: FaqItem[] = [
     pergunta: 'Qual é a data da próxima Tardezinha?',
     // 27/09/2026: a data vem de DATAS_LONGAS; sem edicao pela frente, volta o texto da campanha.
     resposta: DATAS_LONGAS
-      ? `As próximas são ${DATAS_LONGAS}. Tem outro dia em mente? A partir de 12 crianças a casa abre um dia pra tua turma — escolhe no formulário de grupo ou fala com a equipe no WhatsApp. Escolher o dia é o pedido: quem confirma é a equipe, depois de conferir a agenda. 🎈`
-      : 'Não tem data fixa no calendário agora — a Tardezinha nasce do dia que as famílias escolhem. A partir de 12 crianças a casa abre um dia pra tua turma: não precisa ser domingo, e o horário a gente combina. Escolhe no formulário de grupo ou fala com a equipe no WhatsApp. Escolher o dia é o pedido: quem confirma é a equipe, depois de conferir a agenda. 🎈',
+      ? `As próximas são ${DATAS_LONGAS}. Tem outro dia em mente? A partir de 15 crianças a casa abre um dia pra tua turma — escolhe no formulário de grupo ou fala com a equipe no WhatsApp. Escolher o dia é o pedido: quem confirma é a equipe, depois de conferir a agenda. 🎈`
+      : 'Não tem data fixa no calendário agora — a Tardezinha nasce do dia que as famílias escolhem. A partir de 15 crianças a casa abre um dia pra tua turma: não precisa ser domingo, e o horário a gente combina. Escolhe no formulário de grupo ou fala com a equipe no WhatsApp. Escolher o dia é o pedido: quem confirma é a equipe, depois de conferir a agenda. 🎈',
   },
   {
     pergunta: 'E se chover no dia?',
@@ -34,7 +34,7 @@ const faqs: FaqItem[] = [
   {
     pergunta: 'Tem valor especial pra grupo?',
     resposta:
-      'Sim, e são dois patamares: com 6 crianças ou mais tu já garante R$ 40 por criança numa edição que já existe; com 12 ou mais a casa abre um dia pra tua turma, no dia e no horário que combinarem com a equipe. A edição segue aberta pra outras famílias — é isso que segura o preço.',
+      'Sim: juntando 15 crianças, a casa abre uma Tardezinha pra tua turma, na data que combinarmos, a R$ 45 por criança (acompanhante não paga). Dá pra garantir antes o lanche por R$ 20 por criança. A edição segue aberta pra outras famílias — é isso que segura o preço.',
   },
   {
     pergunta: 'Tem onde estacionar?',

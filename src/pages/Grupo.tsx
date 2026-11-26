@@ -71,11 +71,11 @@ export function Grupo() {
     //   6+  -> garante o DESCONTO (R$40 por crianca) numa edicao que ja existe
     //   12+ -> garante a CASA ABERTA (a casa abre um DIA novo pra ela -- nao precisa ser
     //          domingo, e o horario se combina; regra da Maninha em 04/09/2026)
+    // 25/11/2026 (Maninha, valor de dezembro): UM patamar só -- 15 criancas, R$45 cada, e a casa
+    // abre uma Tardezinha pra turma. O desconto de R$40 pra 6+ deixou de existir.
     const totalDoGrupo = 1 + convidados.length
-    if (querOutraData && totalDoGrupo < 12)
-      return 'Pra gente abrir um dia pra tua turma são 12 crianças (contando o aniversariante). Com 6 ou mais tu já garante o valor de grupo numa data que já existe.'
-    if (totalDoGrupo < 6)
-      return 'O valor de grupo começa em 6 crianças (contando o aniversariante). Chama a gente no WhatsApp que a gente vê o melhor jeito.'
+    if (totalDoGrupo < 15)
+      return 'A Tardezinha de grupo é a partir de 15 crianças (contando o aniversariante). Com menos, cada família se inscreve na edição aberta, ou chama a gente no WhatsApp que a gente vê o melhor jeito.'
     if (!orgNome.trim()) return 'Preenche teu nome'
     const digits = orgWhatsapp.replace(/\D/g, '')
     if (digits.length < 10) return 'WhatsApp precisa ter DDD + número'
@@ -232,8 +232,8 @@ export function Grupo() {
             <p className="text-lg font-bold text-gray-800 mb-3">Resumo</p>
             <p className="mb-1 text-gray-700">🎂 <strong>Aniversariante:</strong> {aniversariante.trim()}</p>
             <p className="mb-1 text-gray-700">👧 <strong>Total de crianças:</strong> {1 + convidados.length}</p>
-            <p className="mb-1 text-gray-700">💰 <strong>Valor por criança:</strong> R$ 40,00 (grupo)</p>
-            <p className="mb-1 text-gray-700">💵 <strong>Estimativa total:</strong> R$ {((1 + convidados.length) * 40).toFixed(2).replace('.', ',')}</p>
+            <p className="mb-1 text-gray-700">💰 <strong>Valor por criança:</strong> R$ 45,00 (grupo)</p>
+            <p className="mb-1 text-gray-700">💵 <strong>Estimativa total:</strong> R$ {((1 + convidados.length) * 45).toFixed(2).replace('.', ',')}</p>
             <p className="mt-4 text-sm text-gray-500 font-semibold">
               Pix em até 24h pra garantir as vagas.
             </p>
@@ -259,7 +259,7 @@ export function Grupo() {
         </p>
         <div className="mt-3 inline-block rounded-lg bg-white/15 px-5 py-2">
           <p className="text-lg text-sdb-yellow font-bold">
-            R$ 40,00 por criança (a partir de 6)
+            R$ 45,00 por criança (a partir de 15)
           </p>
           <p className="mt-1 text-sm text-white/70">
             Adulto não paga entrada

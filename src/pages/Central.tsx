@@ -40,7 +40,7 @@ const G = {
 function publicos(): Cartao[] {
   return [
     { nome: 'Inscrição', desc: 'Pra mandar pra família: ela se inscreve e paga.', ico: '🎟️', url: `${BASE}/reservar`, grad: G.amarelo },
-    { nome: 'Grupos', desc: 'Grupo de 6+ crianças, turma, aniversário.', ico: '👨‍👩‍👧‍👦', url: `${BASE}/grupo`, grad: G.lilas },
+    { nome: 'Grupos', desc: 'Turma de 15+ crianças, aniversário.', ico: '👨‍👩‍👧‍👦', url: `${BASE}/grupo`, grad: G.lilas },
     { nome: 'Álbum de Figurinhas', desc: 'O álbum da criança — a fidelização.', ico: '🏅', url: `${BASE}/passaporte`, grad: G.rosa },
     { nome: 'Site', desc: 'A página pública do evento.', ico: '🏖️', url: `${BASE}/`, grad: G.laranja },
   ]

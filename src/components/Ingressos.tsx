@@ -109,7 +109,7 @@ export function Ingressos() {
             👨‍👩‍👧 Adulto não paga entrada — paga apenas consumo no bar
           </p>
           <p className="mt-2 inline-block rounded-full bg-sdb-purple/10 px-4 py-1 text-sm font-bold text-sdb-purple">
-            👥 Grupo com 6 crianças ou mais: R$ 40 antecipado por criança
+            👥 Juntou 15 crianças? A casa abre uma Tardezinha pra tua turma: R$ 45 por criança
           </p>
         </div>
 

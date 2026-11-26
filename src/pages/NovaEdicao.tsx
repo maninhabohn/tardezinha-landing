@@ -152,7 +152,7 @@ export function NovaEdicao() {
             className="mt-4 w-full rounded-xl bg-purple-700 py-3 text-sm font-bold text-white disabled:opacity-40 active:scale-95">
             {salvando ? 'Mandando…' : 'Mandar pra Maninha aprovar'}
           </button>
-          <p className="mt-2 text-[11px] text-gray-400">Lembra de marcar na agenda da casa com o título “Tardezinha”. O preço é o de sempre (R$ 45 antecipado · R$ 50 no dia · grupo 6+ R$ 40).</p>
+          <p className="mt-2 text-[11px] text-gray-400">Lembra de marcar na agenda da casa com o título “Tardezinha”. O preço é o de sempre (R$ 45 antecipado · R$ 50 no dia · turma de 15+ R$ 45).</p>
         </section>
 
         {/* Abertas */}
