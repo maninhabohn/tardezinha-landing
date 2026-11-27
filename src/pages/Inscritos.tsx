@@ -1,5 +1,13 @@
 import { useEffect, useState, useCallback, useMemo } from 'react'
-import { fetchPainel, formatBRL, type PainelReserva, type PainelEdicao } from '../lib/tzApi'
+import { fetchPainel, formatBRL, abrirComprovante, type PainelReserva, type PainelEdicao, type PainelTurma } from '../lib/tzApi'
+
+// 27/11/2026: "Felipe pago — é a criança ou o responsável?" A mãe escreveu o nome do filho no
+// campo do responsável. Agora a linha mostra a CRIANÇA em destaque e avisa quando os nomes batem.
+function nomeTrocado(resp: string, criancas: string[]): boolean {
+  const n = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim()
+  const r = n(resp)
+  return !!r && criancas.some(c => { const cc = n(c); return cc === r || cc.startsWith(r + ' ') })
+}
 
 // Inscritos — ADM (Ana e Maninha). 13/11/2026, desenho aprovado pela Maninha: junta o /inscritos
 // (só a edição atual) com o filtro de edição do /admin/tardezinha-stats. Total, crianças, pagantes,
@@ -49,13 +57,24 @@ export function Inscritos() {
 
   const [status, setStatus] = useState<'loading' | 'ok' | 'negado'>('loading')
   const [reservas, setReservas] = useState<PainelReserva[]>([])
+  const [turmas, setTurmas] = useState<PainelTurma[]>([])
   const [atualizadoEm, setAtualizadoEm] = useState<string>('')
+  const [abrindo, setAbrindo] = useState('')
+
+  async function verComprovante(id: string) {
+    setAbrindo(id)
+    const r = await abrirComprovante(key, id)
+    setAbrindo('')
+    if (r.ok && r.url) window.open(r.url, '_blank', 'noopener')
+    else alert('Não consegui abrir o comprovante: ' + (r.motivo || 'tenta de novo'))
+  }
 
   const carregar = useCallback(async () => {
     if (!key) { setStatus('negado'); return }
     const res = await fetchPainel(key, edicao)
     if (!res.ok || !res.adm) { setStatus('negado'); return }
     setReservas(res.reservas ?? [])
+    setTurmas(res.turmas ?? [])
     setEdicoes(res.edicoes ?? [])
     if (!edicao && res.edicao) setEdicao(res.edicao)
     setAtualizadoEm(new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }))
@@ -172,8 +191,29 @@ export function Inscritos() {
           </div>
         )}
 
+        {turmas.length > 0 && (
+          <div className="mt-4 rounded-2xl bg-white p-4 shadow-sm">
+            <p className="mb-2 text-xs font-bold uppercase tracking-wide text-gray-400">Turmas de aniversário nesta data</p>
+            {turmas.map(t => (
+              <div key={t.token} className="flex items-center gap-3 border-b py-2 last:border-0">
+                <div className="min-w-0 flex-1">
+                  <p className="font-semibold text-gray-800">🎈 Turma do {t.aniversariante} <span className="font-normal text-gray-500">· {t.organizadora}</span></p>
+                  <p className={`text-xs ${t.inscritos < t.piso ? 'text-rose-700' : 'text-gray-500'}`}>
+                    {t.inscritos} de {t.piso} nomes na lista{t.modelo === 'turma_mae_paga' ? ' · a mãe paga todos' : ''}
+                    {t.inscritos === 0 && ' · lista ainda não veio'}
+                  </p>
+                </div>
+                <a href={`/turma/${t.token}`} target="_blank" rel="noopener noreferrer"
+                  className="shrink-0 rounded-lg bg-purple-100 px-2.5 py-1.5 text-xs font-bold text-purple-800 active:scale-95">
+                  ➕ Colocar nome
+                </a>
+              </div>
+            ))}
+          </div>
+        )}
+
         <h2 className="mt-6 mb-2 text-sm font-bold uppercase tracking-wide text-gray-400">
-          Quem se inscreveu ({lista.length})
+          Todos os inscritos do dia — avulsos e turmas ({lista.length})
         </h2>
 
         {lista.length === 0 ? (
@@ -185,14 +225,26 @@ export function Inscritos() {
             {lista.map(r => {
               const pago = PAGO.has(r.status)
               const zap = whatsappLink(r.whatsapp)
+              const kids = (r.criancas ?? []).map(c => c.nome).filter(Boolean)
+              const trocado = nomeTrocado(r.nome, kids)
               return (
                 <div key={r.id} className="flex items-center gap-3 border-b px-4 py-3 last:border-0">
                   <div className="min-w-0 flex-1">
-                    <p className="truncate font-semibold text-gray-800">{r.nome}</p>
+                    <p className="font-semibold text-gray-800">👧 {kids.length ? kids.join(', ') : `${r.qtd_criancas} criança(s)`}</p>
                     <p className="text-xs text-gray-500">
-                      {r.qtd_criancas} criança(s) · {partesDoTurno(r.turno).turno}
+                      Responsável: {r.nome}
+                      {r.turma ? <> · 🎈 Turma do {r.turma}</> : <> · {partesDoTurno(r.turno).turno}</>}
                     </p>
+                    {trocado && (
+                      <p className="text-xs font-semibold text-amber-700">⚠️ Escreveram o nome da criança no lugar do responsável</p>
+                    )}
                   </div>
+                  {r.tem_comprovante && (
+                    <button onClick={() => verComprovante(r.id)} disabled={abrindo === r.id}
+                      className="shrink-0 rounded-lg bg-emerald-50 px-2.5 py-1.5 text-sm active:scale-95" title="Ver comprovante">
+                      {abrindo === r.id ? '…' : '🧾'}
+                    </button>
+                  )}
                   {zap && (
                     <a
                       href={zap}

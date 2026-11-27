@@ -102,12 +102,28 @@ export interface PainelReserva {
   pedidos: PainelPedido[]
   consumo_centavos: number
   ja_pago_centavos?: number
+  // 27/11/2026: comprovante guardado na inscrição + de qual turma veio
+  tem_comprovante?: boolean
+  turma?: string | null
 }
 export interface PainelEdicao { marker: string; dia: string }
+// 27/11/2026: turma aparece mesmo com 0 inscritos (mãe paga e a lista ainda não veio)
+export interface PainelTurma {
+  aniversariante: string; organizadora: string; modelo: string; piso: number
+  horario: string | null; token: string; inscritos: number
+}
 // adm=false: chave da EQUIPE do dia — o banco manda só a edição do dia e nenhuma outra (edicoes vazio)
 export interface PainelResult {
   ok: boolean; reservas?: PainelReserva[]; edicao?: string; edicoes?: PainelEdicao[]
   adm?: boolean; nivel?: 'equipe' | 'adm' | 'dona'; dia?: string | null
+  turmas?: PainelTurma[]
+}
+
+// 27/11/2026: abre o comprovante (link de 10 min, só ADM). A pasta das fotos é fechada.
+export async function abrirComprovante(key: string, reservaId: string): Promise<{ ok: boolean; url?: string; motivo?: string }> {
+  const { data, error } = await supabase.functions.invoke('tz-comprovante', { body: { key, reserva: reservaId } })
+  if (error) return { ok: false, motivo: 'não abriu' }
+  return data as { ok: boolean; url?: string; motivo?: string }
 }
 
 // edicao vazia = o banco escolhe a proxima. Edicao passada continua editavel (lancar consumo depois do evento).
