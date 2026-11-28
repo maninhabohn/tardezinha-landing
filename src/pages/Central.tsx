@@ -48,6 +48,8 @@ function publicos(): Cartao[] {
 
 function doDia(param: string, chave: string): Cartao[] {
   return [
+    // 27/11/2026 (sugestão da Ana): tudo do dia numa página — links + cartão de cada mãe com extras
+    { nome: 'Página do dia', desc: 'Os links do dia e o cartão de cada aniversário: crianças, o que a mãe pagou, combinados e extras.', ico: '📅', url: `/dia?${param}=${chave}`, grad: G.amarelo },
     { nome: 'Recepção / Bar', desc: 'Chegou, saiu, quem pode retirar, lanches e "recebi em…".', ico: '🛎️', url: `/painel?${param}=${chave}`, grad: G.verde },
     { nome: 'Cozinha', desc: 'O que preparar. Põe num tablet ou TV.', ico: '🍳', url: `/cozinha?${param}=${chave}`, grad: G.marrom },
   ]

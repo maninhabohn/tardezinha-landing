@@ -23,6 +23,10 @@ interface Dados {
   }
   meta_centavos: number; despesas_centavos: number; do_dia_centavos: number
   entrou_centavos: number; gastou_centavos: number; resultado_centavos: number
+  // 27/11/2026: extras das turmas + entrada paga na porta
+  extras?: { turma: string; mae: string; descricao: string; qtd: number; centavos: number; pago: boolean; forma: string | null }[]
+  extras_pago_centavos?: number; extras_aberto_centavos?: number
+  entrada_porta_centavos?: number; entrada_porta_qtd?: number
 }
 const br = (iso: string) => `${iso.slice(8, 10)}/${iso.slice(5, 7)}`
 const FORMA: Record<string, string> = { pix: 'Pix', credito: 'Crédito', debito: 'Débito', dinheiro: 'Dinheiro' }
@@ -105,7 +109,8 @@ export function Fechamento() {
             </div>
           </div>
           <p className="mt-2 text-center text-[11px] text-gray-500">
-            Entrou = inscrições pagas antes ({reais(d.pago_antes_centavos)}) + bar no dia ({reais(totalDia)}).
+            Entrou = inscrições pagas ({reais(d.pago_antes_centavos)}) + bar no dia ({reais(totalDia)}){(d.extras_pago_centavos ?? 0) > 0 && <> + extras das turmas ({reais(d.extras_pago_centavos ?? 0)})</>}.
+            {(d.entrada_porta_qtd ?? 0) > 0 && <> Das inscrições, {reais(d.entrada_porta_centavos ?? 0)} foram {d.entrada_porta_qtd} entrada(s) paga(s) na porta.</>}
             {aReceber > 0 && <> Ainda falta receber {reais(aReceber)} de lanche.</>}
           </p>
         </div>
@@ -173,6 +178,15 @@ export function Fechamento() {
           </div>
         </div>
 
+        <Lista titulo="🎂 Extras das turmas (fora do cardápio)" vazio="Nenhum extra lançado.">
+          {(d.extras ?? []).map((x, i) => (
+            <div key={i} className="flex items-center justify-between gap-2 py-2 text-sm">
+              <div className="min-w-0"><p className="font-semibold text-gray-800">{x.qtd}× {x.descricao}</p>
+                <p className="text-xs text-gray-400">turma de {x.turma} · mãe {x.mae}</p></div>
+              <span className={`shrink-0 font-bold ${x.pago ? 'text-emerald-700' : 'text-amber-600'}`}>{reais(x.centavos)} · {x.pago ? (FORMA[x.forma ?? ''] ?? 'pago') : 'falta receber'}</span>
+            </div>
+          ))}
+        </Lista>
         <Lista titulo="💰 Lanche sem pagar" vazio="Ninguém devendo lanche. ✓" alerta>
           {d.a_receber.map((p, i) => <Linha key={i} p={p} dir={reais(p.centavos ?? 0)} />)}
         </Lista>

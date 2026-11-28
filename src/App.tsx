@@ -23,6 +23,7 @@ import { Inscritos } from './pages/Inscritos'
 import { Turma } from './pages/Turma'
 import { Turmas } from './pages/Turmas'
 import { Fechamento } from './pages/Fechamento'
+import { Dia } from './pages/Dia'
 import { ListaTurma } from './pages/ListaTurma'
 import { NovaEdicao } from './pages/NovaEdicao'
 import { Convidar } from './pages/Convidar'
@@ -64,6 +65,7 @@ function App() {
       <Route path="/turma/:token" element={<Turma />} />
       <Route path="/turmas" element={<Turmas />} />
       <Route path="/fechamento" element={<Fechamento />} />
+      <Route path="/dia" element={<Dia />} />
       <Route path="/lista/:token" element={<ListaTurma />} />
       <Route path="/nova-edicao" element={<NovaEdicao />} />
       <Route path="/convidar" element={<Convidar />} />

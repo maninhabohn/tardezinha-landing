@@ -161,12 +161,17 @@ export async function setSaida(key: string, reservaId: string, saiu: boolean) {
   return data as { ok: boolean; aberto_centavos: number }
 }
 
+// 27/11/2026: a porta diz QUEM paga a entrada. Em 20/11 foram 8 entradas sem valor no relatório.
+//   paga='porta' → pagou aqui (valor + forma) · paga='turma' → é da turma (turmaToken) · null → ainda não pagou
+export interface WalkinPagamento { paga?: 'porta' | 'turma' | null; valorCentavos?: number; forma?: FormaPagamento | null; turmaToken?: string | null }
 export async function walkin(
-  key: string, turno: string, crianca: string, responsavel?: string, whatsapp?: string,
+  key: string, turno: string, crianca: string, responsavel?: string, whatsapp?: string, pg: WalkinPagamento = {},
 ) {
   const { data, error } = await supabase.rpc('tardezinha_walkin', {
     p_key: key, p_turno: turno, p_crianca: crianca,
     p_responsavel: responsavel ?? null, p_whatsapp: whatsapp ?? null,
+    p_paga: pg.paga ?? null, p_valor_centavos: pg.valorCentavos ?? null,
+    p_forma: pg.forma ?? null, p_turma_token: pg.turmaToken ?? null,
   })
   if (error) { console.error('[tzApi] walkin:', error); return { ok: false } }
   return data as { ok: boolean; id?: string; motivo?: string }
@@ -228,6 +233,50 @@ export async function addPedido(
   if (error) { console.error('[tzApi] pedido_add:', error); return { ok: false } }
   return data as { ok: boolean; id?: string }
 }
+
+// ---------- Página do dia (27/11/2026, sugestão da Ana) ----------
+export interface DiaExtra { id: string; descricao: string; qtd: number; valor_unit_centavos: number; pago: boolean; forma: string | null; lancado_por: string | null; quando: string }
+export interface DiaTurma {
+  id: string; token: string; aniversariante: string; organizadora: string; whatsapp: string | null
+  modelo: string; horario: string | null; piso: number; preco_entrada_centavos: number; lista_fecha_em: string
+  combinados: string | null; combinados_em: string | null; mae_pagou_centavos: number | null
+  inscritos: number; pagos: number; chegaram: number; criancas: string[]
+  lanches: { item: string; qtd: number; centavos: number }[]; extras: DiaExtra[]
+}
+export interface DiaResult {
+  ok: boolean; adm?: boolean; edicao?: string; dia?: string | null; horario?: string | null
+  edicoes?: PainelEdicao[]; avulsos?: { familias: number; criancas: number; pagas: number; na_porta: number }
+  turmas?: DiaTurma[]
+}
+export async function fetchDia(key: string, edicao?: string): Promise<DiaResult> {
+  const { data, error } = await supabase.rpc('tz_dia', { p_key: key, p_edicao: edicao || null })
+  if (error) { console.error('[tzApi] dia:', error); return { ok: false } }
+  return data as DiaResult
+}
+export async function addExtra(key: string, grupo: string, descricao: string, qtd: number, valorUnit: number, pago: boolean, forma?: FormaPagamento | null, quem?: string) {
+  const { data, error } = await supabase.rpc('tz_extra_add', {
+    p_key: key, p_grupo: grupo, p_descricao: descricao, p_qtd: qtd, p_valor_unit_centavos: valorUnit,
+    p_pago: pago, p_forma: forma ?? null, p_quem: quem ?? null,
+  })
+  if (error) { console.error('[tzApi] extra_add:', error); return { ok: false } }
+  return data as { ok: boolean; motivo?: string }
+}
+export async function setExtraPago(key: string, id: string, pago: boolean, forma?: FormaPagamento | null) {
+  const { data, error } = await supabase.rpc('tz_extra_pago', { p_key: key, p_id: id, p_pago: pago, p_forma: forma ?? null })
+  if (error) { console.error('[tzApi] extra_pago:', error); return { ok: false } }
+  return data as { ok: boolean }
+}
+export async function removerExtra(key: string, id: string) {
+  const { data, error } = await supabase.rpc('tz_extra_remover', { p_key: key, p_id: id })
+  if (error) { console.error('[tzApi] extra_remover:', error); return { ok: false } }
+  return data as { ok: boolean }
+}
+export async function salvarCombinados(key: string, grupo: string, texto: string, maePagouCentavos: number | null) {
+  const { data, error } = await supabase.rpc('tz_turma_combinados', { p_key: key, p_grupo: grupo, p_texto: texto, p_mae_pagou_centavos: maePagouCentavos })
+  if (error) { console.error('[tzApi] combinados:', error); return { ok: false } }
+  return data as { ok: boolean; motivo?: string }
+}
+export const paraCentavos = (s: string) => Math.round(Number(s.replace(/\./g, '').replace(',', '.')) * 100) || 0
 
 // ---------- util ----------
 export const formatBRL = (centavos: number) =>

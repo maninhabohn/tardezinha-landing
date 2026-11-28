@@ -1,8 +1,8 @@
 import { useEffect, useState, useCallback } from 'react'
 import {
-  fetchPainel, setPedidoStatus, addPedido, fetchCardapio, setCheckin, setSaida, setConsumoPago, walkin, sugerirCrianca, liberarPedidoParcial,
+  fetchPainel, fetchDia, setPedidoStatus, addPedido, fetchCardapio, setCheckin, setSaida, setConsumoPago, walkin, sugerirCrianca, liberarPedidoParcial,
   FORMAS_PAGAMENTO, type FormaPagamento, liberarPedido,
-  formatBRL, type PainelReserva, type CardapioItem, type PainelPedido, type PainelEdicao,
+  formatBRL, paraCentavos, type PainelReserva, type CardapioItem, type PainelPedido, type PainelEdicao, type PainelTurma,
 } from '../lib/tzApi'
 import { lerChave, comChave } from '../lib/chave'
 
@@ -64,6 +64,13 @@ export function Painel() {
   const [wWhats, setWWhats] = useState('')
   const [wTurno, setWTurno] = useState('')
   const [wSaving, setWSaving] = useState(false)
+  // 27/11/2026: quem paga a entrada de quem chega sem inscrição (20/11: 8 entradas sem valor)
+  const [wPaga, setWPaga] = useState<'porta' | 'turma' | 'nao' | ''>('')
+  const [wValor, setWValor] = useState('')
+  const [wForma, setWForma] = useState<FormaPagamento | ''>('')
+  const [wTurma, setWTurma] = useState('')
+  const [wErro, setWErro] = useState('')
+  const [turmas, setTurmas] = useState<PainelTurma[]>([])
   // 15/10/2026: o painel virava sozinho pra proxima edicao no dia seguinte e a equipe
   // nao conseguia mais lancar o que vendeu. Agora da pra escolher a edicao.
   const [edicao, setEdicao] = useState('')
@@ -78,6 +85,12 @@ export function Painel() {
     const res = await fetchPainel(key, edicao)
     if (!res.ok) { setStatus('negado'); return }
     setReservas(res.reservas ?? [])
+    // equipe do dia não recebe turmas no painel; a página do dia manda (só nome e de quem é)
+    if ((res.turmas ?? []).length > 0) setTurmas(res.turmas ?? [])
+    else fetchDia(key, edicao).then(d => setTurmas((d.turmas ?? []).map(t => ({
+      aniversariante: t.aniversariante, organizadora: t.organizadora, modelo: t.modelo, piso: t.piso,
+      horario: t.horario, token: t.token, inscritos: t.inscritos,
+    }))))
     setEdicoes(res.edicoes ?? [])
     setAdm(!!res.adm)
     setDiaEdicao(res.dia ?? null)
@@ -136,14 +149,27 @@ export function Painel() {
     (s, r) => s + r.pedidos.filter(p => p.status === 'recebido' || p.status === 'preparando').length, 0)
   const totalReceber = visiveis.filter(r => !r.consumo_pago).reduce((s, r) => s + r.consumo_centavos, 0)
 
+  const entradaRef = reservas.find(r => (r.entrada_ref_centavos ?? 0) > 0)?.entrada_ref_centavos ?? 0
+  const wValorCent = paraCentavos(wValor)
+  const wPronto = !!wCrianca.trim() && !!wPaga &&
+    (wPaga !== 'porta' || (wValorCent > 0 && !!wForma)) && (wPaga !== 'turma' || !!wTurma)
+
   async function addWalkin() {
-    if (!wCrianca.trim() || !wTurno) return
-    setWSaving(true)
-    const res = await walkin(key, wTurno, wCrianca, wResp, wWhats)
+    if (!wPronto || !wTurno) return
+    setWSaving(true); setWErro('')
+    const res = await walkin(key, wTurno, wCrianca, wResp, wWhats, {
+      paga: wPaga === 'nao' ? null : (wPaga || null),
+      valorCentavos: wPaga === 'porta' ? wValorCent : undefined,
+      forma: wPaga === 'porta' ? (wForma || null) : null,
+      turmaToken: wPaga === 'turma' ? wTurma : null,
+    })
     setWSaving(false)
     if (res.ok) {
-      setWCrianca(''); setWResp(''); setWWhats(''); setWalkinOpen(false)
+      setWCrianca(''); setWResp(''); setWWhats(''); setWPaga(''); setWValor(''); setWForma(''); setWTurma('')
+      setWalkinOpen(false)
       carregar()
+    } else {
+      setWErro(res.motivo || 'Não salvou. Tenta de novo.')
     }
   }
 
@@ -236,7 +262,10 @@ export function Painel() {
       <div className="px-4 pt-1 pb-1">
         {!walkinOpen ? (
           <button
-            onClick={() => { setWalkinOpen(true); setWTurno(turnos[0] ?? '') }}
+            onClick={() => {
+              setWalkinOpen(true); setWTurno(turnos[0] ?? ''); setWErro('')
+              if (entradaRef > 0) setWValor((entradaRef / 100).toFixed(2).replace('.', ','))
+            }}
             className="w-full rounded-lg border-2 border-dashed border-sdb-purple/40 py-2.5 text-sm font-bold text-sdb-purple active:bg-sdb-purple/5"
           >➕ Adicionar criança na hora</button>
         ) : (
@@ -267,9 +296,42 @@ export function Painel() {
               className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm bg-white focus:border-sdb-purple focus:outline-none">
               {turnos.map(t => <option key={t} value={t}>Turno {t.replace(/^[^|]+\|/, '')}</option>)}
             </select>
+            {/* 27/11: sem isso a entrada da porta não aparecia no relatório */}
+            <div className="rounded-lg bg-gray-50 border border-gray-200 p-2 space-y-2">
+              <p className="text-xs font-bold text-gray-700">Quem paga a entrada? *</p>
+              <div className="grid grid-cols-1 gap-1.5">
+                <button type="button" onClick={() => setWPaga('porta')}
+                  className={`rounded-lg border-2 px-3 py-2 text-left text-sm font-semibold ${wPaga === 'porta' ? 'border-emerald-600 bg-emerald-50 text-emerald-800' : 'border-gray-200 bg-white text-gray-700'}`}>
+                  💵 Pagou aqui na porta</button>
+                {turmas.map(t => (
+                  <button type="button" key={t.token} onClick={() => { setWPaga('turma'); setWTurma(t.token) }}
+                    className={`rounded-lg border-2 px-3 py-2 text-left text-sm font-semibold ${wPaga === 'turma' && wTurma === t.token ? 'border-purple-600 bg-purple-50 text-purple-800' : 'border-gray-200 bg-white text-gray-700'}`}>
+                    🎂 Turma de {t.aniversariante}{t.modelo === 'turma_mae_paga' ? ` (a mãe ${t.organizadora} paga)` : ''}</button>
+                ))}
+                <button type="button" onClick={() => setWPaga('nao')}
+                  className={`rounded-lg border-2 px-3 py-2 text-left text-sm font-semibold ${wPaga === 'nao' ? 'border-amber-500 bg-amber-50 text-amber-800' : 'border-gray-200 bg-white text-gray-700'}`}>
+                  ⏳ Ainda não pagou</button>
+              </div>
+              {wPaga === 'porta' && (
+                <div className="space-y-2">
+                  <div className="flex items-center rounded-lg border border-gray-300 bg-white px-2">
+                    <span className="text-sm text-gray-400">R$</span>
+                    <input value={wValor} onChange={e => setWValor(e.target.value)} inputMode="decimal" placeholder="valor da entrada"
+                      className="w-full py-2 pl-1 text-sm outline-none" />
+                  </div>
+                  <div className="grid grid-cols-4 gap-1">
+                    {FORMAS_PAGAMENTO.map(f => (
+                      <button type="button" key={f.id} onClick={() => setWForma(f.id)}
+                        className={`rounded-md border py-1.5 text-xs font-bold ${wForma === f.id ? 'border-emerald-600 bg-emerald-600 text-white' : 'border-gray-300 bg-white text-gray-600'}`}>{f.rotulo}</button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+            {wErro && <p className="rounded-md bg-red-50 px-2 py-1 text-xs font-semibold text-red-700">{wErro}</p>}
             <div className="flex gap-2 pt-1">
               <button onClick={() => setWalkinOpen(false)} className="flex-1 rounded-lg border border-gray-300 py-2.5 text-sm font-semibold text-gray-600">Cancelar</button>
-              <button onClick={addWalkin} disabled={wSaving || !wCrianca.trim()}
+              <button onClick={addWalkin} disabled={wSaving || !wPronto}
                 className="flex-1 rounded-lg bg-sdb-purple py-2.5 text-sm font-bold text-white disabled:opacity-50">
                 {wSaving ? 'Adicionando…' : 'Adicionar'}
               </button>
